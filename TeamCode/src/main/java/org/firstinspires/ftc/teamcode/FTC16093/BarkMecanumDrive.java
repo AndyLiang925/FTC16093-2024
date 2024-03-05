@@ -26,6 +26,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -77,6 +78,13 @@ public class BarkMecanumDrive extends MecanumDrive {
     private TrajectoryFollower follower;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    private DcMotorEx armDrive   = null;
+    private DcMotorEx amlDrive   = null;
+    private Servo gb1 = null;
+    private Servo brake = null;
+    private Servo gb2 = null;
+    private Servo wrt = null;
+
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
@@ -110,6 +118,13 @@ public class BarkMecanumDrive extends MecanumDrive {
         rightRear = hardwareMap.get(DcMotorEx.class, "rearRight");
         rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
 
+        armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
+        amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
+        wrt = hardwareMap.get(Servo.class, "wrist");
+        gb1 = hardwareMap.get(Servo.class, "grab2");
+        gb2 = hardwareMap.get(Servo.class, "grab1");
+
+
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
         for (DcMotorEx motor : motors) {
@@ -133,7 +148,15 @@ public class BarkMecanumDrive extends MecanumDrive {
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
-
+        amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        armDrive.setDirection(DcMotorEx.Direction.FORWARD);
+        wrt.setDirection(Servo.Direction.FORWARD);
+        amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -146,7 +169,50 @@ public class BarkMecanumDrive extends MecanumDrive {
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
     }
+    /////////////////////////////////////
+    //grabbers, wrist and arm functions//
+    ////////////////////////////////////
+    public void grab1_close(){
+        gb1.setPosition(0.53);
+    }
+    public void grab2_close(){
+        gb2.setPosition(0.76);
+    }
+    public void grab1_open(){
+        gb1.setPosition(0.22);
+    }
+    public void grab2_open(){
+        gb2.setPosition(0.45);
+    }
+    public void wrist_grab_distal(){
+        setArmPosition(200);
+        setArmLength(1150);
+        wrt.setPosition(0.23);
+    }
+    public void wrist_grab_proximal(){
+        setArmLength(0);
+        wrt.setPosition(0.34);
+        setArmPosition(0);
+    }
+    public void setArmLength(int length){
+        amlDrive.setTargetPosition(length);
+        amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        amlDrive.setPower(1);
+    }
+    public void setArmPosition(int pos){
+        if(armDrive.getCurrentPosition()>pos){
+            armDrive.setPower(0.6);
+        }else{
+            armDrive.setPower(0.8);
+        }
+        armDrive.setTargetPosition(pos);
+        armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        armDrive.setPower(0.8);
 
+    }
+    ///////////////////////////
+    //road runner's functions//
+    ///////////////////////////
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
