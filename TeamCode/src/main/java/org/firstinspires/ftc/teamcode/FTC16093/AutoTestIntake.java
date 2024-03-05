@@ -11,9 +11,9 @@ public class AutoTestIntake extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         initHardware();
 
-        setUp();
+        setUpAuto();
         intake2();
-        setUp();
+        setUpAuto();
     }
 
 }

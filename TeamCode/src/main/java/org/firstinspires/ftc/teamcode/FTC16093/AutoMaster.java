@@ -525,41 +525,20 @@ public class AutoMaster extends LinearOpMode {
         }
     }
 
-    public void setUp(){
-        upper.setArmLength(10);
-        upper.gb1.setPosition(0.53);//gb1.setPosition(0.22);
-        upper.gb2.setPosition(0.76);//gb2.setPosition(0.45);
-        upper.wrt.setPosition(1);
+    public void setUpAuto(){
+        upper.setUp();
     }
     public void putOnSpikeMark(){
-        upper.wrt.setPosition(0.4);
-        upper.setArmPosition(20);
-        upper.gb1.setPosition(0.22);
-        sleep(300);
-        upper.wrt.setPosition(0.7);
-        upper.gb1.setPosition(0.53);
-        upper.wrt.setPosition(1);
+        upper.putOnSpikeMark();
     }
     public void putOnBackDrop(){
-        upper.setArmPosition(1890);
-        sleep(500);
-        //gb1.setPosition(0.22);
-        upper.gb2.setPosition(0.45);
-        sleep(500);
-        upper.setArmPosition(150);
+        upper.putOnBackDrop();
     }
     public void intake1(){
 
     }
     public void intake2(){
-        upper.gb1.setPosition(0.53);
-        upper.wrist_grab_distalAuto(armPos);
-        sleep(200);
-        upper.gb1.setPosition(0.22);
-        sleep(400);
-        upper.wrt.setPosition(1);
-        upper.setArmLength(0);
-        upper.setArmPosition(0);
+        upper.intake2(armPos);
     }
 
 

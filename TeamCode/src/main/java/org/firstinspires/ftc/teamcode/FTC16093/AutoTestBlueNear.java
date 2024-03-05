@@ -12,17 +12,18 @@ public class AutoTestBlueNear extends AutoMaster {
 
         startSide = PROXIMAL;
         side_color = BLUE;
-        setUp();
+        setUpAuto();
         initHardware();
         spikeMarkDump();
+
         putOnSpikeMark();
         backDropDump();
         putOnBackDrop();
-        setUp();
+        setUpAuto();
 
         extraCredit();
         putOnBackDrop();
-        setUp();
+        setUpAuto();
     }
 
 }

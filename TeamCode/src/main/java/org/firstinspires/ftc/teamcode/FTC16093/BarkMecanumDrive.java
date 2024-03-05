@@ -212,7 +212,36 @@ public class BarkMecanumDrive extends MecanumDrive {
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armDrive.setPower(0.8);
+    }
+    public void setUp(){
+        setArmLength(10);
+        gb1.setPosition(0.53);//gb1.setPosition(0.22);
+        gb2.setPosition(0.76);//gb2.setPosition(0.45);
+        wrt.setPosition(1);
+    }
+    public void putOnSpikeMark(){
+        wrt.setPosition(0.4);
+        setArmPosition(20);
+        gb1.setPosition(0.22);
+        
+        wrt.setPosition(0.7);
+        gb1.setPosition(0.53);
+        wrt.setPosition(1);
+    }
+    public void putOnBackDrop(){
+        setArmPosition(1890);
+        //gb1.setPosition(0.22);
+        gb2.setPosition(0.45);
+    }
+    public void intake2(int armPos){
+        gb1.setPosition(0.53);
+        wrist_grab_distalAuto(armPos);
 
+        gb1.setPosition(0.22);
+
+        wrt.setPosition(1);
+        setArmLength(0);
+        setArmPosition(0);
     }
     ///////////////////////////
     //road runner's functions//
