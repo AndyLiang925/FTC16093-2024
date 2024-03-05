@@ -32,7 +32,7 @@ public class AutoTestBlueFar extends AutoMaster {
         gb2.setPosition(0.76);
         wrt.setPosition(1);
         initHardware();
-        moveToCenter();
+        //moveToCenter();
         ///退退退
         setArmPosition(170);
         setArmLength(-450);

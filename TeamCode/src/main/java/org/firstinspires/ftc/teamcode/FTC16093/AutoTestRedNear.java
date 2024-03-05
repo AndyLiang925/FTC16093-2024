@@ -34,7 +34,7 @@ public class AutoTestRedNear extends AutoMaster {
         gb2.setPosition(0.76);
         wrt.setPosition(1);
         initHardware();
-        moveToCenter();
+        //moveToCenter();
         wrt.setPosition(0.4);
         sleep(300);
         setArmPosition(70);

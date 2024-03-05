@@ -6,24 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
-public class AutoTestBlueNear extends AutoMaster {
+public class AutoTestIntake extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
-
-        startSide = PROXIMAL;
-        side_color = BLUE;
-        setUp();
         initHardware();
-        spikeMarkDump();
-        putOnSpikeMark();
-        backDropDump();
-        putOnBackDrop();
-        setUp();
 
-        extraCredit();
-        putOnBackDrop();
+        setUp();
+        intake2();
         setUp();
     }
 
 }
-

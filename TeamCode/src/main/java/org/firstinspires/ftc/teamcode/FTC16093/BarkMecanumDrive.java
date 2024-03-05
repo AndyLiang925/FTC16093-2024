@@ -79,10 +79,10 @@ public class BarkMecanumDrive extends MecanumDrive {
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private DcMotorEx armDrive   = null;
     private DcMotorEx amlDrive   = null;
-    private Servo gb1 = null;
+    public Servo gb1 = null;
     private Servo brake = null;
-    private Servo gb2 = null;
-    private Servo wrt = null;
+    public Servo gb2 = null;
+    public Servo wrt = null;
 
     private List<DcMotorEx> motors;
 
@@ -187,6 +187,11 @@ public class BarkMecanumDrive extends MecanumDrive {
         setArmPosition(200);
         setArmLength(1150);
         wrt.setPosition(0.23);
+    }
+    public void wrist_grab_distalAuto(int armPos){
+        setArmPosition(armPos);
+        wrt.setPosition(0.23);
+        setArmLength(1150);
     }
     public void wrist_grab_proximal(){
         setArmLength(0);

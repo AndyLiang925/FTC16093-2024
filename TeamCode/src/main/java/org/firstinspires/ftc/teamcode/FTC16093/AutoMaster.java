@@ -99,12 +99,12 @@ public class AutoMaster extends LinearOpMode {
 
 
     public static double detectedParking=56; // add by me 外侧值:56
-    public static double intake_x = -60, intake_y = 36.90 ;
+    public static double intake_x = -48, intake_y = 36.90 ;
 
     public static double duration_timeM = 1000, intake_power= -0.17;
     public static double intake_duration1_timeM = 500, intake_duration2_timeM = 150, intake_realPower = 1;
 
-    public static double intermediate_y=10,ec_intermediate_y=12;
+    public static double intermediate_y=10,ec_intermediate_y=6;
     public static double ec_backDropRed_x = 45, ec_backDropRed_y = 27;
     public static double ec_backDropBlue_x = 45, ec_backDropBlue_y = 27;
 
@@ -114,6 +114,8 @@ public class AutoMaster extends LinearOpMode {
     public static double farPos_x = spikeMark_x, farPos_y = intermediate_y, farPos_heading = 180;
 
     public static double forwardDistance=3;
+    private BarkMecanumDrive upper;
+    public static int armPos=250;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -320,12 +322,11 @@ public class AutoMaster extends LinearOpMode {
     public void spikeMarkDump(){
         if (isStopRequested()) return;
         Trajectory moveToSpikeMark;
-        moveToSpikeMark = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x,spikeMarkCenter_y*side_color,Math.toRadians(spikeMark_heading)))
+        moveToSpikeMark = drive.trajectoryBuilder(startPos)
                 .lineToLinearHeading(new Pose2d(spikeMark_x, spikeMark_y,Math.toRadians(spikeMark_heading)))
                 .build();
         drive.followTrajectory(moveToSpikeMark);
         //drive.followTrajectory(moveToVertical);
-
     }
 
     public void barkKickProp(){
@@ -410,7 +411,7 @@ public class AutoMaster extends LinearOpMode {
     public void extraCredit(){
         if(isStopRequested()) return;
         Trajectory moveToSide=drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
-                .lineToLinearHeading(new Pose2d(20,52*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(20,54*side_color,Math.toRadians(180)))
                 .build();
 
                 /*.splineTo(new Vector2d(20,56.69*side_color),Math.toRadians(163.43))
@@ -422,23 +423,23 @@ public class AutoMaster extends LinearOpMode {
                 .build();
                  */
 
-        Trajectory moveToDistal = drive.trajectoryBuilder(new Pose2d(20,52*side_color,Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(-36,52*side_color,Math.toRadians(180)))
+        Trajectory moveToDistal = drive.trajectoryBuilder(new Pose2d(20,54*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-36,54*side_color,Math.toRadians(180)))
                 .build();
 
-        Trajectory moveToPixel=drive.trajectoryBuilder(new Pose2d(-36,52*side_color,Math.toRadians(spikeMark_heading)))
-                .lineToConstantHeading(new Vector2d(-58,intake_y*side_color))
+        Trajectory moveToPixel=drive.trajectoryBuilder(new Pose2d(-36,54*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(intake_x,intake_y*side_color))
                 .build();
 
-        Trajectory moveToIntake=drive.trajectoryBuilder(new Pose2d(-58,intake_y*side_color,Math.toRadians(spikeMark_heading)))
+        Trajectory moveToIntake=drive.trajectoryBuilder(new Pose2d(-44,intake_y*side_color,Math.toRadians(spikeMark_heading)))
                 .lineToConstantHeading(new Vector2d(intake_x,intake_y*side_color))
                 .build();
 
         Trajectory fromIntakeToIntermediate=drive.trajectoryBuilder(new Pose2d(intake_x,intake_y*side_color,Math.toRadians(spikeMark_heading)))
-                .strafeTo(new Vector2d(intake_x+2,ec_intermediate_y*side_color))
+                .strafeTo(new Vector2d(intake_x,ec_intermediate_y*side_color))
                 .build();
 
-        Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_x+2,ec_intermediate_y*side_color,Math.toRadians(spikeMark_heading)))
+        Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_x,ec_intermediate_y*side_color,Math.toRadians(spikeMark_heading)))
                 .lineToConstantHeading(new Vector2d(29.39,ec_intermediate_y*side_color))
                 .build();
         Trajectory fromProximalToSpikeMark = drive.trajectoryBuilder(new Pose2d(29.39,ec_intermediate_y*side_color,Math.toRadians(spikeMark_heading)))
@@ -452,16 +453,11 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveToSide);
         drive.followTrajectory(moveToDistal);
         drive.followTrajectory(moveToPixel);
-        drive.followTrajectory(moveToIntake);
+        //drive.followTrajectory(moveToIntake);
 
         sleep(200);
 
         intake2();
-        forward();
-        back();
-//        while(drive.getPoseEstimate().getX()<-59){
-//            upper.intake.setPower(1);
-//        }
 
         drive.followTrajectory(fromIntakeToIntermediate);
         drive.followTrajectory(fromIntermediateToProximal);
@@ -471,9 +467,6 @@ public class AutoMaster extends LinearOpMode {
         //drive.followTrajectory(fromProximalToSpikeMark);
         drive.followTrajectory(fromSpikeMarkToBackdrop); // need to change
 
-        sleep(300);
-        sleep(300);
-        sleep(300);
 
     }
 
@@ -531,9 +524,42 @@ public class AutoMaster extends LinearOpMode {
             }
         }
     }
+
+    public void setUp(){
+        upper.setArmLength(10);
+        upper.gb1.setPosition(0.53);//gb1.setPosition(0.22);
+        upper.gb2.setPosition(0.76);//gb2.setPosition(0.45);
+        upper.wrt.setPosition(1);
+    }
+    public void putOnSpikeMark(){
+        upper.wrt.setPosition(0.4);
+        upper.setArmPosition(20);
+        upper.gb1.setPosition(0.22);
+        sleep(300);
+        upper.wrt.setPosition(0.7);
+        upper.gb1.setPosition(0.53);
+        upper.wrt.setPosition(1);
+    }
+    public void putOnBackDrop(){
+        upper.setArmPosition(1890);
+        sleep(500);
+        //gb1.setPosition(0.22);
+        upper.gb2.setPosition(0.45);
+        sleep(500);
+        upper.setArmPosition(150);
+    }
     public void intake1(){
+
     }
     public void intake2(){
+        upper.gb1.setPosition(0.53);
+        upper.wrist_grab_distalAuto(armPos);
+        sleep(200);
+        upper.gb1.setPosition(0.22);
+        sleep(400);
+        upper.wrt.setPosition(1);
+        upper.setArmLength(0);
+        upper.setArmPosition(0);
     }
 
 
