@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.FTC16093;
 
-import org.firstinspires.ftc.teamcode.FTC16093.BarkMecanumDrive;
-import org.firstinspires.ftc.teamcode.FTC16093.CenterStageVisionProcessor;
+
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -11,7 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
-
+import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
+import org.firstinspires.ftc.teamcode.FTC16093.uppersystem.superstructure;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -114,7 +114,7 @@ public class AutoMaster extends LinearOpMode {
     public static double farPos_x = spikeMark_x, farPos_y = intermediate_y, farPos_heading = 180;
 
     public static double forwardDistance=3;
-    private BarkMecanumDrive upper;
+    private superstructure upper;
     public static int armPos=250;
 
     @Override
@@ -144,7 +144,9 @@ public class AutoMaster extends LinearOpMode {
         drive.update();
         drive.getLocalizer().setPoseEstimate(startPos);
         drive.update();
-        telemetry.addLine("init: superstructure_tripleServo");
+        telemetry.addLine("init: superstructure");
+        upper = new superstructure(this,drive::update);
+        upper.setUp();
 
 
         telemetry.addLine("init: trajectory");
