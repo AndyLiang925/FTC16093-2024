@@ -86,7 +86,6 @@ public class superstructure {
     }
     public void newSleep(int sleepTime){//tested sleep
         try { Thread.sleep(sleepTime); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
-
     }
     public void autoGrabUpward(){//UNTESTED 2+2 grab the top two pixels
         setArmPosition(100);
@@ -130,10 +129,14 @@ public class superstructure {
         armDrive.setPower(0.8);
     }
     public void setUp(){
+        setArmPosition(0);
         setArmLength(10);
         gb1.setPosition(0.53);//gb1.setPosition(0.22);
         gb2.setPosition(0.76);//gb2.setPosition(0.45);
         wrt.setPosition(1);
+    }
+    public void wrist_to_middle(){
+        wrt.setPosition(0.55);
     }
     public void putOnSpikeMark(){
         wrt.setPosition(0.4);
@@ -151,9 +154,14 @@ public class superstructure {
     }
     public void putOnBackDrop(){
         setArmPosition(1890);
-        newSleep(1000);
+        newSleep(1500);
         //gb1.setPosition(0.22);
-        gb2.setPosition(0.45);
+        grab2_open();
+        grab1_open();
+        newSleep(500);
+        grab2_close();
+        grab1_close();
+        setUp();
     }
     public void intake2(int armPos){
         gb1.setPosition(0.53);

@@ -415,7 +415,6 @@ public class AutoMaster extends LinearOpMode {
         Trajectory moveToSide=drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
                 .lineToLinearHeading(new Pose2d(20,54*side_color,Math.toRadians(180)))
                 .build();
-
                 /*.splineTo(new Vector2d(20,56.69*side_color),Math.toRadians(163.43))
                 .splineTo(new Vector2d(-13.65,60.59*side_color),Math.toRadians(180))
                 .splineTo(new Vector2d(-49.61,55*side_color),Math.toRadians(190))
@@ -459,8 +458,8 @@ public class AutoMaster extends LinearOpMode {
 
         sleep(200);
 
-        intake2();
-
+        //intake2();
+        intake22();//test for new intake with no arm expand
         drive.followTrajectory(fromIntakeToIntermediate);
         drive.followTrajectory(fromIntermediateToProximal);
 
@@ -530,6 +529,9 @@ public class AutoMaster extends LinearOpMode {
     public void setUpAuto(){
         upper.setUp();
     }
+    public void setKickProp(){
+        upper.wrist_to_middle();
+    }
     public void putOnSpikeMark(){
         upper.putOnSpikeMark();
     }
@@ -542,7 +544,9 @@ public class AutoMaster extends LinearOpMode {
     public void intake2(){
         upper.intake2(armPos);
     }
-
+    public void intake22(){
+        upper.autoGrabUpward();
+    }
 
 
 

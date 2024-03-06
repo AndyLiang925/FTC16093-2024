@@ -16,9 +16,11 @@ public class AutoTestBlueNear extends AutoMaster {
         side_color = BLUE;///cnmjwh
         initHardware();
         setUpAuto();
+        setKickProp();
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
+        sleep(1000);
         putOnBackDrop();
         setUpAuto();
         extraCredit();
