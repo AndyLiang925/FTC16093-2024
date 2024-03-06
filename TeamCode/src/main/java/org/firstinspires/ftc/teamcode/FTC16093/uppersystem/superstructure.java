@@ -137,24 +137,36 @@ public class superstructure {
     }
     public void putOnSpikeMark(){
         wrt.setPosition(0.4);
+        newSleep(300);
         setArmPosition(20);
+        newSleep(300);
         gb1.setPosition(0.22);
-
+        newSleep(300);
         wrt.setPosition(0.7);
+        newSleep(300);
         gb1.setPosition(0.53);
+        newSleep(300);
         wrt.setPosition(1);
+        newSleep(300);
     }
     public void putOnBackDrop(){
         setArmPosition(1890);
+        newSleep(1000);
         //gb1.setPosition(0.22);
         gb2.setPosition(0.45);
     }
     public void intake2(int armPos){
         gb1.setPosition(0.53);
+        newSleep(300);
         wrist_grab_distalAuto(armPos);
+        newSleep(300);
         gb1.setPosition(0.22);
+        newSleep(300);
         wrt.setPosition(1);
+        newSleep(300);
         setArmLength(0);
+        newSleep(300);
         setArmPosition(0);
+        newSleep(300);
     }
 }
