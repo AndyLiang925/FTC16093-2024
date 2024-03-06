@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.FTC16093.uppersystem;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -10,6 +11,23 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.apache.commons.math3.geometry.euclidean.twod.Line;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.util.NanoClock;
 
 @Config
 public class superstructure {
@@ -66,6 +84,10 @@ public class superstructure {
         setArmLength(1150);
         wrt.setPosition(0.23);
     }
+    public void drop_16379(int level){//unfinished(drop with wrist upward)
+        try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
+
+    }
     public void wrist_grab_distalAuto(int armPos){
         setArmPosition(armPos);
         wrt.setPosition(0.23);
@@ -114,9 +136,7 @@ public class superstructure {
     public void intake2(int armPos){
         gb1.setPosition(0.53);
         wrist_grab_distalAuto(armPos);
-
         gb1.setPosition(0.22);
-
         wrt.setPosition(1);
         setArmLength(0);
         setArmPosition(0);

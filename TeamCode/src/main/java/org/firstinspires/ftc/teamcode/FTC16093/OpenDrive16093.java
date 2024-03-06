@@ -22,16 +22,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-//Asset from FTC
-
-//Original asset
-
 import java.util.List;
-////to do
-
-//1悬挂刹车防唐
-//2工笔
-//3拍照
 @TeleOp
 public class OpenDrive16093 extends LinearOpMode {
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
