@@ -8,36 +8,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.util.NanoClock;
-
 //Assets from Qualcomm
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import java.util.List;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 @TeleOp(name = "intake test")
 @Config
-public class MotorTest extends LinearOpMode {
+public class IntakeTest extends LinearOpMode {
 
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     public static int encoder_position = 1150;
@@ -46,7 +26,7 @@ public class MotorTest extends LinearOpMode {
     public static double max_power = 1;
     public static boolean read_only = false;
     public static boolean reverse_0 = false;
-    public static boolean reverse_1 = false;
+    public static boolean reverse_1 = true;
     public static boolean reset = true;
     public static boolean set_power_mode_or_set_position_mode = false;
     public static String motor_name_0 = "arm";
@@ -90,6 +70,7 @@ public class MotorTest extends LinearOpMode {
 
             } else {
                 if (!read_only) {
+                    servo0.setPosition(wrist_pos);
                     motor0.setTargetPosition(encoder_position);
                     motor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     motor0.setPower(max_power);

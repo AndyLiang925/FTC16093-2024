@@ -84,9 +84,24 @@ public class superstructure {
         setArmLength(1150);
         wrt.setPosition(0.23);
     }
-    public void drop_16379(int level){//unfinished(drop with wrist upward)
-        try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
+    public void newSleep(int sleepTime){//sleep(untested)
+        try { Thread.sleep(sleepTime); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
 
+    }
+    public void autoGrabUpward(){//UNTESTED 2+2 grab the top two pixels
+        setArmPosition(100);
+        newSleep(300);
+        setArmLength(0);
+        grab1_open();
+        grab2_open();
+        newSleep(300);
+        wrt.setPosition(0.35);
+        newSleep(300);
+        grab1_close();
+        grab2_close();
+        newSleep(300);
+        wrt.setPosition(1);
+        setArmPosition(0);
     }
     public void wrist_grab_distalAuto(int armPos){
         setArmPosition(armPos);
