@@ -17,12 +17,10 @@ public class AutoTestBlueNear extends AutoMaster {
         setUpAuto();
         initHardware();
         spikeMarkDump();
-
         putOnSpikeMark();
         backDropDump();
         putOnBackDrop();
         setUpAuto();
-
         extraCredit();
         putOnBackDrop();
         setUpAuto();
