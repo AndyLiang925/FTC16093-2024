@@ -84,7 +84,7 @@ public class superstructure {
         setArmLength(1150);
         wrt.setPosition(0.23);
     }
-    public void newSleep(int sleepTime){//sleep(untested)
+    public void newSleep(int sleepTime){//tested sleep
         try { Thread.sleep(sleepTime); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
 
     }
