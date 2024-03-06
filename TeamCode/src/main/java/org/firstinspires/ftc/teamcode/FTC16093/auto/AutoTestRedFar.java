@@ -1,12 +1,14 @@
-package org.firstinspires.ftc.teamcode.FTC16093;
+package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.FTC16093.AutoMaster;
+
 @Autonomous
-public class AutoTestBlueFar extends AutoMaster {
+public class AutoTestRedFar extends AutoMaster {
     private DcMotorEx armDrive   = null;
     private DcMotorEx amlDrive   = null;
     private Servo gb1 = null;
@@ -26,7 +28,7 @@ public class AutoTestBlueFar extends AutoMaster {
         amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         startSide = DISTAL;
-        side_color = BLUE;
+        side_color = RED;
         setArmLength(10);
         gb1.setPosition(0.53);
         gb2.setPosition(0.76);
@@ -35,6 +37,7 @@ public class AutoTestBlueFar extends AutoMaster {
         //moveToCenter();
         ///退退退
         setArmPosition(170);
+        sleep(300);
         setArmLength(-450);
         sleep(300);
         barkKickProp();

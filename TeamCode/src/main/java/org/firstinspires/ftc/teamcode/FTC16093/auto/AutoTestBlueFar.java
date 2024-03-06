@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.FTC16093;
+package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.FTC16093.AutoMaster;
 
 @Autonomous
-public class AutoTestRedNear extends AutoMaster {
+public class AutoTestBlueFar extends AutoMaster {
     private DcMotorEx armDrive   = null;
     private DcMotorEx amlDrive   = null;
     private Servo gb1 = null;
@@ -27,42 +27,53 @@ public class AutoTestRedNear extends AutoMaster {
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        startSide = PROXIMAL;
-        side_color = RED;
+        startSide = DISTAL;
+        side_color = BLUE;
         setArmLength(10);
         gb1.setPosition(0.53);
         gb2.setPosition(0.76);
         wrt.setPosition(1);
         initHardware();
         //moveToCenter();
+        ///退退退
+        setArmPosition(170);
+        setArmLength(-450);
+        sleep(300);
+        barkKickProp();
+        setArmPosition(10);
+        setArmLength(10);
+        sleep(1000);
+        //////
         wrt.setPosition(0.4);
         sleep(300);
-        setArmPosition(70);
         spikeMarkDump();
-        sleep(500);
+        sleep(1000);
+        sleep(1000);
         setArmPosition(0);
         sleep(300);
-        gb2.setPosition(0.45);
-        sleep(700);
+        gb1.setPosition(0.22);
+
+        sleep(1500);
+
         wrt.setPosition(0.7);
         sleep(200);
-        gb2.setPosition(0.76);
+        gb1.setPosition(0.53);
+
         sleep(200);
         wrt.setPosition(1);
-        backDropDump();
-        setArmPosition(1890);
+        DistalBackDropDump();
+        setArmPosition(1850);
         sleep(1500);
+        gb2.setPosition(0.45);
         //gb1.setPosition(0.22);
-        gb1.setPosition(0.22);
         sleep(1000);
         setArmPosition(0);
         gb1.setPosition(0.53);
         gb2.setPosition(0.76);
         sleep(1500);
-        parking();
-        wrt.setPosition(1);
-        sleep(1000);
-        headReset();
+        //parking();
+
+        //wrt.setPosition(0.34);
         //extraCredit();
     }
     public void setArmLength(int length){
