@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
+import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
+
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -48,16 +50,26 @@ public class OpenDrive16093 extends LinearOpMode {
     //time of this period (sec)
     private double period_time_sec;
     public double speed=1.0;
+    private BarkMecanumDrive drive;
 
     enum Sequence {
         AIM, RELEASE, RUN
     }
     int mode=0;
     private OpenDrive16093.Sequence sequence;
-    @Override public void runOpMode(){
+
+    @Override
+    public void runOpMode() throws InterruptedException {
         time = NanoClock.system();
         //get all Lynx Module device objects
         allHubs = hardwareMap.getAll(LynxModule.class);
+        drive = new BarkMecanumDrive(hardwareMap);
+
+        telemetry.addData("leftFront_velo",drive.getMotorVelo(1));
+        telemetry.addData("leftBack_velo",drive.getMotorVelo(2));
+        telemetry.addData("rightFront_velo",drive.getMotorVelo(3));
+        telemetry.addData("rightBack_velo",drive.getMotorVelo(4));
+
         //init position
         double  drive           = 0;        // Desired forward power/speed (-1 to +1)
         double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
@@ -305,6 +317,7 @@ public class OpenDrive16093 extends LinearOpMode {
             telemetry.addData("底盘速度:",speed);
             telemetry.addData("手腕位置:",wrtp);
             telemetry.addData("index:",index);
+
             telemetry.update();
             if(gamepad1.dpad_up||gamepad1.dpad_down||gamepad1.dpad_right||gamepad1.dpad_left){
                 bark_tank_drive_period();

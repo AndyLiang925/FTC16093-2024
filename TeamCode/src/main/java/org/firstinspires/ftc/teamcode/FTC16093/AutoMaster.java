@@ -254,7 +254,7 @@ public class AutoMaster extends LinearOpMode {
                 spikeMark_x = spikeMark3_x_Blue_Distal;
                 spikeMark_y = spikeMark3_y_Blue_Distal; // doesn't need spikeMark3_y, since 1 and 3 y are completely the same
                 spikeMark_heading = -3; // initial 177
-                detectedBackDrop_x = BackDrop1_distalBlue_x;////
+                detectedBackDrop_x = BackDrop_Blue_farRight_x;////
                 detectedBackDrop_y = BackDrop1_distalBlue_y;//25.5
                 closeToIntake = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {

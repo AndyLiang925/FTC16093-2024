@@ -471,9 +471,11 @@ public class BarkMecanumDrive extends MecanumDrive {
             return leftRear.getVelocity();
         }else if(vel==3){
             return rightFront.getVelocity();
-        }else{
+        }else if(vel==4){
             return rightRear.getVelocity();
         }
+        return 0;
     }
+
 
 }
