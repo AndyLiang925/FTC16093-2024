@@ -23,7 +23,7 @@ import java.util.List;
 public class AutoMaster extends LinearOpMode {
 
 
-    private ElapsedTime runtime; // 111222
+    private ElapsedTime runtime; // 1112220
     public static final int PROXIMAL = 1;
     public static final int DISTAL = -1;
     public static boolean DEBUG = true;
