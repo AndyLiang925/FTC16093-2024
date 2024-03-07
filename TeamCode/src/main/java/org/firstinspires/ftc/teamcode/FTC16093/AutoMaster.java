@@ -260,15 +260,15 @@ public class AutoMaster extends LinearOpMode {
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
                 spikeMark_x = spikeMark3_x_Blue_Distal;
-                spikeMark_y = spikeMark3_y_Blue_Distal * RED;
+                spikeMark_y = spikeMark3_y_Blue_Distal ;
                 spikeMark_heading = 0; // initial 183
                 detectedBackDrop_x = BackDrop1_distalRed_x; // change to distal
-                detectedBackDrop_y = BackDrop1_distalRed_y * RED;
+                detectedBackDrop_y = BackDrop1_distalRed_y ;
                 closeToIntake = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark_x = spikeMark2_x_Blue_Distal;
-                spikeMark_y = spikeMark2_y_Blue_Distal * RED;
+                spikeMark_y = spikeMark2_y_Blue_Distal ;
                 spikeMark_heading = 0; // initial 185  //5
                 detectedBackDrop_x = BackDrop2_distalRed_x;
                 detectedBackDrop_y = BackDrop2_distalRed_y * RED;
