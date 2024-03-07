@@ -148,7 +148,6 @@ public class AutoMaster extends LinearOpMode {
         upper = new superstructure(this,drive::update);
         upper.setUp();
 
-
         telemetry.addLine("init: trajectory");
 
 

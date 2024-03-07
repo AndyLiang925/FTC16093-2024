@@ -13,13 +13,14 @@ public class AutoTestBlueNear extends AutoMaster {
     public void runOpMode() throws InterruptedException{
 
         startSide = PROXIMAL;
-        side_color = BLUE;///cnmjwh
+        side_color = BLUE;
         initHardware();
-        setUpAuto();
+
         setKickProp();
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
+
         sleep(1000);
         putOnBackDrop();
         setUpAuto();

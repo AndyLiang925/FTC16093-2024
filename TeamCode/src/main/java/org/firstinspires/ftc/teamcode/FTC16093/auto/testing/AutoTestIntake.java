@@ -13,7 +13,6 @@ public class AutoTestIntake extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         initHardware();
 
-        setUpAuto();
         intake2();
         setUpAuto();
     }

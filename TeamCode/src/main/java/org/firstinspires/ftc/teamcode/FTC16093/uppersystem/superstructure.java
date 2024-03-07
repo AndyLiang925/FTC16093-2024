@@ -136,11 +136,11 @@ public class superstructure {
         wrt.setPosition(1);
     }
     public void wrist_to_middle(){
-        wrt.setPosition(0.55);
+        wrt.setPosition(1); // initial 0.55
     }
     public void putOnSpikeMark(){
         wrt.setPosition(0.4);
-        newSleep(300);
+        //newSleep(300);
         setArmPosition(20);
         newSleep(300);
         gb1.setPosition(0.22);
@@ -154,7 +154,7 @@ public class superstructure {
     }
     public void putOnBackDrop(){
         setArmPosition(1890);
-        newSleep(1500);
+        newSleep(1000);
         //gb1.setPosition(0.22);
         grab2_open();
         grab1_open();
