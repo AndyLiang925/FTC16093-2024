@@ -65,7 +65,7 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMark_RedCenter_x=20.5,spikeMark_RedCenter_y= -20;
     public static double spikeMark_RedRight_x = 36 ,spikeMark_RedRight_y = -30;
 
-    public static double spikeMark_BlueLeft_x = 35.0, spikeMark_BlueLeft_y=30;
+    public static double spikeMark_BlueLeft_x = 35.0, spikeMark_BlueLeft_y=30;//
     public static double spikeMark_BlueCenter_x = 26, spikeMark_BlueCenter_y = 20;
     public static double spikeMark_BlueRight_x = 13,spikeMark_BlueRight_y = 30;
 
