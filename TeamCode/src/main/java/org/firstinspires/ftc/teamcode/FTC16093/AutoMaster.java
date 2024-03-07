@@ -61,13 +61,13 @@ public class AutoMaster extends LinearOpMode {
 
     public static double startPos_x=12.125,startPos_y=59,startPos_heading=90;
     public static double spikeMark_x,spikeMark_y,spikeMark_heading=0;
-    public static double spikeMark1_x=12,spikeMark1_y=30;
-    public static double spikeMark2_x=20.5,spikeMark2_y=20; // spikeMark2 initial 23, change to 21.5
-    public static double spikeMark3_x=36,spikeMark3_y=30; // spikeMark3 initial 33.5 change to 31.5
+    public static double spikeMark_RedLeft_x=12,spikeMark_RedLeft_y= -30;
+    public static double spikeMark_RedCenter_x=20.5,spikeMark_RedCenter_y= -20;
+    public static double spikeMark_RedRight_x = 36 ,spikeMark_RedRight_y = -30;
 
-    public static double spikeMark1_x_Blue = 35.0;
-    public static double spikeMark2_x_Blue = 26;
-    public static double spikeMark3_x_Blue = 13; //10?
+    public static double spikeMark_BlueLeft_x = 35.0, spikeMark_BlueLeft_y=30;
+    public static double spikeMark_BlueCenter_x = 26, spikeMark_BlueCenter_y = 20;
+    public static double spikeMark_BlueRight_x = 13,spikeMark_BlueRight_y = 30;
 
     public static double spikeMarkCenter_x,spikeMarkCenter_y;
     public static double spikeMarkCenterProximal_x = 45,spikeMarkCenterProximal_y = 30;
@@ -77,12 +77,12 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMark2_x_Blue_Distal = -45, spikeMark2_y_Blue_Distal = 21;  // x:21+24
     public static double spikeMark3_x_Blue_Distal = -61, spikeMark3_y_Blue_Distal = 30.0; // x:30+24
 
-    public static double detectedBackDrop1_x = 46.8,detectedBackDrop1_y = 22;
-    public static double detectedBackDrop2_x = 46.8,detectedBackDrop2_y = 28;
-    public static double detectedBackDrop3_x = 46.8,detectedBackDrop3_y = 36.5;
-    public static double detectedBackDrop1_x_Blue = 46.8,detectedBackDrop1_y_Blue = 24;
-    public static double detectedBackDrop2_x_Blue = 46.8,detectedBackDrop2_y_Blue = 29;
-    public static double detectedBackDrop3_x_Blue =46.8,detectedBackDrop3_y_Blue = 34; //x change to 50, initial 51
+    public static double BackDrop_RedLeft_x = 46.8,BackDrop_RedLeft_y = 22;
+    public static double BackDrop_RedCenter_x = 46.8, BackDrop_RedCenter_y = 28;
+    public static double BackDrop_RedRight_x = 46.8, BackDrop_RedRight_y = 36.5;
+    public static double BackDrop_BlueRight_x = 46.8,BackDrop_BlueRight_y = 24;
+    public static double BackDrop_BlueCenter_x = 46.8, BackDrop_BlueCenter_y = 29;
+    public static double BackDrop_BlueLeft_x =46.8,BackDrop_BlueLeft_y = 34; //x change to 50, initial 51
 
     public static double BackDrop1_distalBlue_x = 47,BackDrop1_distalBlue_y = 27;
     public static double BackDrop2_distalBlue_x = 50.8,BackDrop2_distalBlue_y = 36;
@@ -188,46 +188,48 @@ public class AutoMaster extends LinearOpMode {
 
             if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == BLUE) {
                 DesiredTagId = 1;
-                spikeMark_x=spikeMark1_x_Blue * PROXIMAL;
-                spikeMark_y=spikeMark3_y * BLUE;
+                spikeMark_x=spikeMark_BlueLeft_x ;
+                spikeMark_y=spikeMark_BlueLeft_y;
+
                 spikeMark_heading=180;
-                detectedBackDrop_x=detectedBackDrop3_x_Blue; // x will not change so delete Proximal
-                detectedBackDrop_y=detectedBackDrop3_y_Blue;
+                detectedBackDrop_x= BackDrop_BlueLeft_x; // x will not change so delete Proximal
+                detectedBackDrop_y= BackDrop_BlueLeft_y;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == BLUE) {
                 DesiredTagId = 2;
-                spikeMark_x=spikeMark2_x_Blue*PROXIMAL;
-                spikeMark_y=spikeMark2_y*BLUE;
+                spikeMark_x=spikeMark_BlueCenter_x;
+                spikeMark_y=spikeMark_BlueCenter_y;
                 spikeMark_heading=180;
-                detectedBackDrop_x=detectedBackDrop2_x_Blue; //
-                detectedBackDrop_y=detectedBackDrop2_y_Blue;
+                detectedBackDrop_x= BackDrop_BlueCenter_x;
+                detectedBackDrop_y= BackDrop_BlueCenter_y;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == BLUE) {
                 DesiredTagId = 3;
-                spikeMark_x=spikeMark3_x_Blue*PROXIMAL;
-                spikeMark_y=spikeMark1_y*BLUE;
+                spikeMark_x=spikeMark_BlueRight_x;
+                spikeMark_y=spikeMark_BlueRight_y;
                 spikeMark_heading=180;
-                detectedBackDrop_x=detectedBackDrop1_x_Blue;
-                detectedBackDrop_y=detectedBackDrop1_y_Blue;
+                detectedBackDrop_x= BackDrop_BlueRight_x;
+                detectedBackDrop_y= BackDrop_BlueRight_y;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
-                spikeMark_x = spikeMark1_x * PROXIMAL;
-                spikeMark_y = spikeMark1_y * RED;
+                spikeMark_x = spikeMark_RedLeft_x  ;
+                spikeMark_y = spikeMark_RedLeft_y ;
                 spikeMark_heading = 180;
-                detectedBackDrop_x = detectedBackDrop1_x;
-                detectedBackDrop_y = detectedBackDrop1_y * RED;
+                detectedBackDrop_x = BackDrop_RedLeft_x;
+                detectedBackDrop_y = BackDrop_RedLeft_y ;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
-                spikeMark_x = spikeMark2_x * PROXIMAL;
-                spikeMark_y = spikeMark2_y * RED; // initial spikeMark1_y change to Mark2_y
+                spikeMark_x = spikeMark_RedCenter_x ;
+                spikeMark_y = spikeMark_RedCenter_y ;
+
                 spikeMark_heading = 180;
-                detectedBackDrop_x = detectedBackDrop2_x;
-                detectedBackDrop_y = detectedBackDrop2_y * RED;
+                detectedBackDrop_x = BackDrop_RedCenter_x;
+                detectedBackDrop_y = BackDrop_RedCenter_y ;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == RED) {
                 DesiredTagId = 6;
-                spikeMark_x = spikeMark3_x * PROXIMAL;
-                spikeMark_y = spikeMark3_y * RED;
+                spikeMark_x = spikeMark_RedRight_x ;
+                spikeMark_y = spikeMark_RedRight_y ;
                 spikeMark_heading = 180;
-                detectedBackDrop_x = detectedBackDrop3_x;
-                detectedBackDrop_y = detectedBackDrop3_y * RED;
+                detectedBackDrop_x = BackDrop_RedRight_x;
+                detectedBackDrop_y = BackDrop_RedRight_y ;
             }
         }
         if(startSide==DISTAL){
@@ -278,7 +280,6 @@ public class AutoMaster extends LinearOpMode {
                 detectedBackDrop_x = BackDrop3_distalRed_x;
                 detectedBackDrop_y = BackDrop3_distalRed_y * RED;
             }
-
         }
         runtime.reset();
         visionPortal.stopStreaming();
