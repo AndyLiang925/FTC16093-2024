@@ -279,7 +279,7 @@ public class AutoMaster extends LinearOpMode {
                 spikeMark_heading = 0;
                 detectedBackDrop_x = BackDrop3_distalRed_x;
                 detectedBackDrop_y = BackDrop3_distalRed_y * RED;
-            }
+            }//
         }
         runtime.reset();
         visionPortal.stopStreaming();
