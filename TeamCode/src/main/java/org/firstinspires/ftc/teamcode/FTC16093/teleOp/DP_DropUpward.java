@@ -69,7 +69,7 @@ public class DP_DropUpward extends LinearOpMode {
         double  turn            = 0;        // Desired turning power/speed (-1 to +1)
         double wrtp = 0.23;
         double plnp=0.2;//plane pos
-        double backPower=-0.2;//the power going back
+        double backPower=-0.2;//the power of going back
         double brkp;//brake's pos
         int amlp=0;
         int armp=0;
