@@ -21,7 +21,7 @@ import java.util.List;
 @TeleOp
 public class DP_DropUpward extends LinearOpMode {
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
-    private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
+    private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel//
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
     private DcMotorEx rightBackDrive   = null;  //  Used to control the right back drive wheel\
     private DcMotorSimple hangLeft   = null;
@@ -195,101 +195,101 @@ public class DP_DropUpward extends LinearOpMode {
             if(gamepad1.a){
                 imu.resetYaw();
             }
-                if(toRun.toTrue()){
-                    setArmLength(0);
-                    setArmPosition(0);
-                    wrtp=1;
+            if(toRun.toTrue()){
+                setArmLength(0);
+                setArmPosition(0);
+                wrtp=1;
+                wrt.setPosition(wrtp);
+                sequence= DP_DropUpward.Sequence.RUN;
+                telemetry.addData("run",0);
+            }
+            if(drop.toTrue()){
+                mode=1;
+                setArmLength(0);
+                setArmPosition(1900);
+                wrtp=0;
+                wrt.setPosition(wrtp);
+                sequence= DP_DropUpward.Sequence.RELEASE;
+                telemetry.addData("release",0);
+            }
+            if(aim.toTrue()){
+                setArmLength(0);
+                setArmPosition(0);
+                wrtp=0.34;
+                wrt.setPosition(wrtp);
+                sequence= DP_DropUpward.Sequence.AIM;
+                telemetry.addData("aim",0);
+            }
+            if(humanGrab.toTrue()){
+                colorSensorUsed=false;
+            }
+            if(sequence== DP_DropUpward.Sequence.AIM){
+                speed = 0.45;
+                if(distal.toTrue()){
+                    setArmPosition(200);
+                    sleep_with_drive(200);
+                    setArmLength(1150);
+                    wrtp=0.23;
                     wrt.setPosition(wrtp);
-                    sequence= DP_DropUpward.Sequence.RUN;
-                    telemetry.addData("run",0);
                 }
-                if(drop.toTrue()){
-                    mode=1;
+                if(proximal.toTrue()){
                     setArmLength(0);
-                    setArmPosition(1900);
-                    wrtp=0;
-                    wrt.setPosition(wrtp);
-                    sequence= DP_DropUpward.Sequence.RELEASE;
-                    telemetry.addData("release",0);
-                }
-                if(aim.toTrue()){
-                    setArmLength(0);
-                    setArmPosition(0);
                     wrtp=0.34;
                     wrt.setPosition(wrtp);
-                    sequence= DP_DropUpward.Sequence.AIM;
-                    telemetry.addData("aim",0);
-                }
-                if(humanGrab.toTrue()){
-                    colorSensorUsed=false;
-                }
-                if(sequence== DP_DropUpward.Sequence.AIM){
-                    speed = 0.45;
-                    if(distal.toTrue()){
-                        setArmPosition(200);
-                        sleep_with_drive(200);
-                        setArmLength(1150);
-                        wrtp=0.23;
-                        wrt.setPosition(wrtp);
-                    }
-                    if(proximal.toTrue()){
-                        setArmLength(0);
-                        wrtp=0.34;
-                        wrt.setPosition(wrtp);
-                        setArmPosition(0);
-                    }
-
-                    if(leftGrab.toTrue()){
-                        gb1.setPosition(leftGrabOpen?0.22:0.53);
-                        leftGrabOpen=!leftGrabOpen;
-                    }
-                    if(rightGrab.toTrue()){
-                        gb2.setPosition(rightGrabOpen?0.76:0.45);
-                        rightGrabOpen=!rightGrabOpen;
-                    }
-                }
-                if(sequence== DP_DropUpward.Sequence.RUN){
-                    setArmLength(0);
                     setArmPosition(0);
-                    wrtp=1;
-                    wrt.setPosition(wrtp);
-                    speed=1;
-                    gb1.setPosition(0.53);
-                    gb2.setPosition(0.76);
                 }
-                if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
-                    setArmLength(armLengthLevels[index]);
-                    mode=0;
+
+                if(leftGrab.toTrue()){
+                    gb1.setPosition(leftGrabOpen?0.22:0.53);
+                    leftGrabOpen=!leftGrabOpen;
                 }
-                if(sequence== DP_DropUpward.Sequence.RELEASE) {
-                    speed = 0.3;
-                    if (distal.toTrue()) {
-                        index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
-                        mode=1;
-                    }
-                    if (proximal.toTrue()) {
-                        index = index - 1 < minIndex ? minIndex : index - 1;
-                        mode=1;
-                    }
-                    bark_wrist_balancer();
-                    setArmPosition(armPosLevels[index]);
-                    bark_wrist_balancer();
-                    wrt.setPosition(wrtp);
-                    if (leftGrab.toTrue()) {
-                        gb1.setPosition(leftGrabOpen?0.22:0.53);
-                        leftGrabOpen = !leftGrabOpen;
+                if(rightGrab.toTrue()){
+                    gb2.setPosition(rightGrabOpen?0.76:0.45);
+                    rightGrabOpen=!rightGrabOpen;
+                }
+            }
+            if(sequence== DP_DropUpward.Sequence.RUN){
+                setArmLength(0);
+                setArmPosition(0);
+                wrtp=1;
+                wrt.setPosition(wrtp);
+                speed=1;
+                gb1.setPosition(0.53);
+                gb2.setPosition(0.76);
+            }
+            if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
+                setArmLength(armLengthLevels[index]);
+                mode=0;
+            }
+            if(sequence== DP_DropUpward.Sequence.RELEASE) {
+                speed = 0.3;
+                if (distal.toTrue()) {
+                    index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
+                    mode=1;
+                }
+                if (proximal.toTrue()) {
+                    index = index - 1 < minIndex ? minIndex : index - 1;
+                    mode=1;
+                }
+                bark_wrist_balancer();
+                setArmPosition(armPosLevels[index]);
+                bark_wrist_balancer();
+                wrt.setPosition(wrtp);
+                if (leftGrab.toTrue()) {
+                    gb1.setPosition(leftGrabOpen?0.22:0.53);
+                    leftGrabOpen = !leftGrabOpen;
 //                        setArmPosition(armPosLevels[index]-130);
 //                        sleep(300);
 //                        setArmPosition(armPosLevels[index]);
-                    }
-                    if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.76:0.45);
-                        rightGrabOpen = !rightGrabOpen;
+                }
+                if (rightGrab.toTrue()) {
+                    gb2.setPosition(rightGrabOpen?0.76:0.45);
+                    rightGrabOpen = !rightGrabOpen;
 //                        setArmPosition(armPosLevels[index]-130);
 //                        sleep(300);
 //                        setArmPosition(armPosLevels[index]);
-                    }
                 }
+            }
             if(hangLower.get()){
                 hangLeft.setPower(1);
                 hangRight.setPower(1);
@@ -415,7 +415,7 @@ public class DP_DropUpward extends LinearOpMode {
     public void sleep_with_drive(double time_mm) {
         long start_time = System.currentTimeMillis();
         while (opModeIsActive() && System.currentTimeMillis() - start_time < time_mm) {
-           bark_drive_period();
+            bark_drive_period();
         }
     }
 }
