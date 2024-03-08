@@ -147,7 +147,7 @@ public class TestMode16093 extends LinearOpMode {
     double wrist_current_pos=60;//the pos
     //double wrist_target_ang=60;//the pos wrist need to reach
     double arm_encoder_range=4000;
-    double wrist_start_pos=0.34;//wrist's pos at angle=0;
+    double wrist_start_pos=0.34;//wrist's pos at angle=0
     double arm_current_angle;
     private void bark_wrist_balancer(){//design for servo range 180
         arm_current_angle=armDrive.getCurrentPosition()*360/arm_encoder_range+arm_start_ang;//get the current angle according to the encoder
