@@ -1,10 +1,10 @@
-# The rode for FTC2024 Centerstage
+# The Code of Team 16093 for FTC Centerstage Season
 
 Build by team 16093 Comic Bark
 
-## Installation
+## Introduction
 
-1. nope
+We are a team of passionate high school students from Beijing National Day School.
 
 ## Documentation
 
