@@ -470,7 +470,66 @@ public class AutoMaster extends LinearOpMode {
 
 
     }
+    public void extraCredit2(){
+        if(isStopRequested()) return;
+        Trajectory moveToSide=drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
+                .lineToLinearHeading(new Pose2d(20,54*side_color,Math.toRadians(180)))
+                .build();
+                /*.splineTo(new Vector2d(20,56.69*side_color),Math.toRadians(163.43))
+                .splineTo(new Vector2d(-13.65,60.59*side_color),Math.toRadians(180))
+                .splineTo(new Vector2d(-49.61,55*side_color),Math.toRadians(190))
+                .splineTo(new Vector2d(intake_x,intake_y*side_color),Math.toRadians(180))
+                .lineTo(new Vector2d(detectedBackDrop_x,detectedBackDrop2_y* side_color))
+                .splineTo(new Vector2d(intake_x,detectedBackDrop2_y * side_color),Math.toRadians(180))
+                .build();
+                 */
 
+        Trajectory moveToDistal = drive.trajectoryBuilder(new Pose2d(20,54*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-36,54*side_color,Math.toRadians(180)))
+                .build();
+
+        Trajectory moveToPixel=drive.trajectoryBuilder(new Pose2d(-36,54*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(intake_x,intake_y*side_color))
+                .build();
+
+        Trajectory moveToIntake=drive.trajectoryBuilder(new Pose2d(-44,intake_y*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(intake_x,intake_y*side_color))
+                .build();
+
+        Trajectory fromIntakeToIntermediate=drive.trajectoryBuilder(new Pose2d(intake_x,intake_y*side_color,Math.toRadians(spikeMark_heading)))
+                .strafeTo(new Vector2d(intake_x,ec_intermediate_y*side_color))
+                .build();
+
+        Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_x,ec_intermediate_y*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(29.39,ec_intermediate_y*side_color))
+                .build();
+        Trajectory fromProximalToSpikeMark = drive.trajectoryBuilder(new Pose2d(29.39,ec_intermediate_y*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(29.39,detectedBackDrop_y*side_color))
+                .build();
+
+        Trajectory fromSpikeMarkToBackdrop = drive.trajectoryBuilder(new Pose2d(29.39,ec_intermediate_y*side_color,Math.toRadians(spikeMark_heading)))
+                .lineTo(new Vector2d(ec_final_backDrop_x,ec_final_backDrop_y*side_color))
+                .build();
+
+        drive.followTrajectory(moveToSide);
+        drive.followTrajectory(moveToDistal);
+        drive.followTrajectory(moveToPixel);
+        //drive.followTrajectory(moveToIntake);
+
+        sleep(200);
+
+        //intake2();
+        intake22();//test for new intake with no arm expand//
+        drive.followTrajectory(fromIntakeToIntermediate);
+        drive.followTrajectory(fromIntermediateToProximal);
+
+        sleep(200);
+        sleep(300);
+        //drive.followTrajectory(fromProximalToSpikeMark);
+        drive.followTrajectory(fromSpikeMarkToBackdrop); // need to change
+
+
+    }
     public void forward(){
         Trajectory moveForward = drive.trajectoryBuilder(new Pose2d(intake_x,intake_y*side_color,Math.toRadians(180)))
                 .forward(forwardDistance)

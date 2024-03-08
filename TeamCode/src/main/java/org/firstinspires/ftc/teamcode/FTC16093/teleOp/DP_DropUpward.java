@@ -1,4 +1,8 @@
-package org.firstinspires.ftc.teamcode.FTC16093;
+package org.firstinspires.ftc.teamcode.FTC16093.teleOp;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.util.NanoClock;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,21 +16,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
 import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.util.NanoClock;
-
-//Assets from Qualcomm
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 import java.util.List;
+
 @TeleOp
-public class OpenDrive16093 extends LinearOpMode {
+public class DP_DropUpward extends LinearOpMode {
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
@@ -56,7 +49,7 @@ public class OpenDrive16093 extends LinearOpMode {
         AIM, RELEASE, RUN
     }
     int mode=0;
-    private OpenDrive16093.Sequence sequence;
+    private DP_DropUpward.Sequence sequence;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -84,7 +77,7 @@ public class OpenDrive16093 extends LinearOpMode {
         int maxIndex=6;
         int minIndex=0;
         int armLengthLevels[] = {50,400,630,750,950,1100};
-        int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
+        int armPosLevels[] = {1920,1914,1847,1840,1840,1830};
         double wrtLevels[] = {1,1,1,1,1,1};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
@@ -207,7 +200,7 @@ public class OpenDrive16093 extends LinearOpMode {
                     setArmPosition(0);
                     wrtp=1;
                     wrt.setPosition(wrtp);
-                    sequence=OpenDrive16093.Sequence.RUN;
+                    sequence= DP_DropUpward.Sequence.RUN;
                     telemetry.addData("run",0);
                 }
                 if(drop.toTrue()){
@@ -216,7 +209,7 @@ public class OpenDrive16093 extends LinearOpMode {
                     setArmPosition(1900);
                     wrtp=0;
                     wrt.setPosition(wrtp);
-                    sequence=OpenDrive16093.Sequence.RELEASE;
+                    sequence= DP_DropUpward.Sequence.RELEASE;
                     telemetry.addData("release",0);
                 }
                 if(aim.toTrue()){
@@ -224,13 +217,13 @@ public class OpenDrive16093 extends LinearOpMode {
                     setArmPosition(0);
                     wrtp=0.34;
                     wrt.setPosition(wrtp);
-                    sequence=OpenDrive16093.Sequence.AIM;
+                    sequence= DP_DropUpward.Sequence.AIM;
                     telemetry.addData("aim",0);
                 }
                 if(humanGrab.toTrue()){
                     colorSensorUsed=false;
                 }
-                if(sequence==OpenDrive16093.Sequence.AIM){
+                if(sequence== DP_DropUpward.Sequence.AIM){
                     speed = 0.45;
                     if(distal.toTrue()){
                         setArmPosition(200);
@@ -255,7 +248,7 @@ public class OpenDrive16093 extends LinearOpMode {
                         rightGrabOpen=!rightGrabOpen;
                     }
                 }
-                if(sequence==OpenDrive16093.Sequence.RUN){
+                if(sequence== DP_DropUpward.Sequence.RUN){
                     setArmLength(0);
                     setArmPosition(0);
                     wrtp=1;
@@ -268,7 +261,7 @@ public class OpenDrive16093 extends LinearOpMode {
                     setArmLength(armLengthLevels[index]);
                     mode=0;
                 }
-                if(sequence==OpenDrive16093.Sequence.RELEASE) {
+                if(sequence== DP_DropUpward.Sequence.RELEASE) {
                     speed = 0.3;
                     if (distal.toTrue()) {
                         index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
@@ -278,10 +271,9 @@ public class OpenDrive16093 extends LinearOpMode {
                         index = index - 1 < minIndex ? minIndex : index - 1;
                         mode=1;
                     }
-
+                    bark_wrist_balancer();
                     setArmPosition(armPosLevels[index]);
-
-                    wrtp=wrtLevels[index];
+                    bark_wrist_balancer();
                     wrt.setPosition(wrtp);
                     if (leftGrab.toTrue()) {
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
@@ -311,7 +303,7 @@ public class OpenDrive16093 extends LinearOpMode {
 
             wrt.setPosition(wrtp);
             plane.setPosition(plnp);
-            telemetry.addData("操作模式:", sequence==OpenDrive16093.Sequence.AIM?"aim1":(sequence==OpenDrive16093.Sequence.RUN?"run":(sequence==OpenDrive16093.Sequence.RELEASE?"drop":"null")));
+            telemetry.addData("操作模式:", sequence== DP_DropUpward.Sequence.AIM?"aim1":(sequence== DP_DropUpward.Sequence.RUN?"run":(sequence== DP_DropUpward.Sequence.RELEASE?"drop":"null")));
             telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());
             telemetry.addData("底盘速度:",speed);
@@ -325,6 +317,18 @@ public class OpenDrive16093 extends LinearOpMode {
                 bark_drive_period();
             }
         }
+    }
+    double arm_start_ang=0;//the angel of arm when starting
+    double wrist_target_ang=0;//the angel wrist need to reach
+    double wrist_range=180;//range
+    double wrist_target_pos=60;//the pos wrist need to reach
+    double arm_encoder_range=2400;
+    double wrist_start_pos=0.4;//wrist's pos at angel=0;
+    double arm_current_angel;
+    private void bark_wrist_balancer(){//design for servo range 180
+        arm_current_angel=armDrive.getCurrentPosition()/arm_encoder_range*360;//get the current angel according to the encoder
+        wrist_target_pos=wrist_start_pos+arm_current_angel/wrist_range+wrist_target_pos/wrist_range;
+        wrt.setPosition(wrist_target_pos);
     }
     private void logic_period() {
         //IMPORTANT: READ ALL
