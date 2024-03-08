@@ -44,7 +44,7 @@ public class OpenDrive16093 extends LinearOpMode {
     //time of this period (sec)
     private double period_time_sec;
     public double speed=1.0;
-    private BarkMecanumDrive drive;
+    private BarkMecanumDrive bdrive;
 
     enum Sequence {
         AIM, RELEASE, RUN
@@ -57,12 +57,6 @@ public class OpenDrive16093 extends LinearOpMode {
         time = NanoClock.system();
         //get all Lynx Module device objects
         allHubs = hardwareMap.getAll(LynxModule.class);
-        drive = new BarkMecanumDrive(hardwareMap);
-
-        telemetry.addData("leftFront_velo",drive.getMotorVelo(1));
-        telemetry.addData("leftBack_velo",drive.getMotorVelo(2));
-        telemetry.addData("rightFront_velo",drive.getMotorVelo(3));
-        telemetry.addData("rightBack_velo",drive.getMotorVelo(4));
 
         //init position
         double  drive           = 0;        // Desired forward power/speed (-1 to +1)
@@ -122,6 +116,7 @@ public class OpenDrive16093 extends LinearOpMode {
 //        }else{
 //            speed=1;
 //        }
+
         //手动慢速
         //parameter box
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -156,8 +151,10 @@ public class OpenDrive16093 extends LinearOpMode {
         plane.setPosition(plnp);
         brkp=0.5;
         brake.setPosition(brkp);
+
         waitForStart();
         while (opModeIsActive()){
+
             logic_period();
             if(brake_start.toTrue()){
                 if(brkp==0.31){
@@ -311,6 +308,10 @@ public class OpenDrive16093 extends LinearOpMode {
             telemetry.addData("底盘速度:",speed);
             telemetry.addData("手腕位置:",wrtp);
             telemetry.addData("index:",index);
+            telemetry.addData("leftFront_velo",bdrive.getMotorVelo(1));
+            telemetry.addData("leftBack_velo",bdrive.getMotorVelo(2));
+            telemetry.addData("rightFront_velo",bdrive.getMotorVelo(3));
+            telemetry.addData("rightBack_velo",bdrive.getMotorVelo(4));
 
             telemetry.update();
             if(gamepad1.dpad_up||gamepad1.dpad_down||gamepad1.dpad_right||gamepad1.dpad_left){
