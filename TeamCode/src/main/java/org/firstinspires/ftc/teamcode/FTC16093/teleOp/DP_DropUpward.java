@@ -271,10 +271,11 @@ public class DP_DropUpward extends LinearOpMode {
                     index = index - 1 < minIndex ? minIndex : index - 1;
                     mode=1;
                 }
-                bark_wrist_balancer();
+
                 setArmPosition(armPosLevels[index]);
                 bark_wrist_balancer();
-                wrt.setPosition(wrtp);
+                //bark_wrist_balancer();
+                //wrt.setPosition(wrtp);
                 if (leftGrab.toTrue()) {
                     gb1.setPosition(leftGrabOpen?0.22:0.53);
                     leftGrabOpen = !leftGrabOpen;
@@ -323,12 +324,12 @@ public class DP_DropUpward extends LinearOpMode {
     double wrist_range=180;//range
     double wrist_target_pos=60;//the pos wrist need to reach
     double arm_encoder_range=2400;
-    double wrist_start_pos=0.4;//wrist's pos at angel=0;
+    double wrist_start_pos=0.6;//wrist's pos at angel=0;
     double arm_current_angel;
     private void bark_wrist_balancer(){//design for servo range 180
-        arm_current_angel=armDrive.getCurrentPosition()/arm_encoder_range*360;//get the current angel according to the encoder
+        arm_current_angel=(armDrive.getCurrentPosition()%100*100.0)*360/arm_encoder_range;//get the current angel according to the encoder
         wrist_target_pos=wrist_start_pos+arm_current_angel/wrist_range+wrist_target_pos/wrist_range;
-        wrt.setPosition(wrist_target_pos);
+        wrt.setPosition(1-wrist_target_pos);
     }
     private void logic_period() {
         //IMPORTANT: READ ALL
