@@ -168,7 +168,11 @@ public class superstructure {
         newSleep(300);
         wrist_grab_distalAuto(armPos);
         newSleep(300);
+
+        setArmPosition(armPos); // added: reset arm position
+        newSleep(300);
         gb1.setPosition(0.22);
+
         newSleep(300);
         wrt.setPosition(1);
         newSleep(300);
