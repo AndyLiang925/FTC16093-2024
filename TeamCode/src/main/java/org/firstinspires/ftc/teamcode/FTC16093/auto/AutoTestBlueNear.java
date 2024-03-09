@@ -11,7 +11,7 @@ public class AutoTestBlueNear extends AutoMaster {
         side_color = BLUE;
         initHardware();
 
-        setKickProp();
+        //setKickProp();
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();

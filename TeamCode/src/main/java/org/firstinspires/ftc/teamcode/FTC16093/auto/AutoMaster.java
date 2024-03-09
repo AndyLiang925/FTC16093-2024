@@ -67,21 +67,21 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMark_RedCenter_x=20.5,spikeMark_RedCenter_y= -20;
     public static double spikeMark_RedRight_x = 36 ,spikeMark_RedRight_y = -30;
 
-    public static double spikeMark_blueLeft_x = 35.0, spikeMark_blueLeft_y = 30;
+    public static double spikeMark_blueLeft_x = 35.0, spikeMark_blueLeft_y = 25; // y initial 30
     public static double spikeMark_blueCenter_x = 26, spikeMark_blueCenter_y = 20;
-    public static double spikeMark_blueRight_x = 13,spikeMark_blueRight_y = 30;
+    public static double spikeMark_blueRight_x = 13,spikeMark_blueRight_y = 25; // y initial 30
 
 
     public static double spikeMarkCenter_x,spikeMarkCenter_y;
     public static double spikeMarkCenterProximal_x = 25,spikeMarkCenterProximal_y = 30; // x initial 45
     public static double spikeMarkCenterDistal_x = -59,spikeMarkCenterDistal_y = 30;
 
-    public static double spikeMark_blue_DistalLeft_x = -38, spikeMark_blue_DistalLeft_y = 30.0;  // x:11+24
-    public static double spikeMark_blue_DistalCenter_x = -45, spikeMark_blue_DistalCenter_y = 21;  // x:21+24
-    public static double spikeMark_blue_DistalRight_x = -61, spikeMark_blue_DistalRight_y = 30.0; // x:30+24
+    public static double spikeMark_blue_DistalLeft_x = -38, spikeMark_blue_DistalLeft_y = 30.0;
+    public static double spikeMark_blue_DistalCenter_x = -45, spikeMark_blue_DistalCenter_y = 21;
+    public static double spikeMark_blue_DistalRight_x = -61, spikeMark_blue_DistalRight_y = 30.0;
 
-    public static double spikeMark_Red_DistalLeft_x = -61, spikeMark_Red_DistalLeft_y = -30.0;  // x:11+24
-    public static double spikeMark_Red_DistalCenter_x = -45, spikeMark_Red_DistalCenter_y = -21;  // x:21+24
+    public static double spikeMark_Red_DistalLeft_x = -61, spikeMark_Red_DistalLeft_y = -30.0;
+    public static double spikeMark_Red_DistalCenter_x = -45, spikeMark_Red_DistalCenter_y = -21;
     public static double spikeMark_Red_DistalRight_x = -38, spikeMark_Red_DistalRight_y = 30.0;
 
     public static double BackDrop_RedLeft_x = 46.8, BackDrop_RedLeft_y = 22;
@@ -329,6 +329,11 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveToSpikeMark);
         //drive.followTrajectory(moveToVertical);
     }
+
+    public void spikeMarkDump_kickProp(){
+
+    }
+
 
     public void barkKickProp(){
         if (isStopRequested()) return;

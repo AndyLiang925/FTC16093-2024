@@ -10,6 +10,7 @@ public class splineIntakeTest extends AutoMaster {
     public void runOpMode() throws InterruptedException {
         initHardware();
 
+        spikeMarkDump();
         extraIntakeSpline();
         intake2();
         setUpAuto();

@@ -161,7 +161,7 @@ public class superstructure {
         newSleep(500);
         grab2_close();
         grab1_close();
-        setUp();
+
     }
     public void intake2(int armPos){
         gb1.setPosition(0.53);
