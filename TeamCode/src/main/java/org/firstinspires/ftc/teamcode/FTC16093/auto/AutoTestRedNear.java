@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.FTC16093.AutoMaster;
-
 @Autonomous
 public class AutoTestRedNear extends AutoMaster {
     private DcMotorEx armDrive   = null;
