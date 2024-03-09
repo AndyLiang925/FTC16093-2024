@@ -73,9 +73,13 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMarkCenterProximal_x = 45,spikeMarkCenterProximal_y = 30;
     public static double spikeMarkCenterDistal_x = -59,spikeMarkCenterDistal_y = 30;
 
-    public static double spikeMark1_x_Blue_Distal = -38, spikeMark1_y_Blue_Distal = 30.0;  // x:11+24
-    public static double spikeMark2_x_Blue_Distal = -45, spikeMark2_y_Blue_Distal = 21;  // x:21+24
-    public static double spikeMark3_x_Blue_Distal = -61, spikeMark3_y_Blue_Distal = 30.0; // x:30+24
+    public static double spikeMark_Blue_DistalLeft_x = -38, spikeMark_Blue_DistalLeft_y = 30.0;  // x:11+24
+    public static double spikeMark_Blue_DistalCenter_x = -45, spikeMark_Blue_DistalCenter_y = 21;  // x:21+24
+    public static double spikeMark_Blue_DistalRight_x = -61, spikeMark_Blue_DistalRight_y = 30.0; // x:30+24
+
+    public static double spikeMark_Red_DistalLeft_x = -61, spikeMark_Red_DistalLeft_y = 30.0;  // x:11+24
+    public static double spikeMark_Red_DistalCenter_x = -45, spikeMark_Red_DistalCenter_y = 21;  // x:21+24
+    public static double spikeMark_Red_DistalRight_x = -38, spikeMark_Red_DistalRight_y = 30.0;
 
     public static double BackDrop_RedLeft_x = 46.8, BackDrop_RedLeft_y = 22;
     public static double BackDrop_RedCenter_x = 46.8, BackDrop_RedCenter_y = 28;
@@ -88,9 +92,9 @@ public class AutoMaster extends LinearOpMode {
     public static double BackDrop2_distalBlue_x = 50.8,BackDrop2_distalBlue_y = 36;
     public static double BackDrop3_distalBlue_x = 47,BackDrop3_distalBlue_y = 41;
 
-    public static double BackDrop1_distalRed_x = 47,BackDrop1_distalRed_y = 27; // initial y= 44, change  with 3
-    public static double BackDrop2_distalRed_x = 47,BackDrop2_distalRed_y = 34;
-    public static double BackDrop3_distalRed_x = 47,BackDrop3_distalRed_y = 41;
+    public static double BackDrop1_distalRed_x = 47,BackDrop1_distalRed_y = -27; // initial y= 44, change  with 3
+    public static double BackDrop2_distalRed_x = 47,BackDrop2_distalRed_y = -34;
+    public static double BackDrop3_distalRed_x = 47,BackDrop3_distalRed_y = -41;
 
 
     // public static double BackDrop_distalBlue_x = 51, BackDrop_distalBlue_y = 27;
@@ -236,49 +240,49 @@ public class AutoMaster extends LinearOpMode {
             spikeMarkCenter_x = spikeMarkCenterDistal_x;
             spikeMarkCenter_y = spikeMarkCenterDistal_y;
             if(startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == BLUE){
-                DesiredTagId=1; // symmetrical to the proximal 1
-                spikeMark_x=spikeMark1_x_Blue_Distal;
-                spikeMark_y=spikeMark1_y_Blue_Distal;
-                spikeMark_heading=-3; // initial 177
+                DesiredTagId=1;
+                spikeMark_x=spikeMark_Blue_DistalLeft_x;
+                spikeMark_y=spikeMark_Blue_DistalLeft_y;
+                spikeMark_heading= 0;
                 detectedBackDrop_x=BackDrop3_distalBlue_x;
                 detectedBackDrop_y=BackDrop3_distalBlue_y;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == BLUE) {
                 DesiredTagId = 2;
-                spikeMark_x=spikeMark2_x_Blue_Distal;
-                spikeMark_y=spikeMark2_y_Blue_Distal;
+                spikeMark_x=spikeMark_Blue_DistalCenter_x;
+                spikeMark_y=spikeMark_Blue_DistalCenter_y;
                 spikeMark_heading=-5; // initial 175
                 detectedBackDrop_x=BackDrop2_distalBlue_x;
                 detectedBackDrop_y=BackDrop2_distalBlue_y;//31
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == BLUE) {
                 DesiredTagId = 3;
-                spikeMark_x = spikeMark3_x_Blue_Distal;
-                spikeMark_y = spikeMark3_y_Blue_Distal; // doesn't need spikeMark3_y, since 1 and 3 y are completely the same
+                spikeMark_x = spikeMark_Blue_DistalRight_x;
+                spikeMark_y = spikeMark_Blue_DistalRight_y;
                 spikeMark_heading = -3; // initial 177
                 detectedBackDrop_x = BackDrop_Blue_farRight_x;////
                 detectedBackDrop_y = BackDrop1_distalBlue_y;//25.5
                 closeToIntake = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
-                spikeMark_x = spikeMark3_x_Blue_Distal;
-                spikeMark_y = spikeMark3_y_Blue_Distal ;
+                spikeMark_x = spikeMark_Red_DistalLeft_x;
+                spikeMark_y = spikeMark_Red_DistalLeft_y ;
                 spikeMark_heading = 0; // initial 183
                 detectedBackDrop_x = BackDrop1_distalRed_x; // change to distal
                 detectedBackDrop_y = BackDrop1_distalRed_y ;
                 closeToIntake = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
-                spikeMark_x = spikeMark2_x_Blue_Distal;
-                spikeMark_y = spikeMark2_y_Blue_Distal ;
+                spikeMark_x = spikeMark_Red_DistalCenter_x;
+                spikeMark_y = spikeMark_Red_DistalCenter_y;
                 spikeMark_heading = 0; // initial 185  //5
                 detectedBackDrop_x = BackDrop2_distalRed_x;
-                detectedBackDrop_y = BackDrop2_distalRed_y * RED;
+                detectedBackDrop_y = BackDrop2_distalRed_y ;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == RED) {
                 DesiredTagId = 6;
-                spikeMark_x = spikeMark1_x_Blue_Distal;
-                spikeMark_y = spikeMark1_y_Blue_Distal * RED;
+                spikeMark_x = spikeMark_Red_DistalRight_x;
+                spikeMark_y = spikeMark_Blue_DistalRight_y ;
                 spikeMark_heading = 0;
                 detectedBackDrop_x = BackDrop3_distalRed_x;
-                detectedBackDrop_y = BackDrop3_distalRed_y * RED;
+                detectedBackDrop_y = BackDrop3_distalRed_y;
             }//
         }
         runtime.reset();
