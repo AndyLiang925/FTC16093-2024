@@ -5,9 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.FTC16093.auto.AutoMaster;
 
 @Autonomous
-public class splineIntakeTest extends AutoMaster {
+public class AutoTestLinearSplineIntake extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
+
         startSide = PROXIMAL;
         side_color = BLUE;
         initHardware();
@@ -17,12 +18,16 @@ public class splineIntakeTest extends AutoMaster {
 
         backDropDump();
         putOnBackDrop();
-        setUpAuto();
-
-        extraIntakeSpline();
+        sleep(500);
 
         setUpAuto();
+        sleep(1000);
+
+        extraIntakeLinearBySpline();
+        putOnBackDrop();
+        sleep(500);
+        setUpAuto();
+        sleep(1500);
     }
 
 }
-

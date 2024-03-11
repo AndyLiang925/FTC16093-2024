@@ -103,9 +103,14 @@ public class superstructure {
         setArmPosition(0);
     }
     public void wrist_grab_distalAuto(int armPos){
+
         setArmPosition(armPos);
-        try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
+        //try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
+        newSleep(300);
+        grab2_open();
+        newSleep(300);
         wrt.setPosition(0.23);
+        newSleep(300);
         setArmLength(1150);
     }
     public void wrist_grab_proximal(){
@@ -145,40 +150,36 @@ public class superstructure {
         newSleep(300);
         gb1.setPosition(0.22);
         newSleep(300);
-        wrt.setPosition(0.7);
-        newSleep(300);
-        gb1.setPosition(0.53);
-        newSleep(300);
+        //wrt.setPosition(0.7);
+        //newSleep(300);
+        //gb1.setPosition(0.53);
+        //newSleep(300);
         wrt.setPosition(1);
         newSleep(300);
     }
     public void putOnBackDrop(){
         setArmPosition(1890);
-        newSleep(1000);
+        newSleep(1500);
         //gb1.setPosition(0.22);
         grab2_open();
-        grab1_open();
-        newSleep(500);
-        grab2_close();
-        grab1_close();
 
+        newSleep(300);
+        grab2_close();
     }
     public void intake2(int armPos){
-        gb1.setPosition(0.53);
-        newSleep(300);
-        wrist_grab_distalAuto(armPos);
-        newSleep(300);
 
-        setArmPosition(armPos); // added: reset arm position
-        newSleep(300);
-        gb1.setPosition(0.22);
+        wrist_grab_distalAuto(armPos);
+        newSleep(500);
+
+        //setArmPosition(armPos); // added: reset arm position
+        newSleep(600);
+        grab2_close();
 
         newSleep(300);
         wrt.setPosition(1);
-        newSleep(300);
+        newSleep(500);
         setArmLength(0);
-        newSleep(300);
+        newSleep(700);
         setArmPosition(0);
-        newSleep(300);
     }
 }

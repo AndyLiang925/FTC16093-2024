@@ -16,12 +16,16 @@ public class AutoTestBlueNear extends AutoMaster {
         putOnSpikeMark();
         backDropDump();
 
-        sleep(1000);
+
         putOnBackDrop();
         setUpAuto();
+
         extraCredit();
+
         putOnBackDrop();
+        sleep(300);
         setUpAuto();
+        sleep(1000);
     }
 
 }
