@@ -349,9 +349,7 @@ public class AutoMaster extends LinearOpMode {
                 .lineTo(new Vector2d(detectedBackDrop_x,detectedBackDrop_y))
                 .build();
 
-        sleep(300);
         drive.followTrajectory(moveToDetectedBackDrop);
-        sleep(200);
     }
 
     public void DistalBackDropDump(){

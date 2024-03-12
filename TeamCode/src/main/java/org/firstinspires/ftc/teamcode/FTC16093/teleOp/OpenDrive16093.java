@@ -71,6 +71,7 @@ public class OpenDrive16093 extends LinearOpMode {
         int index=0;
         int maxIndex=6;
         int minIndex=0;
+        int pd=0;
         int armLengthLevels[] = {50,400,630,750,950,1100};
         int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
         double wrtLevels[] = {1,1,1,1,1,1};
@@ -165,11 +166,7 @@ public class OpenDrive16093 extends LinearOpMode {
                 //brkp=0.31;
                 brake.setPosition(brkp);
             }
-            if (gamepad2.left_stick_y>0) {
-                wrtp=wrtp+(gamepad2.left_stick_y/50)>0.72?0.72:wrtp+(gamepad2.left_stick_y/50);
-            }else if(gamepad2.left_stick_y<0){
-                wrtp=wrtp+(gamepad2.left_stick_y/50)<0.09?0.09:wrtp+(gamepad2.left_stick_y/50);
-            }
+
             if(armBack.toTrue()) {
                 armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 armDrive.setPower(backPower);
@@ -207,6 +204,7 @@ public class OpenDrive16093 extends LinearOpMode {
                     setArmPosition(1900);
                     wrtp=0;
                     wrt.setPosition(wrtp);
+                    pd=0;
                     sequence=OpenDrive16093.Sequence.RELEASE;
                     telemetry.addData("release",0);
                 }
@@ -222,7 +220,7 @@ public class OpenDrive16093 extends LinearOpMode {
                     colorSensorUsed=false;
                 }
                 if(sequence==OpenDrive16093.Sequence.AIM){
-                    speed = 0.45;
+                    speed = 0.5;
                     if(distal.toTrue()){
                         setArmPosition(200);
                         sleep_with_drive(200);
@@ -264,16 +262,27 @@ public class OpenDrive16093 extends LinearOpMode {
                     if (distal.toTrue()) {
                         index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
                         mode=1;
+                        pd=0;
                     }
                     if (proximal.toTrue()) {
                         index = index - 1 < minIndex ? minIndex : index - 1;
                         mode=1;
+                        pd=0;
                     }
 
                     setArmPosition(armPosLevels[index]);
 
                     wrtp=wrtLevels[index];
-                    wrt.setPosition(wrtp);
+                    if (gamepad2.left_stick_y>0) {
+                        wrtp=wrtp+(gamepad2.left_stick_y/50)>0.72?0.72:wrtp+(gamepad2.left_stick_y/50);
+                        pd=1;
+                    }else if(gamepad2.left_stick_y<0){
+                        wrtp=wrtp+(gamepad2.left_stick_y/50)<0.09?0.09:wrtp+(gamepad2.left_stick_y/50);
+                        pd=1;
+                    }else if(pd==0){
+                        wrt.setPosition(wrtp);
+                    }
+
                     if (leftGrab.toTrue()) {
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
                         leftGrabOpen = !leftGrabOpen;
