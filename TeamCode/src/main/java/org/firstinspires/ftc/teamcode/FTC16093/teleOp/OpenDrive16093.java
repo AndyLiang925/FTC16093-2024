@@ -69,12 +69,12 @@ public class OpenDrive16093 extends LinearOpMode {
         int amlp=0;
         int armp=0;
         int index=0;
-        int maxIndex=6;
+        int maxIndex=7;
         int minIndex=0;
         int pd=0;
-        int armLengthLevels[] = {50,400,630,750,950,1100};
-        int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
-        double wrtLevels[] = {1,1,1,1,1,1};
+        int armLengthLevels[] = {50,50,400,630,750,950,1100};
+        int armPosLevels[] = {2000,1820,1814,1747,1740,1740,1730};
+        double wrtLevels[] = {0.3,1,1,1,1,1,1};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=false;
@@ -272,17 +272,17 @@ public class OpenDrive16093 extends LinearOpMode {
 
                     setArmPosition(armPosLevels[index]);
 
-                    wrtp=wrtLevels[index];
+
                     if (gamepad2.left_stick_y>0) {
-                        wrtp=wrtp+(gamepad2.left_stick_y/50)>0.72?0.72:wrtp+(gamepad2.left_stick_y/50);
+                        wrtp=wrtp+(gamepad2.left_stick_y/50)>1?1:wrtp+(gamepad2.left_stick_y/50);
                         pd=1;
                     }else if(gamepad2.left_stick_y<0){
-                        wrtp=wrtp+(gamepad2.left_stick_y/50)<0.09?0.09:wrtp+(gamepad2.left_stick_y/50);
+                        wrtp=wrtp+(gamepad2.left_stick_y/50)<0?0:wrtp+(gamepad2.left_stick_y/50);
                         pd=1;
                     }else if(pd==0){
-                        wrt.setPosition(wrtp);
+                        wrtp=wrtLevels[index];
                     }
-
+                    wrt.setPosition(wrtp);
                     if (leftGrab.toTrue()) {
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
                         leftGrabOpen = !leftGrabOpen;
