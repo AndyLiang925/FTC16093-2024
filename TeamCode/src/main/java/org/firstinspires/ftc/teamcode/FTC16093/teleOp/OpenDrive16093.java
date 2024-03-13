@@ -374,9 +374,9 @@ public class OpenDrive16093 extends LinearOpMode {
     }
     public void setArmPosition(int pos){
         if(armDrive.getCurrentPosition()>pos){
-            armDrive.setPower(0.8);
+            armDrive.setPower(0.7);
         }else{
-            armDrive.setPower(1);
+            armDrive.setPower(0.9);
         }
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
