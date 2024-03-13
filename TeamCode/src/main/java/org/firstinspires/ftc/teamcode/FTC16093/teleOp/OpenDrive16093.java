@@ -69,12 +69,13 @@ public class OpenDrive16093 extends LinearOpMode {
         int amlp=0;
         int armp=0;
         int index=0;
-        int maxIndex=7;
+        int maxIndex=6;
         int minIndex=0;
-        int pd=0;
-        int armLengthLevels[] = {50,50,400,630,750,950,1100};
-        int armPosLevels[] = {2000,1820,1814,1747,1740,1740,1730};
-        double wrtLevels[] = {0.3,1,1,1,1,1,1};
+        int pd=0;//判断手腕是否手动微调
+        int pdArm=0;//判断大臂是否微调
+        int armLengthLevels[] = {50,400,630,750,950,1100};
+        int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
+        double wrtLevels[] = {1,1,1,1,1,1};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=false;
@@ -97,6 +98,7 @@ public class OpenDrive16093 extends LinearOpMode {
         XCYBoolean hangLower = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean hangUp = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.x);
+        XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
         XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
         leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "frontLeft");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -205,6 +207,7 @@ public class OpenDrive16093 extends LinearOpMode {
                     wrtp=0;
                     wrt.setPosition(wrtp);
                     pd=0;
+                    pdArm=0;
                     sequence=OpenDrive16093.Sequence.RELEASE;
                     telemetry.addData("release",0);
                 }
@@ -263,14 +266,25 @@ public class OpenDrive16093 extends LinearOpMode {
                         index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
                         mode=1;
                         pd=0;
+                        pdArm=0;
                     }
                     if (proximal.toTrue()) {
                         index = index - 1 < minIndex ? minIndex : index - 1;
                         mode=1;
                         pd=0;
+                        pdArm=0;
                     }
+                    if (gamepad2.right_stick_y>0) {
+                        armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
+                        pdArm=1;
+                    }else if(gamepad2.right_stick_y<0){
+                        armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
+                        pdArm=1;
+                    }else if(pdArm==0){
+                        armp=armPosLevels[index];
+                    }
+                    setArmPosition(armp);
 
-                    setArmPosition(armPosLevels[index]);
 
 
                     if (gamepad2.left_stick_y>0) {
@@ -282,11 +296,15 @@ public class OpenDrive16093 extends LinearOpMode {
                     }else if(pd==0){
                         wrtp=wrtLevels[index];
                     }
+                    if(movePixel.toTrue()){
+                        wrtp=0.30;
+                        pd=1;
+                    }
                     wrt.setPosition(wrtp);
                     if (leftGrab.toTrue()) {
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
                         leftGrabOpen = !leftGrabOpen;
-//                        setArmPosition(armPosLevels[index]-130);
+//                        setArmPosition(armPosLevels[index]-130);//
 //                        sleep(300);
 //                        setArmPosition(armPosLevels[index]);
                     }
