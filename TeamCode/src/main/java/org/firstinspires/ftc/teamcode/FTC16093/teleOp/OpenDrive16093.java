@@ -45,6 +45,7 @@ public class OpenDrive16093 extends LinearOpMode {//
     private double period_time_sec;
     public double speed=1.0;
     public double driver_speed=1.0;//手动慢速档
+    public double rotation_speed=1.0;//旋转降速
     private BarkMecanumDrive bdrive;
 
     enum Sequence {
@@ -281,11 +282,16 @@ public class OpenDrive16093 extends LinearOpMode {//
                     if (gamepad2.right_stick_y>0) {
                         armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                         pdArm=1;
+                        rotation_speed=0.5;
                     }else if(gamepad2.right_stick_y<0){
                         armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                         pdArm=1;
+                        rotation_speed=0.5;
                     }else if(pdArm==0){
                         armp=armPosLevels[index];
+                        rotation_speed=1;
+                    }else{
+                        rotation_speed=1;
                     }
                     setArmPosition(armp);
 
@@ -395,10 +401,10 @@ public class OpenDrive16093 extends LinearOpMode {//
         double backLeftPower = ((rotY - rotX - rx)) / denominator;
         double frontRightPower = ((rotY - rotX + rx)) / denominator;
         double backRightPower = ((rotY + rotX + rx)) / denominator;
-        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed);
-        leftBackDrive.setPower(backLeftPower*speed*driver_speed);
-        rightFrontDrive.setPower(frontRightPower*speed*driver_speed);
-        rightBackDrive.setPower(backRightPower*speed*driver_speed);
+        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
+        leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
+        rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
+        rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed);
     }
     public void bark_tank_drive_period(){
         double frontLeftPower = 0;
@@ -429,10 +435,10 @@ public class OpenDrive16093 extends LinearOpMode {//
             frontRightPower = 1;
             backRightPower = -1;
         }
-        leftFrontDrive.setPower(frontLeftPower*speed);
-        leftBackDrive.setPower(backLeftPower*speed);
-        rightFrontDrive.setPower(frontRightPower*speed);
-        rightBackDrive.setPower(backRightPower*speed);
+        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
+        leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
+        rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
+        rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed);
     }
     public void sleep_with_drive(double time_mm) {
         long start_time = System.currentTimeMillis();
