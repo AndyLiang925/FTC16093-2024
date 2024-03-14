@@ -143,9 +143,9 @@ public class OpenDrive16093 extends LinearOpMode {//
 //        hangRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
         gb1.setPosition(0.53);
