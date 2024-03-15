@@ -243,14 +243,16 @@ public class OpenDrive16093 extends LinearOpMode {//
                         setArmPosition(0);
                     }
 
-                    if(leftGrab.toTrue()){
-                        gb1.setPosition(leftGrabOpen?0.22:0.53);
-                        leftGrabOpen=!leftGrabOpen;
-                    }
-                    if(rightGrab.toTrue()){
-                        gb2.setPosition(rightGrabOpen?0.76:0.45);
-                        rightGrabOpen=!rightGrabOpen;
-                    }
+//                    if(leftGrab.toTrue()){
+//                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+//                        leftGrabOpen=!leftGrabOpen;
+//                    }
+//                    if(rightGrab.toTrue()){
+//                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+//                        rightGrabOpen=!rightGrabOpen;
+//                    }
+                    gb1.setPosition(leftGrab.get()?0.22:0.53);
+                    gb2.setPosition(rightGrab.get()?0.76:0.45);
                 }
                 if(sequence==OpenDrive16093.Sequence.RUN){
                     setArmLength(0);
@@ -282,11 +284,11 @@ public class OpenDrive16093 extends LinearOpMode {//
                     if (gamepad2.right_stick_y>0) {
                         armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                         pdArm=1;
-                        rotation_speed=0.5;
+                        rotation_speed=0.4;
                     }else if(gamepad2.right_stick_y<0){
                         armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                         pdArm=1;
-                        rotation_speed=0.5;
+                        rotation_speed=0.4;
                     }else if(pdArm==0){
                         armp=armPosLevels[index];
                         rotation_speed=1;
@@ -311,20 +313,22 @@ public class OpenDrive16093 extends LinearOpMode {//
                         pd=1;
                     }
                     wrt.setPosition(wrtp);
-                    if (leftGrab.toTrue()) {
-                        gb1.setPosition(leftGrabOpen?0.22:0.53);
-                        leftGrabOpen = !leftGrabOpen;
-//                        setArmPosition(armPosLevels[index]-130);//
-//                        sleep(300);
-//                        setArmPosition(armPosLevels[index]);
-                    }
-                    if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.76:0.45);
-                        rightGrabOpen = !rightGrabOpen;
-//                        setArmPosition(armPosLevels[index]-130);
-//                        sleep(300);
-//                        setArmPosition(armPosLevels[index]);
-                    }
+                    gb1.setPosition(leftGrab.get()?0.22:0.53);
+                    gb2.setPosition(rightGrab.get()?0.76:0.45);
+//                    if (leftGrab.toTrue()) {
+//                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+//                        leftGrabOpen = !leftGrabOpen;
+////                        setArmPosition(armPosLevels[index]-130);//
+////                        sleep(300);
+////                        setArmPosition(armPosLevels[index]);
+//                    }
+//                    if (rightGrab.toTrue()) {
+//                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+//                        rightGrabOpen = !rightGrabOpen;
+////                        setArmPosition(armPosLevels[index]-130);
+////                        sleep(300);
+////                        setArmPosition(armPosLevels[index]);
+//                    }
                 }
             if(hangLower.get()){
                 hangLeft.setPower(1);
