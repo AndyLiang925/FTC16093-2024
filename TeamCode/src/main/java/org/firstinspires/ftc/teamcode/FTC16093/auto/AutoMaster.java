@@ -146,8 +146,7 @@ public class AutoMaster extends LinearOpMode {
         drive.update();
         telemetry.addLine("init: superstructure");
         upper = new superstructure(this,drive::update);
-
-
+        setUpAuto();
         telemetry.addLine("init: trajectory");
 
 
@@ -589,7 +588,7 @@ public class AutoMaster extends LinearOpMode {
         sleep(700);
         upper.setArmPosition(0);
     }
-    public void intake22(){
+    public void intake22(){//
         upper.setArmPosition(100);
         sleep(300);
         upper.setArmLength(0);
