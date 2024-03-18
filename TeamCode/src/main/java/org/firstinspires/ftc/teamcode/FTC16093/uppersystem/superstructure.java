@@ -133,30 +133,14 @@ public class superstructure {
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         armDrive.setPower(0.8);
     }
-    public void setUp(){
-        setArmPosition(0);
-        setArmLength(10);
-        gb1.setPosition(0.53);//gb1.setPosition(0.22);
-        gb2.setPosition(0.76);//gb2.setPosition(0.45);
-        wrt.setPosition(1);
-    }
+
     public void wrist_to_middle(){
         wrt.setPosition(1); // initial 0.55
     }
-    public void putOnSpikeMark(){
-        wrt.setPosition(0.4);
-        //newSleep(300);
-        setArmPosition(20);
-        newSleep(300);
-        gb1.setPosition(0.22);
-        newSleep(300);
-        //wrt.setPosition(0.7);
-        //newSleep(300);
-        //gb1.setPosition(0.53);
-        //newSleep(300);
-        wrt.setPosition(1);
-        newSleep(300);
+    public void wristDown(){
+        wrt.setPosition(0.34);
     }
+
     public void putOnBackDrop(){
         setArmPosition(1890);
         newSleep(1500);
@@ -166,20 +150,5 @@ public class superstructure {
         newSleep(300);
         grab2_close();
     }
-    public void intake2(int armPos){
 
-        wrist_grab_distalAuto(armPos);
-        newSleep(500);
-
-        //setArmPosition(armPos); // added: reset arm position
-        newSleep(600);
-        grab2_close();
-
-        newSleep(300);
-        wrt.setPosition(1);
-        newSleep(500);
-        setArmLength(0);
-        newSleep(700);
-        setArmPosition(0);
-    }
 }

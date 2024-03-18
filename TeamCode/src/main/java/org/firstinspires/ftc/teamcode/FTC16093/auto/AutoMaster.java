@@ -146,11 +146,9 @@ public class AutoMaster extends LinearOpMode {
         drive.update();
         telemetry.addLine("init: superstructure");
         upper = new superstructure(this,drive::update);
-        upper.setUp();
+
 
         telemetry.addLine("init: trajectory");
-
-
 
 
         while (!opModeIsActive()) {
@@ -555,25 +553,54 @@ public class AutoMaster extends LinearOpMode {
     }
 
     public void setUpAuto(){
-        upper.setUp();
+        upper.setArmPosition(0);
+        upper.setArmLength(10);
+        upper.grab1_close();//gb1.setPosition(0.22);
+        upper.grab2_close();//gb2.setPosition(0.45);
+        upper.wrist_to_middle();
     }
     public void setKickProp(){
         upper.wrist_to_middle();
     }
     public void putOnSpikeMark(){
-        upper.putOnSpikeMark();
+        upper.wristDown();
+        upper.setArmPosition(30);
+        sleep(300);
+        upper.grab1_open();
+        upper.wrist_to_middle();
     }
     public void putOnBackDrop(){
-        upper.putOnBackDrop();
+        upper.setArmPosition(1890);
+        sleep(700);
+        upper.grab2_open();
+        sleep(100);
+        upper.grab2_close();
     }
     public void intake1(){
 
     }
     public void intake2(){
-        upper.intake2(armPos);
+        upper.wrist_grab_distalAuto(armPos);
+        sleep(500);
+        upper.grab2_close();
+        upper.wrist_to_middle();
+        sleep(500);
+        upper.setArmLength(0);
+        sleep(700);
+        upper.setArmPosition(0);
     }
     public void intake22(){
-        upper.autoGrabUpward();
+        upper.setArmPosition(100);
+        sleep(300);
+        upper.setArmLength(0);
+
+        upper.grab2_open();
+        upper.wristDown();
+
+        upper.grab2_close();
+        sleep(300);
+        upper.wrist_to_middle();
+
     }
 
 }
