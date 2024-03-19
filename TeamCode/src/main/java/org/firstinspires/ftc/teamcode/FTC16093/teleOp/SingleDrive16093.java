@@ -1,4 +1,12 @@
 package org.firstinspires.ftc.teamcode.FTC16093.teleOp;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.util.NanoClock;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -6,34 +14,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
 import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 
-
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.util.NanoClock;
-
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import java.util.Vector;
-import java.util.Locale;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 
 @TeleOp
-public class OpenDrive16093 extends LinearOpMode {//
+public class SingleDrive16093 extends LinearOpMode {//
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
@@ -65,7 +58,7 @@ public class OpenDrive16093 extends LinearOpMode {//
         AIM, RELEASE, RUN
     }
     int mode=0;
-    private OpenDrive16093.Sequence sequence;
+    private SingleDrive16093.Sequence sequence;
     NormalizedColorSensor colorSensor;
     View relativeLayout;
     @Override//
@@ -111,27 +104,19 @@ public class OpenDrive16093 extends LinearOpMode {//
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=false;
         boolean PDSleep;
-        XCYBoolean aim =new XCYBoolean(()->gamepad2.a);
-        XCYBoolean distal = new XCYBoolean(()->gamepad2.dpad_up);
-        XCYBoolean proximal = new XCYBoolean(()->gamepad2.dpad_down);
-        XCYBoolean drop = new XCYBoolean(()->gamepad2.y);
-        XCYBoolean brake_start = new XCYBoolean(()->gamepad1.b);
-        //XCYBoolean back = new XCYBoolean(()->gamepad2.x);
-        XCYBoolean leftGrab = new XCYBoolean(()->gamepad2.left_trigger>0);
-        XCYBoolean rightGrab = new XCYBoolean(()->gamepad2.right_trigger>0);
-        XCYBoolean humanGrab = new XCYBoolean(()->gamepad2.back);
-        XCYBoolean toRun = new XCYBoolean(()->gamepad2.x);
-        XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
-        XCYBoolean armExpandBack = new XCYBoolean(()->gamepad2.right_bumper);
-        XCYBoolean TankForward = new XCYBoolean(()->gamepad1.dpad_up);
-        XCYBoolean TankBackward = new XCYBoolean(()->gamepad1.dpad_down);
-        XCYBoolean TankLeftward = new XCYBoolean(()->gamepad1.dpad_left);
-        XCYBoolean TankRightward = new XCYBoolean(()->gamepad1.dpad_right);
+        XCYBoolean aim =new XCYBoolean(()->gamepad1.a);
+        XCYBoolean distal = new XCYBoolean(()->gamepad1.dpad_up);
+        XCYBoolean proximal = new XCYBoolean(()->gamepad1.dpad_down);
+        XCYBoolean drop = new XCYBoolean(()->gamepad1.y);
+        XCYBoolean leftGrab = new XCYBoolean(()->gamepad1.left_trigger>0);
+        XCYBoolean rightGrab = new XCYBoolean(()->gamepad1.right_trigger>0);
+        XCYBoolean toRun = new XCYBoolean(()->gamepad1.x);
+        XCYBoolean armBack = new XCYBoolean(()->gamepad1.touchpad);
+        XCYBoolean armExpandBack = new XCYBoolean(()->gamepad1.touchpad);
         XCYBoolean hangLower = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean hangUp = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.x);
-        XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
-        XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
+        XCYBoolean movePixel = new XCYBoolean(()->gamepad1.left_stick_button);
         leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "frontLeft");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "frontRight");
         leftBackDrive  = hardwareMap.get(DcMotorEx.class, "rearLeft");
@@ -194,21 +179,11 @@ public class OpenDrive16093 extends LinearOpMode {//
             NormalizedRGBA colors = colorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             logic_period();
-
-            if(brake_start.toTrue()){
-                if(brkp==0.31){
-                    brkp=0.5;
-                }else{
-                    brkp=0.29;
-                }
-                //brkp=0.31;
-                brake.setPosition(brkp);
-            }
-            if(slowMode.get()){
-                driver_speed=0.7;
-            }else{
-                driver_speed=1;
-            }
+//            if(slowMode.get()){
+//                driver_speed=0.7;
+//            }else{
+//                driver_speed=1;
+//            }
             if(armBack.toTrue()) {
                 armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 armDrive.setPower(backPower);
@@ -229,7 +204,7 @@ public class OpenDrive16093 extends LinearOpMode {//
                 amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
-            if(gamepad1.a){
+            if(gamepad1.back){
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
@@ -237,7 +212,7 @@ public class OpenDrive16093 extends LinearOpMode {//
                 setArmPosition(0);
                 wrtp=1;
                 wrt.setPosition(wrtp);
-                sequence=OpenDrive16093.Sequence.RUN;
+                sequence= SingleDrive16093.Sequence.RUN;
                 telemetry.addData("run",0);
             }
             if(drop.toTrue()){
@@ -248,7 +223,7 @@ public class OpenDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 pd=0;
                 pdArm=0;
-                sequence=OpenDrive16093.Sequence.RELEASE;
+                sequence= SingleDrive16093.Sequence.RELEASE;
                 telemetry.addData("release",0);
             }
             if(aim.toTrue()){
@@ -256,13 +231,10 @@ public class OpenDrive16093 extends LinearOpMode {//
                 setArmPosition(0);
                 wrtp=0.34;
                 wrt.setPosition(wrtp);
-                sequence=OpenDrive16093.Sequence.AIM;
+                sequence= SingleDrive16093.Sequence.AIM;
                 telemetry.addData("aim",0);
             }
-            if(humanGrab.toTrue()){
-                colorSensorUsed=false;
-            }
-            if(sequence==OpenDrive16093.Sequence.AIM){
+            if(sequence== SingleDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
                     setArmPosition(200);
@@ -288,7 +260,7 @@ public class OpenDrive16093 extends LinearOpMode {//
                 gb1.setPosition(leftGrab.get()?0.22:0.53);
                 gb2.setPosition(rightGrab.get()?0.45:0.76);
             }
-            if(sequence==OpenDrive16093.Sequence.RUN){
+            if(sequence== SingleDrive16093.Sequence.RUN){
                 setArmLength(0);
                 setArmPosition(0);
                 wrtp=1;
@@ -301,7 +273,7 @@ public class OpenDrive16093 extends LinearOpMode {//
                 setArmLength(armLengthLevels[index]);
                 mode=0;
             }
-            if(sequence==OpenDrive16093.Sequence.RELEASE) {
+            if(sequence== SingleDrive16093.Sequence.RELEASE) {
                 speed = 0.4;
                 if (distal.toTrue()) {
                     index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
@@ -315,11 +287,11 @@ public class OpenDrive16093 extends LinearOpMode {//
                     pd=0;
                     pdArm=0;
                 }
-                if (gamepad2.right_stick_y>0) {
+                if (false) {
                     armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
                     rotation_speed=0.4;
-                }else if(gamepad2.right_stick_y<0){
+                }else if(false){
                     armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
                     rotation_speed=0.4;
@@ -333,10 +305,10 @@ public class OpenDrive16093 extends LinearOpMode {//
 
 
 
-                if (gamepad2.left_stick_y>0) {
+                if (false) {
                     wrtp=wrtp+(gamepad2.left_stick_y/50)>1?1:wrtp+(gamepad2.left_stick_y/50);
                     pd=1;
-                }else if(gamepad2.left_stick_y<0){
+                }else if(false){
                     wrtp=wrtp+(gamepad2.left_stick_y/50)<0?0:wrtp+(gamepad2.left_stick_y/50);
                     pd=1;
                 }else if(pd==0){
@@ -377,7 +349,7 @@ public class OpenDrive16093 extends LinearOpMode {//
 
             wrt.setPosition(wrtp);
             plane.setPosition(plnp);
-            telemetry.addData("操作模式:", sequence==OpenDrive16093.Sequence.AIM?"aim1":(sequence==OpenDrive16093.Sequence.RUN?"run":(sequence==OpenDrive16093.Sequence.RELEASE?"drop":"null")));
+            telemetry.addData("操作模式:", sequence== SingleDrive16093.Sequence.AIM?"aim1":(sequence== SingleDrive16093.Sequence.RUN?"run":(sequence== SingleDrive16093.Sequence.RELEASE?"drop":"null")));
             telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());
             telemetry.addData("底盘速度:",speed);
@@ -404,11 +376,7 @@ public class OpenDrive16093 extends LinearOpMode {//
                     relativeLayout.setBackgroundColor(Color.HSVToColor(hsvValues));
                 }
             });
-            if(gamepad1.dpad_up||gamepad1.dpad_down||gamepad1.dpad_right||gamepad1.dpad_left){
-                bark_tank_drive_period();
-            }else{
-                bark_drive_period();
-            }
+            bark_drive_period();
         }
     }
     private void logic_period() {
@@ -454,40 +422,6 @@ public class OpenDrive16093 extends LinearOpMode {//
         double backLeftPower = ((rotY - rotX - rx)) / denominator;
         double frontRightPower = ((rotY - rotX + rx)) / denominator;
         double backRightPower = ((rotY + rotX + rx)) / denominator;
-        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
-        leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
-        rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
-        rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed);
-    }
-    public void bark_tank_drive_period(){
-        double frontLeftPower = 0;
-        double backLeftPower = 0;
-        double frontRightPower = 0;
-        double backRightPower = 0;
-        if(gamepad1.dpad_up){
-            frontLeftPower = 1;
-            backLeftPower = 1;
-            frontRightPower = 1;
-            backRightPower = 1;
-        }
-        if(gamepad1.dpad_down){
-            frontLeftPower = -1;
-            backLeftPower = -1;
-            frontRightPower = -1;
-            backRightPower = -1;
-        }
-        if(gamepad1.dpad_right){
-            frontLeftPower = 1;
-            backLeftPower = -1;
-            frontRightPower = -1;
-            backRightPower = 1;
-        }
-        if(gamepad1.dpad_left){
-            frontLeftPower = -1;
-            backLeftPower = 1;
-            frontRightPower = 1;
-            backRightPower = -1;
-        }
         leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
         leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
         rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
