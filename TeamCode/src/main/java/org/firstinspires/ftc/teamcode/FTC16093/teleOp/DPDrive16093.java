@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -32,8 +32,8 @@ public class DPDrive16093 extends LinearOpMode {//
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
     private DcMotorEx rightBackDrive   = null;  //  Used to control the right back drive wheel\
-    private DcMotorSimple hangLeft   = null;
-    private DcMotorSimple hangRight   = null;
+    private DcMotorEx hangLeft   = null;
+    private DcMotorEx hangRight   = null;
     private DcMotorEx armDrive   = null;
     private DcMotorEx amlDrive   = null;
     public static String motor_name_0 = "hangLeft";
@@ -130,8 +130,8 @@ public class DPDrive16093 extends LinearOpMode {//
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "frontRight");
         leftBackDrive  = hardwareMap.get(DcMotorEx.class, "rearLeft");
         rightBackDrive = hardwareMap.get(DcMotorEx.class, "rearRight");
-        hangLeft  = hardwareMap.get(DcMotorSimple.class, motor_name_0);
-        hangRight = hardwareMap.get(DcMotorSimple.class, motor_name_1);
+        hangLeft  = hardwareMap.get(DcMotorEx.class, motor_name_0);
+        hangRight = hardwareMap.get(DcMotorEx.class, motor_name_1);
         armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
         amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
         wrt = hardwareMap.get(Servo.class, "wrist");
@@ -157,8 +157,8 @@ public class DPDrive16093 extends LinearOpMode {//
         leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        hangLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        hangRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        hangLeft.setDirection(DcMotorEx.Direction.FORWARD);
+        hangRight.setDirection(DcMotorEx.Direction.REVERSE);
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
@@ -166,8 +166,8 @@ public class DPDrive16093 extends LinearOpMode {//
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//        hangLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-//        hangRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        hangLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        hangRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         //armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
