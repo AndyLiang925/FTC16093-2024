@@ -61,6 +61,7 @@ public class DPDrive16093 extends LinearOpMode {//
     int mode=0;
     private DPDrive16093.Sequence sequence;
     NormalizedColorSensor colorSensor;
+    NormalizedColorSensor colorSensor2;
     View relativeLayout;
     @Override//
     public void runOpMode() throws InterruptedException {
@@ -78,9 +79,13 @@ public class DPDrive16093 extends LinearOpMode {//
         float gain = 2;
         final float[] hsvValues = new float[3];
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+        colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "sensor_color2");
 
         if (colorSensor instanceof SwitchableLight) {
             ((SwitchableLight)colorSensor).enableLight(true);
+        }
+        if (colorSensor2 instanceof SwitchableLight) {
+            ((SwitchableLight)colorSensor2).enableLight(true);
         }
 
         //init position
@@ -103,7 +108,9 @@ public class DPDrive16093 extends LinearOpMode {//
         double wrtLevels[] = {1,1,1,1,1,1};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
-        boolean colorSensorUsed=false;
+        boolean colorSensorUsed=true;
+        boolean leftColorRe=true;
+        boolean rightColorRe=true;
         boolean PDSleep;
         XCYBoolean aim =new XCYBoolean(()->gamepad2.a);
         XCYBoolean distal = new XCYBoolean(()->gamepad2.dpad_up);
@@ -185,7 +192,9 @@ public class DPDrive16093 extends LinearOpMode {//
         waitForStart();
         while (opModeIsActive()){
             colorSensor.setGain(gain);
+            colorSensor2.setGain(gain);
             NormalizedRGBA colors = colorSensor.getNormalizedColors();
+            NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             logic_period();
 
@@ -256,6 +265,7 @@ public class DPDrive16093 extends LinearOpMode {//
             if(humanGrab.toTrue()){
                 colorSensorUsed=false;
             }
+
             if(sequence==DPDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
@@ -279,8 +289,39 @@ public class DPDrive16093 extends LinearOpMode {//
 //                        gb2.setPosition(rightGrabOpen?0.76:0.45);
 //                        rightGrabOpen=!rightGrabOpen;
 //                    }
-                gb1.setPosition(leftGrab.get()?0.22:0.53);
-                gb2.setPosition(rightGrab.get()?0.45:0.76);
+                if(colorSensorUsed){
+                    if (leftGrab.toTrue()) {
+                        leftGrabOpen = !leftGrabOpen;
+                    }
+                    if(!grabbed(colors2)){
+                        leftColorRe=true;
+                    }
+                    if(grabbed(colors2)&&leftColorRe){
+                        leftGrabOpen=false;
+                        leftColorRe=false;
+                    }
+                    gb1.setPosition(leftGrabOpen?0.22:0.53);
+                    if (rightGrab.toTrue()) {
+                        rightGrabOpen = !rightGrabOpen;
+                    }
+                    if(!grabbed(colors)){
+                        rightColorRe=true;
+                    }
+                    if(grabbed(colors)&&rightColorRe){
+                        rightGrabOpen=true;
+                        rightColorRe=false;
+                    }
+                    gb2.setPosition(rightGrabOpen?0.76:0.45);
+                }else{
+                    if (leftGrab.toTrue()) {
+                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+                        leftGrabOpen = !leftGrabOpen;
+                    }
+                    if (rightGrab.toTrue()) {
+                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+                        rightGrabOpen = !rightGrabOpen;
+                    }
+                }
             }
             if(sequence==DPDrive16093.Sequence.RUN){
                 setArmLength(0);
@@ -341,8 +382,15 @@ public class DPDrive16093 extends LinearOpMode {//
                     pd=1;
                 }
                 wrt.setPosition(wrtp);
-                gb1.setPosition(leftGrab.get()?0.22:0.53);
-                gb2.setPosition(rightGrab.get()?0.45:0.76);
+                if (leftGrab.toTrue()) {
+                    gb1.setPosition(leftGrabOpen?0.22:0.53);
+                    leftGrabOpen = !leftGrabOpen;
+                }
+                if (rightGrab.toTrue()) {
+                    gb2.setPosition(rightGrabOpen?0.76:0.45);
+                    rightGrabOpen = !rightGrabOpen;
+                }
+                ////
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?0.22:0.53);
 //                        leftGrabOpen = !leftGrabOpen;
@@ -377,10 +425,11 @@ public class DPDrive16093 extends LinearOpMode {//
             telemetry.addData("底盘速度:",speed);
             telemetry.addData("手腕位置:",wrtp);
             telemetry.addData("index:",index);
+            telemetry.addData("color_sensor抓没抓到:",grabbed(colors2)?"抓到了":"没抓到");
             telemetry.addLine()
-                    .addData("Red", "%.3f", colors.red)
-                    .addData("Green", "%.3f", colors.green)
-                    .addData("Blue", "%.3f", colors.blue);
+                    .addData("Red", "%.3f", colors2.red)
+                    .addData("Green", "%.3f", colors2.green)
+                    .addData("Blue", "%.3f", colors2.blue);
             telemetry.addLine()
                     .addData("Hue", "%.3f", hsvValues[0])
                     .addData("Saturation", "%.3f", hsvValues[1])
@@ -406,7 +455,7 @@ public class DPDrive16093 extends LinearOpMode {//
         }
     }
     public boolean grabbed(NormalizedRGBA c){
-        return c.red>1&&c.green>1&&c.blue>1;
+        return c.red>0.07&&c.green>0.15&&c.blue>0.15;
     }
     private void logic_period() {
         //IMPORTANT: READ ALL
