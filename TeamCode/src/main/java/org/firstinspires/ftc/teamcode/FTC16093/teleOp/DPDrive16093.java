@@ -405,6 +405,9 @@ public class DPDrive16093 extends LinearOpMode {//
             }
         }
     }
+    public boolean grabbed(NormalizedRGBA c){
+        return c.red>1&&c.green>1&&c.blue>1;
+    }
     private void logic_period() {
         //IMPORTANT: READ ALL
         XCYBoolean.bulkRead();
