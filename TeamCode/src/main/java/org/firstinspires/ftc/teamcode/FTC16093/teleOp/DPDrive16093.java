@@ -261,6 +261,12 @@ public class DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 sequence=DPDrive16093.Sequence.AIM;
                 telemetry.addData("aim",0);
+                if(colorSensorUsed&&grabbed(colors)){
+                    rightGrabOpen=true;
+                }
+                if(colorSensorUsed&&grabbed(colors2)){
+                    leftGrabOpen=true;
+                }
             }
             if(humanGrab.toTrue()){
                 colorSensorUsed=false;
