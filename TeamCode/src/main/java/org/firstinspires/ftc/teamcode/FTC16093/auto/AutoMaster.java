@@ -104,6 +104,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double detectedParking=56;
     public static double intake_x = -45, intake_y = 30.5 ;
+    public static double intake_center_x= 55, intake_center_y= 11;
     public static double intermediate_y=10,ec_intermediate_y=6;
 
 
@@ -602,4 +603,21 @@ public class AutoMaster extends LinearOpMode {
 
     }
 
+    public void ecByCenter(){
+        Trajectory intake = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x, detectedBackDrop_y, Math.toRadians(180.00)))
+                .splineToSplineHeading(new Pose2d(22.75, -14.08, Math.toRadians(168.61)), Math.toRadians(168.61))
+                .splineTo(new Vector2d(intake_center_x, intake_y*side_color), Math.toRadians(180))
+                .build();
+
+        Trajectory moveBack = drive.trajectoryBuilder(new Pose2d(intake_center_x, intake_y*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(10,intermediate_y))
+                .build();
+        Trajectory drop = drive.trajectoryBuilder(new Pose2d(10, intermediate_y,Math.toRadians(180)))
+                .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+                .build();
+        drive.followTrajectory(intake);
+        intake22();
+        drive.followTrajectory(moveBack);
+        drive.followTrajectory(drop);
+    }
 }
