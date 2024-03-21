@@ -317,6 +317,19 @@ public class DPDrive16093 extends LinearOpMode {//
                         rightGrabOpen=true;
                         rightColorRe=false;
                     }
+                    if(colorSensorUsed&&grabbed(colors)&&grabbed(colors2)){
+                        rightGrabOpen=false;
+                        leftGrabOpen=false;
+                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+                        sleep_with_drive(500);
+                        setArmLength(0);
+                        setArmPosition(0);
+                        wrtp=1;
+                        wrt.setPosition(wrtp);
+                        sequence=DPDrive16093.Sequence.RUN;
+                        telemetry.addData("run",0);
+                    }
                     gb2.setPosition(rightGrabOpen?0.76:0.45);
                 }else{
                     if (leftGrab.toTrue()) {
