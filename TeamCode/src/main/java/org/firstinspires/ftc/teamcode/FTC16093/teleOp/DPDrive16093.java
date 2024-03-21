@@ -51,8 +51,8 @@ public class DPDrive16093 extends LinearOpMode {//
     //time of this period (sec)
     private double period_time_sec;
     public double speed=1.0;
-    public double driver_speed=1.0;//手动慢速档
-    public double rotation_speed=1.0;//旋转降速
+    public double driver_speed=1.0;//手动慢速档 driver controlled slow mode speed
+    public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
     private BarkMecanumDrive bdrive;
 
     enum Sequence {
@@ -101,8 +101,8 @@ public class DPDrive16093 extends LinearOpMode {//
         int index=0;
         int maxIndex=6;
         int minIndex=0;
-        int pd=0;//判断手腕是否手动微调
-        int pdArm=0;//判断大臂是否微调
+        int pd=0;//判断手腕是否手动微调 whether wrist is in driver controlled mode
+        int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {50,400,630,750,950,1100};
         int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
         double wrtLevels[] = {1,1,1,1,1,1};
@@ -154,7 +154,7 @@ public class DPDrive16093 extends LinearOpMode {//
 //            speed=1;
 //        }
 
-        //手动慢速
+        //手动慢速 driver-controlled slow mode
         //parameter box
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
@@ -425,13 +425,13 @@ public class DPDrive16093 extends LinearOpMode {//
 
             wrt.setPosition(wrtp);
             plane.setPosition(plnp);
-            telemetry.addData("操作模式:", sequence==DPDrive16093.Sequence.AIM?"aim1":(sequence==DPDrive16093.Sequence.RUN?"run":(sequence==DPDrive16093.Sequence.RELEASE?"drop":"null")));
-            telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());
-            telemetry.addData("大臂位置:",armDrive.getCurrentPosition());
-            telemetry.addData("底盘速度:",speed);
-            telemetry.addData("手腕位置:",wrtp);
-            telemetry.addData("index:",index);
-            telemetry.addData("color_sensor抓没抓到:",grabbed(colors2)?"抓到了":"没抓到");
+            telemetry.addData("操作模式:", sequence==DPDrive16093.Sequence.AIM?"aim1":(sequence==DPDrive16093.Sequence.RUN?"run":(sequence==DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
+            telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());//arm expand position
+            telemetry.addData("大臂位置:",armDrive.getCurrentPosition());//arm position
+            telemetry.addData("底盘速度:",speed);// robot speed
+            telemetry.addData("手腕位置:",wrtp);//wrist position
+            telemetry.addData("index:",index);//level of upper system
+            telemetry.addData("color_sensor抓没抓到:",grabbed(colors2)?"抓到了":"没抓到");//grabbed or not
             telemetry.addLine()
                     .addData("Red", "%.3f", colors2.red)
                     .addData("Green", "%.3f", colors2.green)
