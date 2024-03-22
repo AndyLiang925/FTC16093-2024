@@ -261,10 +261,10 @@ public class DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 sequence=DPDrive16093.Sequence.AIM;
                 telemetry.addData("aim",0);
-                if(colorSensorUsed&&grabbed(colors)){
+                if(colorSensorUsed&&!grabbed(colors)){
                     rightGrabOpen=true;
                 }
-                if(colorSensorUsed&&grabbed(colors2)){
+                if(colorSensorUsed&&!grabbed(colors2)){
                     leftGrabOpen=true;
                 }
             }
@@ -321,7 +321,7 @@ public class DPDrive16093 extends LinearOpMode {//
                         rightGrabOpen=false;
                         leftGrabOpen=false;
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
-                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+                        gb2.setPosition(rightGrabOpen?0.45:0.76);
                         sleep_with_drive(500);
                         setArmLength(0);
                         setArmPosition(0);
@@ -330,14 +330,14 @@ public class DPDrive16093 extends LinearOpMode {//
                         sequence=DPDrive16093.Sequence.RUN;
                         telemetry.addData("run",0);
                     }
-                    gb2.setPosition(rightGrabOpen?0.76:0.45);
+                    gb2.setPosition(rightGrabOpen?0.45:0.76);
                 }else{
                     if (leftGrab.toTrue()) {
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
                         leftGrabOpen = !leftGrabOpen;
                     }
                     if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+                        gb2.setPosition(rightGrabOpen?0.45:0.76);
                         rightGrabOpen = !rightGrabOpen;
                     }
                 }
@@ -406,7 +406,7 @@ public class DPDrive16093 extends LinearOpMode {//
                     leftGrabOpen = !leftGrabOpen;
                 }
                 if (rightGrab.toTrue()) {
-                    gb2.setPosition(rightGrabOpen?0.76:0.45);
+                    gb2.setPosition(rightGrabOpen?0.45:0.76);
                     rightGrabOpen = !rightGrabOpen;
                 }
                 ////
