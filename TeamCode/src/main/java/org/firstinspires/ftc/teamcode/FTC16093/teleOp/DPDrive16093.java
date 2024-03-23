@@ -489,7 +489,7 @@ public class DPDrive16093 extends LinearOpMode {//
     private void logic_period() {
         //IMPORTANT: READ ALL
         XCYBoolean.bulkRead();
-        //time of this period
+        //time of this period//
         period_time_sec = time.seconds() - last_time_sec;
         //P.S. telemetry comes from parent class, caption = title
 //        telemetry.addData("elapse time", period_time_sec * 1000);/
