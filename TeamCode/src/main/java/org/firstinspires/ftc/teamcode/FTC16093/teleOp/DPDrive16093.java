@@ -104,7 +104,7 @@ public class DPDrive16093 extends LinearOpMode {//
         int pd=0;//判断手腕是否手动微调 whether wrist is in driver controlled mode
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {50,400,630,750,950,1100};
-        int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
+        int armPosLevels[] = {1950,1814,1747,1740,1740,1730};
         double wrtLevels[] = {1,1,1,1,1,1};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
@@ -253,6 +253,9 @@ public class DPDrive16093 extends LinearOpMode {//
                 pdArm=0;
                 sequence=DPDrive16093.Sequence.RELEASE;
                 telemetry.addData("release",0);
+                leftGrabOpen=false;
+                rightGrabOpen=false;
+
             }
             if(aim.toTrue()){
                 setArmLength(0);
@@ -261,13 +264,17 @@ public class DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 sequence=DPDrive16093.Sequence.AIM;
                 telemetry.addData("aim",0);
-                if(colorSensorUsed&&!grabbed(colors)){
-                    rightGrabOpen=true;
-                }
-                if(colorSensorUsed&&!grabbed(colors2)){
-                    leftGrabOpen=true;
-                }
+//                if(colorSensorUsed&&!grabbed(colors)){
+//                    rightGrabOpen=true;
+//                }
+//                if(colorSensorUsed&&!grabbed(colors2)){
+//                    leftGrabOpen=true;
+//                }
+                //need to change
+                leftGrabOpen=false;
+                rightGrabOpen=false;
             }
+
             if(humanGrab.toTrue()){
                 colorSensorUsed=false;
             }
@@ -314,7 +321,7 @@ public class DPDrive16093 extends LinearOpMode {//
                         rightColorRe=true;
                     }
                     if(grabbed(colors)&&rightColorRe){
-                        rightGrabOpen=true;
+                        rightGrabOpen=false;
                         rightColorRe=false;
                     }
                     if(colorSensorUsed&&grabbed(colors)&&grabbed(colors2)){
@@ -322,7 +329,7 @@ public class DPDrive16093 extends LinearOpMode {//
                         leftGrabOpen=false;
                         gb1.setPosition(leftGrabOpen?0.22:0.53);
                         gb2.setPosition(rightGrabOpen?0.45:0.76);
-                        sleep_with_drive(500);
+                        sleep_with_drive(300);
                         setArmLength(0);
                         setArmPosition(0);
                         wrtp=1;
@@ -402,13 +409,15 @@ public class DPDrive16093 extends LinearOpMode {//
                 }
                 wrt.setPosition(wrtp);
                 if (leftGrab.toTrue()) {
-                    gb1.setPosition(leftGrabOpen?0.22:0.53);
+
                     leftGrabOpen = !leftGrabOpen;
                 }
                 if (rightGrab.toTrue()) {
-                    gb2.setPosition(rightGrabOpen?0.45:0.76);
+
                     rightGrabOpen = !rightGrabOpen;
                 }
+                gb1.setPosition(leftGrabOpen?0.22:0.53);
+                gb2.setPosition(rightGrabOpen?0.45:0.76);
                 ////
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?0.22:0.53);
@@ -474,7 +483,8 @@ public class DPDrive16093 extends LinearOpMode {//
         }
     }
     public boolean grabbed(NormalizedRGBA c){
-        return c.red>0.07&&c.green>0.15&&c.blue>0.15;
+        //return (c.red>0.07&&c.green>0.15&&c.blue>0.15)||(c.red>0.1)||(c.green>0.1)||(c.blue>0.1);
+        return (c.red>0.04&&c.green>0.10&&c.blue>0.10)||(c.red>0.05)||(c.green>0.05)||(c.blue>0.05);
     }
     private void logic_period() {
         //IMPORTANT: READ ALL
