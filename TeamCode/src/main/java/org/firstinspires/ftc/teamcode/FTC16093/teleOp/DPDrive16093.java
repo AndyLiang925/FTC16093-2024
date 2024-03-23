@@ -494,7 +494,7 @@ public class DPDrive16093 extends LinearOpMode {//
         //P.S. telemetry comes from parent class, caption = title
 //        telemetry.addData("elapse time", period_time_sec * 1000);/
         last_time_sec = time.seconds();
-        //send data
+        //send data//
 //        telemetry.update();
         //clear read(ed) cache//
         for (LynxModule module : allHubs) {
