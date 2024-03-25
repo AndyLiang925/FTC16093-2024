@@ -402,7 +402,7 @@ public class LAC_Version_DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 gb1.setPosition(leftGrab.get()?0.22:0.53);
                 gb2.setPosition(rightGrab.get()?0.45:0.76);
-                ////
+                //////
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?0.22:0.53);
 //                        leftGrabOpen = !leftGrabOpen;
