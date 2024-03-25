@@ -14,17 +14,7 @@ public class AutoTestRedFar extends AutoMaster {
     private Servo wrt = null;
     @Override
     public void runOpMode() throws InterruptedException{
-        armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
-        amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
-        wrt = hardwareMap.get(Servo.class, "wrist");
-        gb1 = hardwareMap.get(Servo.class, "grab2");
-        gb2 = hardwareMap.get(Servo.class, "grab1");
-        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
         startSide = DISTAL;
         side_color = RED;
         initHardware();
@@ -32,7 +22,8 @@ public class AutoTestRedFar extends AutoMaster {
         putOnSpikeMark();
         DistalBackDropDump();
         putOnBackDrop();
-
+        sleep(1000);
+        setUpAuto();
     }
     public void setArmLength(int length){
         amlDrive.setTargetPosition(length);

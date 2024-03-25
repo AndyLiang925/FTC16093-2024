@@ -18,7 +18,9 @@ public class AutoTestCenterPath extends AutoMaster {
 
         backDropDump();
         putOnBackDrop();
-        sleep(500);
+        sleep(1500);
+        setUpAuto();
+
         ecByCenter();
         putOnBackDrop();
         sleep(1000);

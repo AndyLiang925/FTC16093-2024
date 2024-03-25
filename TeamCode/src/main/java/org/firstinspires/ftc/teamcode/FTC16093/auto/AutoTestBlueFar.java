@@ -9,13 +9,15 @@ public class AutoTestBlueFar extends AutoMaster {
 
         startSide = DISTAL;
         side_color = BLUE;
+
         initHardware();
         spikeMarkDump();
         putOnSpikeMark();
         DistalBackDropDump();
-
+        sleep(300);
         putOnBackDrop();
-
+        sleep(1000);
+        setUpAuto();
     }
 }
 

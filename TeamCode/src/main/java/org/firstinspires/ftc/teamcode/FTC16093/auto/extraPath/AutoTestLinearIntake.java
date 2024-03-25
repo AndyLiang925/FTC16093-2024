@@ -14,16 +14,18 @@ public class AutoTestLinearIntake extends AutoMaster {
         initHardware();
 
         spikeMarkDump();
-        putOnSpikeMark();
 
+        putOnSpikeMark();
         backDropDump();
         putOnBackDrop();
-
+        sleep(1000);
         setUpAuto();
 
+
         extraIntakeLinearPath();
+
         putOnBackDrop();
-        sleep(500);
+        sleep(1500);
         setUpAuto();
         sleep(1500);
     }
