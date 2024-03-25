@@ -219,6 +219,12 @@ public class BarkMecanumDrive extends MecanumDrive {
         gb2.setPosition(0.76);//gb2.setPosition(0.45);
         wrt.setPosition(1);
     }
+    public void resetEncoder(){
+        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     public void putOnSpikeMark(){
         wrt.setPosition(0.4);
         setArmPosition(20);

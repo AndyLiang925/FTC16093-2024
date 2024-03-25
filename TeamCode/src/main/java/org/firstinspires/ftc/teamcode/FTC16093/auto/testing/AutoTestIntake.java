@@ -8,16 +8,17 @@ import org.firstinspires.ftc.teamcode.FTC16093.auto.AutoMaster;
 public class AutoTestIntake extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
-        initHardware();
 
+        initHardware();
+        //resetUpper();
         intake2();
         //setUpAuto();
         sleep(300);
-        putOnBackDrop();
+        //intake_throw();
+        //putOnBackDrop();
 
-        sleep(500);
         setUpAuto();
-        sleep(1000);
+        //sleep(1000);
 
     }
 

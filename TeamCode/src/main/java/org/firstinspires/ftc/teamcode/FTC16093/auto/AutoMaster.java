@@ -116,7 +116,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 275;
+    public static int armPos = 280;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -328,8 +328,8 @@ public class AutoMaster extends LinearOpMode {
         //drive.followTrajectory(moveToVertical);
     }
 
-    public void spikeMarkDump_kickProp(){
-
+    public void resetUpper(){
+        drive.resetEncoder();
     }
 
 
@@ -576,13 +576,26 @@ public class AutoMaster extends LinearOpMode {
         sleep(100);
         upper.grab2_close();
     }
-    public void intake1(){
-
+    public void intake_throw(){
+        upper.setArmLength(800);
+        sleep(500);
+        upper.setArmPosition(350);
+        sleep(500);
+        upper.wrist_to_down();
+        sleep(500);
+        upper.wrist_to_middle();
+        upper.setArmPosition(250);
+        upper.setArmLength(0);
+        sleep(500);
+        upper.setArmPosition(0);
     }
     public void intake2(){
         upper.wrist_grab_distalAuto(armPos);
         sleep(500);
         upper.grab2_close();
+        sleep(500);
+        intake_throw();
+        sleep(500);
         upper.wrist_to_middle();
         sleep(500);
         upper.setArmLength(0);

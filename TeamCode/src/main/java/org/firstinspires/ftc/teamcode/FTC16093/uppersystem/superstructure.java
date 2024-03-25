@@ -137,6 +137,9 @@ public class superstructure {
     public void wrist_to_middle(){
         wrt.setPosition(1); // initial 0.55
     }
+    public void wrist_to_down(){
+        wrt.setPosition(0); // initial 0.55
+    }
     public void wristDown(){
         wrt.setPosition(0.34);
     }
