@@ -574,30 +574,56 @@ public class AutoMaster extends LinearOpMode {
         sleep(200);
         upper.grab2_close();
     }
+//    public void intake_throw(){
+//        upper.setArmLength(800);
+//        sleep(500);
+//        upper.setArmPosition(350);
+//        sleep(300);
+//        upper.wrist_to_down();
+//        sleep(300);
+//        upper.wrist_to_middle();
+//        upper.setArmPosition(250);
+//        upper.setArmLength(0);
+//        sleep(300);
+//        upper.setArmPosition(0);
+//    } slower version
     public void intake_throw(){
         upper.setArmLength(800);
-        sleep(500);
+//        sleep(200);
         upper.setArmPosition(350);
-        sleep(500);
+        sleep(300);
         upper.wrist_to_down();
-        sleep(500);
+        sleep(200);
         upper.wrist_to_middle();
         upper.setArmPosition(250);
         upper.setArmLength(0);
-        sleep(500);
+        sleep(300);
         upper.setArmPosition(0);
     }
+//    public void intake2(){
+//        upper.wrist_grab_distalAuto(armPos);
+//        sleep(500);
+//        upper.grab2_close();
+//        sleep(500);
+//        intake_throw();
+//        sleep(500);
+//        upper.wrist_to_middle();
+//        sleep(500);
+//        upper.setArmLength(0);
+//        sleep(700);
+//        upper.setArmPosition(0);
+//    } old version, which is slower
     public void intake2(){
         upper.wrist_grab_distalAuto(armPos);
         sleep(500);
         upper.grab2_close();
-        sleep(500);
+        sleep(200);
         intake_throw();
-    sleep(500);
+        sleep(200);
         upper.wrist_to_middle();
-        sleep(500);
+        sleep(200);
         upper.setArmLength(0);
-        sleep(700);
+        sleep(200);
         upper.setArmPosition(0);
     }
 

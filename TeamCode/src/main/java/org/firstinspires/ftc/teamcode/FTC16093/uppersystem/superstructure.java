@@ -110,7 +110,7 @@ public class superstructure {
         grab2_open();
         newSleep(300);
         wrt.setPosition(0.23);
-        newSleep(300);
+        newSleep(100);
         setArmLength(1150);
     }
     public void wrist_grab_proximal(){

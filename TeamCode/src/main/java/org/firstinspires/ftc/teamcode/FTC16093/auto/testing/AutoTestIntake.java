@@ -11,6 +11,7 @@ public class AutoTestIntake extends AutoMaster {
 
         initHardware();
         //resetUpper();
+        //intake2();
         intake2();
         //setUpAuto();
         sleep(300);
