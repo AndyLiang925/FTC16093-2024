@@ -99,13 +99,13 @@ public class DPDrive16093 extends LinearOpMode {//
         int amlp=0;
         int armp=0;
         int index=0;
-        int maxIndex=6;
+        int maxIndex=7;
         int minIndex=0;
         int pd=0;//判断手腕是否手动微调 whether wrist is in driver controlled mode
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
-        int armLengthLevels[] = {50,400,630,750,950,1100};
-        int armPosLevels[] = {1950,1814,1747,1740,1740,1730};
-        double wrtLevels[] = {1,1,1,1,1,1};
+        int armLengthLevels[] = {50,400,630,750,950,1100,1100};
+        int armPosLevels[] = {1950,1814,1747,1740,1740,1730,1850};
+        double wrtLevels[] = {1,1,1,1,1,1,0.12};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=true;
@@ -236,8 +236,22 @@ public class DPDrive16093 extends LinearOpMode {//
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
+                if(sequence==Sequence.AIM){
+                    setArmPosition(250);
+                }
                 setArmLength(0);
+                if(sequence==Sequence.RELEASE){
+                    speed=1;
+                }
+                if(sequence==Sequence.AIM){
+                    speed=1;
+                    sleep_with_drive(500);
+                }
                 setArmPosition(0);
+                if(sequence==Sequence.RELEASE){
+                    speed=1;
+                    sleep_with_drive(500);
+                }
                 wrtp=1;
                 wrt.setPosition(wrtp);
                 sequence=DPDrive16093.Sequence.RUN;
@@ -507,15 +521,15 @@ public class DPDrive16093 extends LinearOpMode {//
         amlDrive.setPower(1);
     }
     public void setArmPosition(int pos){
-        if(armDrive.getCurrentPosition()>pos){
-            armDrive.setPower(0.7);
+        if(armDrive.getCurrentPosition()<=200&&pos<=armDrive.getCurrentPosition()){
+            armDrive.setPower(0.5);
+        }else if(armDrive.getCurrentPosition()<1300){
+            armDrive.setPower(1);
         }else{
-            armDrive.setPower(0.9);
+            armDrive.setPower(0.7);
         }
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armDrive.setPower(0.8);
-
     }
     public void bark_drive_period(){
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
