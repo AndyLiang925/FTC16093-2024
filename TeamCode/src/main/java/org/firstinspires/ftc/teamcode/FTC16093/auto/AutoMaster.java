@@ -612,7 +612,7 @@ public class AutoMaster extends LinearOpMode {
 //        upper.setArmLength(0);
 //        sleep(700);
 //        upper.setArmPosition(0);
-//    } old version, which is slower
+//    } old version, which is slower//
     public void intake2(){
         upper.wrist_grab_distalAuto(armPos);
         sleep(500);
