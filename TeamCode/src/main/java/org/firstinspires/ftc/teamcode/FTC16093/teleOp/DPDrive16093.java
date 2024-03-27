@@ -27,7 +27,7 @@ import android.view.View;
 import java.util.List;
 
 @TeleOp
-public class DPDrive16093 extends LinearOpMode {//
+public class  DPDrive16093 extends LinearOpMode {//
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
@@ -53,6 +53,7 @@ public class DPDrive16093 extends LinearOpMode {//
     public double speed=1.0;
     public double driver_speed=1.0;//手动慢速档 driver controlled slow mode speed
     public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
+    private double heading_target;//heading target
     private BarkMecanumDrive bdrive;
 
     enum Sequence {
@@ -132,6 +133,8 @@ public class DPDrive16093 extends LinearOpMode {//
         XCYBoolean hangUp = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.x);
         XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
+        XCYBoolean dpadLeft = new XCYBoolean(()->gamepad1.dpad_left);
+        XCYBoolean dpadRight = new XCYBoolean(()->gamepad1.dpad_right);
         XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
         leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "frontLeft");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "frontRight");
@@ -188,7 +191,7 @@ public class DPDrive16093 extends LinearOpMode {//
         plane.setPosition(plnp);
         brkp=0.5;
         brake.setPosition(brkp);
-
+        heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         waitForStart();
         while (opModeIsActive()){
             colorSensor.setGain(gain);
@@ -393,11 +396,11 @@ public class DPDrive16093 extends LinearOpMode {//
                 if (gamepad2.right_stick_y>0) {
                     armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=0.4;
+                    rotation_speed=0.3;
                 }else if(gamepad2.right_stick_y<0){
                     armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=0.4;
+                    rotation_speed=0.3;
                 }else if(pdArm==0){
                     armp=armPosLevels[index];
                     rotation_speed=1;
@@ -461,6 +464,8 @@ public class DPDrive16093 extends LinearOpMode {//
 
             wrt.setPosition(wrtp);
             plane.setPosition(plnp);
+            telemetry.addData("imu_radian :",imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+            telemetry.addData("target_radian :",heading_target);
             telemetry.addData("操作模式:", sequence==DPDrive16093.Sequence.AIM?"aim1":(sequence==DPDrive16093.Sequence.RUN?"run":(sequence==DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
             telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());//arm expand position
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());//arm position
@@ -489,8 +494,11 @@ public class DPDrive16093 extends LinearOpMode {//
                     relativeLayout.setBackgroundColor(Color.HSVToColor(hsvValues));
                 }
             });
+            if(dpadLeft.toTrue()||dpadRight.toTrue()){
+                heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+            }
             if(gamepad1.dpad_up||gamepad1.dpad_down||gamepad1.dpad_right||gamepad1.dpad_left){
-                bark_tank_drive_period();
+                bark_tank_drive_period(true,heading_target);
             }else{
                 bark_drive_period();
             }
@@ -548,7 +556,7 @@ public class DPDrive16093 extends LinearOpMode {//
         rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
         rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed);
     }
-    public void bark_tank_drive_period(){
+    public void bark_tank_drive_period(boolean use_heading_correction, double target_heading){
         double frontLeftPower = 0;
         double backLeftPower = 0;
         double frontRightPower = 0;
@@ -570,12 +578,23 @@ public class DPDrive16093 extends LinearOpMode {//
             backLeftPower = -1;
             frontRightPower = -1;
             backRightPower = 1;
+            if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)>target_heading&&use_heading_correction){
+                frontRightPower = -1+Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+            }else if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)<target_heading&&use_heading_correction){
+                frontLeftPower = 1-Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+            }
         }
         if(gamepad1.dpad_left){
             frontLeftPower = -1;
             backLeftPower = 1;
             frontRightPower = 1;
             backRightPower = -1;
+            if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)>target_heading&&use_heading_correction){
+                frontRightPower = 1-Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+            }else if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)<target_heading&&use_heading_correction){
+                frontLeftPower = -1+Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+            }
+
         }
         leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
         leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
