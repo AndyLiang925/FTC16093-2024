@@ -6,11 +6,13 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.FTC16093.CenterStageVisionProcessor;
 import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 import org.firstinspires.ftc.teamcode.FTC16093.uppersystem.superstructure;
@@ -468,6 +470,7 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveToCenter);
         drive.followTrajectory(moveToIntake);
         sleep(300);
+        //drive.correct_heading(0);
         intake2();
 
 
@@ -475,6 +478,7 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveToDrop);
 
     }
+
     public void extraIntakeLinearBySpline(){
         Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
                 .splineTo(new Vector2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color), Math.toRadians(183.52))

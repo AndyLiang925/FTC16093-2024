@@ -188,6 +188,22 @@ public class BarkMecanumDrive extends MecanumDrive {
         setArmLength(1150);
         wrt.setPosition(0.23);
     }
+//    public void correct_heading(double target_heading_correction){
+//        while(Math.abs(Math.toRadians(imu.getAngularOrientation().firstAngle)-target_heading_correction)<2.5){
+//            if(Math.toRadians(imu.getAngularOrientation().firstAngle)<target_heading_correction){
+//                leftFront.setPower(1);
+//                leftRear.setPower(1);
+//                rightFront.setPower(-1);
+//                rightRear.setPower(-1);
+//            }else if(Math.toRadians(imu.getAngularOrientation().firstAngle)>target_heading_correction){
+//                leftFront.setPower(-1);
+//                leftRear.setPower(-1);
+//                rightFront.setPower(1);
+//                rightRear.setPower(1);
+//            }
+//        }
+//
+//    }
     public void wrist_grab_distalAuto(int armPos){
         setArmPosition(armPos);
         wrt.setPosition(0.23);
