@@ -579,9 +579,9 @@ public class  DPDrive16093 extends LinearOpMode {//
             frontRightPower = -1;
             backRightPower = 1;
             if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)>target_heading&&use_heading_correction){
-                frontRightPower = -1+Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
-            }else if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)<target_heading&&use_heading_correction){
                 frontLeftPower = 1-Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+            }else if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)<target_heading&&use_heading_correction){
+                frontRightPower = -1+Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
             }
         }
         if(gamepad1.dpad_left){
@@ -590,9 +590,10 @@ public class  DPDrive16093 extends LinearOpMode {//
             frontRightPower = 1;
             backRightPower = -1;
             if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)>target_heading&&use_heading_correction){
-                frontRightPower = 1-Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+                frontLeftPower = -1+Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/1.0;
             }else if(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)<target_heading&&use_heading_correction){
-                frontLeftPower = -1+Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/8;
+                frontRightPower = 1-Math.abs(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)-target_heading)/1.0;
+
             }
 
         }
