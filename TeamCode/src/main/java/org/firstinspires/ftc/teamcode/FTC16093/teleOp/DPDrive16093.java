@@ -533,7 +533,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         }else if(armDrive.getCurrentPosition()<1300){
             armDrive.setPower(1);
         }else{
-            armDrive.setPower(0.7);
+            armDrive.setPower(0.5);
         }
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);

@@ -106,12 +106,12 @@ public class superstructure {
 
         setArmPosition(armPos);
         //try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
-        newSleep(300);
+        newSleep(600);
         grab2_open();
         newSleep(300);
         wrt.setPosition(0.23);
         newSleep(100);
-        setArmLength(1150);
+        setArmLength(400);
     }
     public void wrist_grab_proximal(){
         setArmLength(0);
@@ -124,14 +124,10 @@ public class superstructure {
         amlDrive.setPower(1);
     }
     public void setArmPosition(int pos){
-        if(armDrive.getCurrentPosition()>pos){
-            armDrive.setPower(0.6);
-        }else{
-            armDrive.setPower(0.8);
-        }
+        armDrive.setPower(1);
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armDrive.setPower(0.8);
+        armDrive.setPower(1);
     }
 
     public void wrist_to_middle(){
@@ -150,7 +146,7 @@ public class superstructure {
         //gb1.setPosition(0.22);
         grab2_open();
 
-        newSleep(300);
+        newSleep(200);
         grab2_close();
     }
 

@@ -453,7 +453,23 @@ public class AutoMaster extends LinearOpMode {
         drive.turn(Math.toRadians(180));
     }
     public void extraIntakeLinearPath(){
-        Trajectory moveToCenter = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
+        Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(intake_x,intake_y))
+                .build();
+        Trajectory moveToDrop = drive.trajectoryBuilder(new Pose2d(intake_x, intake_y,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+                .build();
+        //drive.followTrajectory(moveToCenter);
+        drive.followTrajectory(moveToIntake);
+        //sleep(300);
+        //drive.correct_heading(0);
+        intake2();
+        drive.followTrajectory(moveToDrop);
+        upper.setArmPosition(1890);
+        sleep(1000);
+        ///////////////////
+        /*old ver:
+         Trajectory moveToCenter = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
                 .lineToConstantHeading(new Vector2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color))
                 .build();
         Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color,Math.toRadians(spikeMark_heading)))
@@ -469,14 +485,64 @@ public class AutoMaster extends LinearOpMode {
 
         drive.followTrajectory(moveToCenter);
         drive.followTrajectory(moveToIntake);
-        sleep(300);
+        //sleep(300);
         //drive.correct_heading(0);
         intake2();
 
 
         drive.followTrajectory(moveToBack);
-        drive.followTrajectory(moveToDrop);
+        drive.followTrajectory(moveToDrop);*/
+        ////////////////////
+    }
+    public void extraIntakeLinearPath2plus4(){
+        Trajectory moveToCenter = drive.trajectoryBuilder(new Pose2d(ec_backDrop_x,ec_backDrop_y,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color))
+                .build();
+        Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(intake_x,intake_y))
+                .build();
 
+        Trajectory moveToBack = drive.trajectoryBuilder(new Pose2d(intake_x, intake_y,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(spikeMarkCenter_x,spikeMarkCenter_y*side_color))
+                .build();
+        Trajectory moveToDrop = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x,spikeMarkCenter_y,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+                .build();
+        drive.followTrajectory(moveToCenter);
+
+        drive.followTrajectory(moveToIntake);
+        //sleep(300);
+        //drive.correct_heading(0);
+        intake2plus4();
+        drive.followTrajectory(moveToBack);
+        upper.setArmPosition(1890);
+        drive.followTrajectory(moveToDrop);
+        ////////////////////
+        /*old ver:
+        Trajectory moveToCenter = drive.trajectoryBuilder(new Pose2d(ec_backDrop_x,ec_backDrop_y,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color))
+                .build();
+        Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x, spikeMarkCenter_y*side_color,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(intake_x,intake_y))
+                .build();
+
+        Trajectory moveToBack = drive.trajectoryBuilder(new Pose2d(intake_x, intake_y,Math.toRadians(spikeMark_heading)))
+                .lineToConstantHeading(new Vector2d(spikeMarkCenter_x,spikeMarkCenter_y*side_color))
+                .build();
+        Trajectory moveToDrop = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x,spikeMarkCenter_y,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+                .build();
+
+        drive.followTrajectory(moveToCenter);
+        drive.followTrajectory(moveToIntake);
+        //sleep(300);
+        //drive.correct_heading(0);
+        intake2plus4();
+
+
+        drive.followTrajectory(moveToBack);
+        drive.followTrajectory(moveToDrop);*/
+        ////////////////////
     }
 
     public void extraIntakeLinearBySpline(){
@@ -492,9 +558,9 @@ public class AutoMaster extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(ec_backDrop_x,ec_backDrop_y))
                 .build();
         drive.followTrajectory(moveToIntake);
-        sleep(300);
+        //sleep(300);
         intake2();
-        sleep(400);
+        //sleep(400);
         drive.followTrajectory(moveToBack);
         drive.followTrajectory(moveToDrop);
 
@@ -570,10 +636,10 @@ public class AutoMaster extends LinearOpMode {
         sleep(300);
         upper.grab1_open();
         upper.wrist_to_middle();
+        upper.setArmPosition(1890);
+        sleep(300);
     }
     public void putOnBackDrop(){
-        upper.setArmPosition(1890);
-        sleep(1500);
         upper.grab2_open();
         sleep(200);
         upper.grab2_close();
@@ -619,6 +685,19 @@ public class AutoMaster extends LinearOpMode {
 //    } old version, which is slower//
     public void intake2(){
         upper.wrist_grab_distalAuto(armPos);
+        sleep(500);
+        upper.grab2_close();
+        sleep(200);
+        intake_throw();
+        sleep(200);
+        upper.wrist_to_middle();
+        sleep(200);
+        upper.setArmLength(0);
+        sleep(200);
+        upper.setArmPosition(0);
+    }
+    public void intake2plus4(){
+        upper.wrist_grab_distalAuto(200);
         sleep(500);
         upper.grab2_close();
         sleep(200);
