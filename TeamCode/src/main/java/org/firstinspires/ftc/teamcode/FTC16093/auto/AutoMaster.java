@@ -365,11 +365,10 @@ public class AutoMaster extends LinearOpMode {
                 .build();
 
         drive.followTrajectory(fromDistalToIntermediate);
-
         drive.turn(Math.toRadians(180));
         drive.followTrajectory(fromIntermediateToProximal);
-
-        sleep(300);
+        upper.setArmPosition(1890);
+        //sleep(300);
         drive.followTrajectory(fromProximalToBackdrop);
         sleep(400);
     }
@@ -621,7 +620,7 @@ public class AutoMaster extends LinearOpMode {
 
     public void setUpAuto(){
         upper.setArmPosition(0);
-        upper.setArmLength(10);
+        upper.setArmLength(0);
         upper.grab1_close();//gb1.setPosition(0.22);
         upper.grab2_close();//gb2.setPosition(0.45);
         upper.wrist_to_middle();
@@ -635,7 +634,7 @@ public class AutoMaster extends LinearOpMode {
         sleep(300);
         upper.grab1_open();
         upper.wrist_to_middle();
-        upper.setArmPosition(1890);
+        //upper.setArmPosition(1890);
         sleep(300);
     }
     public void putOnBackDrop(){

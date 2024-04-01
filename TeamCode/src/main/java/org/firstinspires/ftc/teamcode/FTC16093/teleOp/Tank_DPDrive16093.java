@@ -1,33 +1,31 @@
 package org.firstinspires.ftc.teamcode.FTC16093.teleOp;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
-import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
-
-
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.util.NanoClock;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.util.NanoClock;
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
+import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
+
 import java.util.List;
 
 @TeleOp
-public class  DPDrive16093 extends LinearOpMode {//
+public class Tank_DPDrive16093 extends LinearOpMode {//
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
@@ -51,6 +49,9 @@ public class  DPDrive16093 extends LinearOpMode {//
     //time of this period (sec)
     private double period_time_sec;
     public double speed=1.0;
+    public double drive;
+    public double turn;
+    public double strafe;
     public double driver_speed=1.0;//手动慢速档 driver controlled slow mode speed
     public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
     private double heading_target;//heading target
@@ -60,7 +61,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         AIM, RELEASE, RUN
     }
     int mode=0;
-    private DPDrive16093.Sequence sequence;
+    private Tank_DPDrive16093.Sequence sequence;
     NormalizedColorSensor colorSensor;
     NormalizedColorSensor colorSensor2;
     View relativeLayout;
@@ -238,25 +239,25 @@ public class  DPDrive16093 extends LinearOpMode {//
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
-                if(sequence==Sequence.AIM){
+                if(sequence== Sequence.AIM){
                     setArmPosition(0);
                 }
                 setArmLength(0);
-                if(sequence==Sequence.RELEASE){
+                if(sequence== Sequence.RELEASE){
                     speed=1;
                 }
-                if(sequence==Sequence.AIM){
+                if(sequence== Sequence.AIM){
                     speed=1;
                     sleep_with_drive(500);
                 }
                 setArmPosition(0);
-                if(sequence==Sequence.RELEASE){
+                if(sequence== Sequence.RELEASE){
                     speed=1;
                     sleep_with_drive(500);
                 }
                 wrtp=1;
                 wrt.setPosition(wrtp);
-                sequence=DPDrive16093.Sequence.RUN;
+                sequence= Tank_DPDrive16093.Sequence.RUN;
                 telemetry.addData("run",0);
             }
             if(drop.toTrue()){
@@ -267,7 +268,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 pd=0;
                 pdArm=0;
-                sequence=DPDrive16093.Sequence.RELEASE;
+                sequence= Tank_DPDrive16093.Sequence.RELEASE;
                 telemetry.addData("release",0);
                 leftGrabOpen=false;
                 rightGrabOpen=false;
@@ -278,7 +279,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 setArmPosition(0);
                 wrtp=0.34;
                 wrt.setPosition(wrtp);
-                sequence=DPDrive16093.Sequence.AIM;
+                sequence= Tank_DPDrive16093.Sequence.AIM;
                 telemetry.addData("aim",0);
 //                if(colorSensorUsed&&!grabbed(colors)){
 //                    rightGrabOpen=true;
@@ -295,7 +296,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 colorSensorUsed=false;
             }
 
-            if(sequence==DPDrive16093.Sequence.AIM){
+            if(sequence== Tank_DPDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
                     setArmPosition(200);
@@ -350,7 +351,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                         setArmPosition(0);
                         wrtp=1;
                         wrt.setPosition(wrtp);
-                        sequence=DPDrive16093.Sequence.RUN;
+                        sequence= Tank_DPDrive16093.Sequence.RUN;
                         telemetry.addData("run",0);
                     }
                     gb2.setPosition(rightGrabOpen?0.45:0.76);
@@ -365,7 +366,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                     }
                 }
             }
-            if(sequence==DPDrive16093.Sequence.RUN){
+            if(sequence== Tank_DPDrive16093.Sequence.RUN){
                 setArmLength(0);
                 setArmPosition(0);
                 wrtp=1;
@@ -378,7 +379,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 setArmLength(armLengthLevels[index]);
                 mode=0;
             }
-            if(sequence==DPDrive16093.Sequence.RELEASE) {
+            if(sequence== Tank_DPDrive16093.Sequence.RELEASE) {
                 speed = 0.4;
                 if (distal.toTrue()) {
                     index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
@@ -465,7 +466,7 @@ public class  DPDrive16093 extends LinearOpMode {//
             plane.setPosition(plnp);
             telemetry.addData("imu_radian :",imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
             telemetry.addData("target_radian :",heading_target);
-            telemetry.addData("操作模式:", sequence==DPDrive16093.Sequence.AIM?"aim1":(sequence==DPDrive16093.Sequence.RUN?"run":(sequence==DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
+            telemetry.addData("操作模式:", sequence== Tank_DPDrive16093.Sequence.AIM?"aim1":(sequence== Tank_DPDrive16093.Sequence.RUN?"run":(sequence== Tank_DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
             telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());//arm expand position
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());//arm position
             telemetry.addData("底盘速度:",speed);// robot speed
@@ -539,21 +540,36 @@ public class  DPDrive16093 extends LinearOpMode {//
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void bark_drive_period(){
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        double x = -gamepad1.left_stick_x;
-        double y = gamepad1.left_stick_y;
-        double rx = (gamepad1.right_stick_x) * 0.7;
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) - Math.abs(rx), 1);
-        double frontLeftPower = ((rotY + rotX - rx)) / denominator;
-        double backLeftPower = ((rotY - rotX - rx)) / denominator;
-        double frontRightPower = ((rotY - rotX + rx)) / denominator;
-        double backRightPower = ((rotY + rotX + rx)) / denominator;
-        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
-        leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
-        rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
-        rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed);
+        drive  = -gamepad1.left_stick_y*speed*driver_speed;  //Reduce drive rate to 50%.
+        strafe = -gamepad1.left_stick_x*speed*driver_speed;  // Reduce strafe rate to 50%.
+        turn   = gamepad1.right_stick_x*speed*driver_speed*rotation_speed;  // Reduce turn rate to 33%.
+        telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
+        moveRobot(drive, strafe, turn);
+    }
+    public void moveRobot(double x, double y, double yaw) {
+        // Calculate wheel powers.
+        double leftFrontPower    =  x -y -yaw;
+        double rightFrontPower   =  x +y +yaw;
+        double leftBackPower     =  x +y -yaw;
+        double rightBackPower    =  x -y +yaw;
+
+        // Normalize wheel powers to be less than 1.0
+        double max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
+        max = Math.max(max, Math.abs(leftBackPower));
+        max = Math.max(max, Math.abs(rightBackPower));
+
+        if (max > 1.0) {
+            leftFrontPower /= max;
+            rightFrontPower /= max;
+            leftBackPower /= max;
+            rightBackPower /= max;
+        }
+
+        // Send powers to the wheels.
+        leftFrontDrive.setPower(leftFrontPower);
+        rightFrontDrive.setPower(rightFrontPower);
+        leftBackDrive.setPower(leftBackPower);
+        rightBackDrive.setPower(rightBackPower);
     }
     public void bark_tank_drive_period(boolean use_heading_correction, double target_heading){
         double frontLeftPower = 0;
@@ -562,10 +578,6 @@ public class  DPDrive16093 extends LinearOpMode {//
         double backRightPower = 0;
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double rx = -(target_heading-botHeading)*3;
-        if(gamepad1.right_stick_x!=0){
-            rx=0;
-            heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-        }
         if(gamepad1.dpad_up){
             frontLeftPower = 1-rx;
             backLeftPower = 1-rx;
@@ -605,11 +617,10 @@ public class  DPDrive16093 extends LinearOpMode {//
 //            }
 
         }
-        double raw=gamepad1.right_stick_x;
-        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed-raw*speed*driver_speed*rotation_speed);
-        leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed-raw*speed*driver_speed*rotation_speed);
-        rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed+raw*speed*driver_speed*rotation_speed);
-        rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed+raw*speed*driver_speed*rotation_speed);
+        leftFrontDrive.setPower(frontLeftPower*speed*driver_speed*rotation_speed);
+        leftBackDrive.setPower(backLeftPower*speed*driver_speed*rotation_speed);
+        rightFrontDrive.setPower(frontRightPower*speed*driver_speed*rotation_speed);
+        rightBackDrive.setPower(backRightPower*speed*driver_speed*rotation_speed);
     }
     public void sleep_with_drive(double time_mm) {
         long start_time = System.currentTimeMillis();

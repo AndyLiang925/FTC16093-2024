@@ -20,10 +20,12 @@ public class AutoTestRedFar extends AutoMaster {
         initHardware();
         spikeMarkDump();
         putOnSpikeMark();
+        setUpAuto();
         DistalBackDropDump();
         putOnBackDrop();
         sleep(1000);
         setUpAuto();
+        sleep(5000);
     }
     public void setArmLength(int length){
         amlDrive.setTargetPosition(length);
