@@ -420,7 +420,6 @@ public class AutoMaster extends LinearOpMode {
 
         sleep(200);
 
-        //intake2();
         intake2();//test for new intake with no arm expand
 
         drive.followTrajectory(fromIntakeToIntermediate);
