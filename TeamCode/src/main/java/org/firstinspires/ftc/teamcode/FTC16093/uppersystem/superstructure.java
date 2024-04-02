@@ -87,8 +87,8 @@ public class superstructure {
     public void newSleep(int sleepTime){//tested sleep
         try { Thread.sleep(sleepTime); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
     }
-    public void autoGrabUpward(){//UNTESTED 2+2 grab the top two pixels
-        setArmPosition(200);
+    public void autoGrabUpward(int armPos_near){//UNTESTED 2+2 grab the top two pixels
+        setArmPosition(armPos_near);
         newSleep(300);
         setArmLength(0);
         grab1_open();
@@ -96,6 +96,23 @@ public class superstructure {
         newSleep(300);
         wrt.setPosition(0.23);
         newSleep(300);
+        grab1_close();
+        newSleep(300);
+        wrt.setPosition(1);
+        setArmPosition(0);
+    }
+
+    public void autoGrabPrepare(int armPos_near){
+        setArmPosition(armPos_near);
+        newSleep(300);
+        setArmLength(0);
+        grab1_open();
+
+        newSleep(300);
+        wrt.setPosition(0.23);
+        newSleep(300);
+    }
+    public void autoGrabFinish(){
         grab1_close();
         newSleep(300);
         wrt.setPosition(1);
