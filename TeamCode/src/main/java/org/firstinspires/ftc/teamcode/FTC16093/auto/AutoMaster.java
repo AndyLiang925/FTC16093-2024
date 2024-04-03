@@ -80,7 +80,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double spikeMark_blue_DistalLeft_x = -38, spikeMark_blue_DistalLeft_y = 21;
     public static double spikeMark_blue_DistalCenter_x = -45, spikeMark_blue_DistalCenter_y = 19;
-    public static double spikeMark_blue_DistalRight_x = -40, spikeMark_blue_DistalRight_y = 20;
+    public static double spikeMark_blue_DistalRight_x = -35, spikeMark_blue_DistalRight_y = 35;
 
     public static double spikeMark_Red_DistalLeft_x = -61, spikeMark_Red_DistalLeft_y = -30.0;
     public static double spikeMark_Red_DistalCenter_x = -45, spikeMark_Red_DistalCenter_y = -21;
@@ -121,7 +121,9 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near = 185;
+    public static int armPos = 280,armPos_near = 175;
+
+    public static double spline_tangent = 0, spline_end_tangent = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
