@@ -357,7 +357,7 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveToDetectedBackDrop);
     }
 
-    public void DistalBackDropDump(){
+    public void DistalBackDropDump(){//
         if(isStopRequested()) return;
         Trajectory toMediByLine = drive.trajectoryBuilder(new Pose2d(spikeMark_x,spikeMark_y,Math.toRadians(spikeMark_heading)))
                 .lineToLinearHeading(new Pose2d(intake_medi_x,intake_near_y*side_color,Math.toRadians(180)))
