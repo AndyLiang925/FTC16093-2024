@@ -121,7 +121,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near = 175;
+    public static int armPos = 280,armPos_near = 155;//175
 
     public static double spline_tangent = 0, spline_end_tangent = 0;
 
@@ -268,7 +268,7 @@ public class AutoMaster extends LinearOpMode {
                 spikeMark_heading = 180;
                 detectedBackDrop_x = backDrop_red_distalLeft_x;
                 detectedBackDrop_y = backDrop_red_distalLeft_y;
-                closeToIntake = true;
+                //closeToIntake = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark_x = spikeMark_Red_DistalCenter_x;
@@ -359,6 +359,10 @@ public class AutoMaster extends LinearOpMode {
 
     public void DistalBackDropDump(){
         if(isStopRequested()) return;
+        Trajectory toMediByLine = drive.trajectoryBuilder(new Pose2d(spikeMark_x,spikeMark_y,Math.toRadians(spikeMark_heading)))
+                .lineToLinearHeading(new Pose2d(intake_medi_x,intake_near_y*side_color,Math.toRadians(180)))
+                .build();
+
         Trajectory fromDistalToIntermediate=drive.trajectoryBuilder(new Pose2d(spikeMark_x,spikeMark_y,Math.toRadians(spikeMark_heading)))
                 .lineTo(new Vector2d(intake_medi_x,intake_near_y*side_color))
                 .build();
@@ -374,10 +378,25 @@ public class AutoMaster extends LinearOpMode {
                 .lineTo(new Vector2d(detectedBackDrop_x,detectedBackDrop_y))
                 .build();
 
-        drive.followTrajectory(fromDistalToIntermediate);
         if(!closeToIntake) {
-            drive.turn(Math.toRadians(180));
+            fromDistalToIntermediate=drive.trajectoryBuilder(new Pose2d(spikeMark_x,spikeMark_y,Math.toRadians(spikeMark_heading)))
+                    .splineToSplineHeading(new Pose2d(intake_medi_x, intake_near_y*side_color, Math.toRadians(180)), Math.toRadians(180))
+                    .build();
+
+            moveToIntake = drive.trajectoryBuilder(new Pose2d(intake_medi_x,intake_near_y*side_color,Math.toRadians(180)))
+                    .lineToConstantHeading(new Vector2d(intake_near_x,intake_near_y*side_color))
+                    .build();
+
+            fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_near_x,intake_near_y*side_color,Math.toRadians(180)))
+                    .lineToConstantHeading(new Vector2d(29.39,intermediate_y*side_color))
+                    .build();
+            fromProximalToBackdrop = drive.trajectoryBuilder(new Pose2d(29.39,intermediate_y*side_color,Math.toRadians(180)))
+                    .lineTo(new Vector2d(detectedBackDrop_x,detectedBackDrop_y))
+                    .build();
         }
+        drive.followTrajectory(toMediByLine);
+        //drive.followTrajectory(fromDistalToIntermediate);
+
         sleep(500);
         upper.autoGrabPrepare(armPos_near);
         drive.followTrajectory(moveToIntake);
@@ -404,7 +423,7 @@ public class AutoMaster extends LinearOpMode {
                 .build();
                  */
         Trajectory moveToDistal = drive.trajectoryBuilder(new Pose2d(20,54*side_color,Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(-36,54*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-36,54*side_color,Math.toRadians(-179)))
                 .build();
 
         Trajectory moveToPixel=drive.trajectoryBuilder(new Pose2d(-36,54*side_color,Math.toRadians(spikeMark_heading)))

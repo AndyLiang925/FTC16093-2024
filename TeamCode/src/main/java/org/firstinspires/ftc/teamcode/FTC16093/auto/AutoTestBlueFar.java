@@ -15,7 +15,7 @@ public class AutoTestBlueFar extends AutoMaster {
         putOnSpikeMark();
         DistalBackDropDump();
         sleep(300);
-        putOnBackDrop_open2();;
+        putOnBackDrop_open2();
         setUpAuto();
         sleep(2500);
     }
