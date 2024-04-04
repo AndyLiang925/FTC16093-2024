@@ -17,18 +17,18 @@ public class AutoTest2plus4 extends AutoMaster {
 
         putOnSpikeMark();
         backDropDump();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         //sleep(50);
         setUpAuto();
 
 
         extraIntakeLinearPath();
 
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         //sleep(300);
         setUpAuto();
         extraIntakeLinearPath2plus4();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         setUpAuto();
     }
 }

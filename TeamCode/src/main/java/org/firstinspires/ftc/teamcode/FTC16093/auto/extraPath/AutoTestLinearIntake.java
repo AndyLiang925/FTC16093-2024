@@ -17,14 +17,14 @@ public class AutoTestLinearIntake extends AutoMaster {
 
         putOnSpikeMark();
         backDropDump();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         sleep(1000);
         setUpAuto();
 
 
         extraIntakeLinearPath();
 
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         sleep(1500);
         setUpAuto();
         sleep(1500);

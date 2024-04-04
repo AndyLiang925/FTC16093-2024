@@ -22,7 +22,7 @@ public class AutoTestRedFar extends AutoMaster {
         putOnSpikeMark();
         setUpAuto();
         DistalBackDropDump();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         sleep(1000);
         setUpAuto();
         sleep(5000);

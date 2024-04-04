@@ -17,12 +17,12 @@ public class AutoTestCenterPath extends AutoMaster {
         putOnSpikeMark();
 
         backDropDump();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         sleep(1500);
         setUpAuto();
 
         ecByCenter();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         sleep(1000);
     }
 }

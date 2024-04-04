@@ -16,7 +16,7 @@ public class splineIntakeTest extends AutoMaster {
         putOnSpikeMark();
 
         backDropDump();
-        putOnBackDrop();
+        putOnBackDrop_grab2();
         setUpAuto();
 
         extraIntakeSpline();
