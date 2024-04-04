@@ -29,6 +29,7 @@ public class AutoTestBlueFar extends AutoMaster {
         sleep(sleep_3);
         setUpAuto();
         sleep(2500);
+        parking(2);
     }
 }
 

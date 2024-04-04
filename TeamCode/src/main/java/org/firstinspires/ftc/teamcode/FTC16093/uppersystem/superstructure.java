@@ -140,10 +140,15 @@ public class superstructure {
         amlDrive.setPower(1);
     }
     public void setArmPosition(int pos){
-        armDrive.setPower(1);
+        if(armDrive.getCurrentPosition()<=200&&pos<=armDrive.getCurrentPosition()){
+            armDrive.setPower(0.75);
+        }else if(armDrive.getCurrentPosition()<1300){
+            armDrive.setPower(1);
+        }else{
+            armDrive.setPower(0.7);
+        }
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armDrive.setPower(1);
     }
 
     public void wrist_to_middle(){

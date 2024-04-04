@@ -112,7 +112,8 @@ public class AutoMaster extends LinearOpMode {
     public static double intake_red_center_near_y = - 57, intake_red_right_near_y = -6;
 
 
-    public static double detectedParking=56;
+    public static double park_x = 43, park_inside=56 , park_outside = 6;
+
     public static double intake_x = -45, intake_y = 30.5 ;
     public static double intake_near_x = -57, intake_near_y = 9;
     public static double intake_medi_x = -35;
@@ -125,11 +126,9 @@ public class AutoMaster extends LinearOpMode {
 
     public static boolean closeToIntake = false;
 
-    public static double farPos_x = spikeMark_x, farPos_y = intermediate_y, farPos_heading = 180;
-
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near = 150;//175
+    public static int armPos = 280,armPos_near = 150, armPos_near_low = 100;//175
     public static int wait_time = 800,sleep_2=500,sleep_3=1000;
 
     @Override
@@ -587,22 +586,26 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveBack);
     }
 
-    public void parking(){
+    public void parking(int side){//side==1: inside         side==2: outside
         if(isStopRequested()) return;
-        Trajectory moveToPark=drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
-                .lineTo(new Vector2d((detectedBackDrop_x-3),detectedParking*side_color))
+        Trajectory moveToPark = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,ec_backDrop_y,Math.toRadians(180)))
+                .lineTo(new Vector2d(park_x,park_inside*side_color))
                 .build();
-        //挪到板子外侧
-//        Trajectory moveToBack=drive.trajectoryBuilder(new Pose2d((detectedBackDrop_x-3),detectedParking*side_color,Math.toRadians(spikeMark_heading)))
-//                .back(12)
-//                .build();
-        //////
-        //挪到板子内侧
-        Trajectory moveToBack=drive.trajectoryBuilder(new Pose2d((detectedBackDrop_x-3),detectedParking*side_color,Math.toRadians(spikeMark_heading)))
+        Trajectory moveToBack=drive.trajectoryBuilder(new Pose2d(park_x,park_inside*side_color,Math.toRadians(180)))
                 .back(12)
                 .build();
+        if (side==2){
+            moveToPark = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,ec_backDrop_y,Math.toRadians(180)))
+                    .lineTo(new Vector2d(park_x,park_outside*side_color))
+                    .build();
+            moveToBack=drive.trajectoryBuilder(new Pose2d(park_x,park_outside*side_color,Math.toRadians(180)))
+                    .back(12)
+                    .build();
+        }
+
         drive.followTrajectory(moveToPark);
         drive.followTrajectory(moveToBack);
+
     }
 
     public void headReset(){
@@ -666,19 +669,12 @@ public class AutoMaster extends LinearOpMode {
         sleep(200);
         upper.grab1_close();
     }
-//    public void intake_throw(){
-//        upper.setArmLength(800);
-//        sleep(500);
-//        upper.setArmPosition(350);
-//        sleep(300);
-//        upper.wrist_to_down();
-//        sleep(300);
-//        upper.wrist_to_middle();
-//        upper.setArmPosition(250);
-//        upper.setArmLength(0);
-//        sleep(300);
-//        upper.setArmPosition(0);
-//    } slower version
+
+    public void intake2_grab1_near(){
+        upper.setArmPosition(armPos_near_low);
+
+    }
+
 
     public void intake_throw(){
         upper.setArmLength(800);
