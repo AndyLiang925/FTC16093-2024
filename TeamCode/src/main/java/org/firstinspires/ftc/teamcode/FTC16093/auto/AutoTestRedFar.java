@@ -7,11 +7,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous
 public class AutoTestRedFar extends AutoMaster {
-    private DcMotorEx armDrive   = null;
-    private DcMotorEx amlDrive   = null;
-    private Servo gb1 = null;
-    private Servo gb2 = null;
-    private Servo wrt = null;
     @Override
     public void runOpMode() throws InterruptedException{
 
@@ -20,23 +15,21 @@ public class AutoTestRedFar extends AutoMaster {
         initHardware();
         spikeMarkDump();
         putOnSpikeMark();
-        setUpAuto();
         DistalBackDropDump();
-        putOnBackDrop_grab2();
-        sleep(1000);
-        setUpAuto();
-        sleep(5000);
-    }
-    public void setArmLength(int length){
-        amlDrive.setTargetPosition(length);
-        amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        amlDrive.setPower(1);
-    }
-    public void setArmPosition(int pos){
-        armDrive.setTargetPosition(pos);
-        armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armDrive.setPower(0.8);
+        sleep(300);
+        upper.setArmPosition(1950);
+        sleep(wait_time);
+        upper.grab2_open(); //yellow
+        upper.setArmPosition(1870);
+        sleep(200);
+        upper.grab2_close();
 
+        backDrop_move();
+        sleep(sleep_2);
+        putOnBackDrop_grab1();
+        sleep(sleep_3);
+        setUpAuto();
+        sleep(2500);
     }
 }
 

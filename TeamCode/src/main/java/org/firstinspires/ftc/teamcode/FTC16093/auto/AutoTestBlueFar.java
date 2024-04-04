@@ -15,13 +15,14 @@ public class AutoTestBlueFar extends AutoMaster {
         putOnSpikeMark();
         DistalBackDropDump();
         sleep(300);
+        upper.setArmPosition(1950);
+        sleep(wait_time);
 
         upper.grab2_open(); //yellow
         upper.setArmPosition(1870);
         sleep(200);
         upper.grab2_close();
 
-        sleep(sleep_1);
         backDrop_move();
         sleep(sleep_2);
         putOnBackDrop_grab1();
