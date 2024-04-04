@@ -12,6 +12,18 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 import com.acmerobotics.roadrunner.util.NanoClock;
+import static com.qualcomm.hardware.rev.RevHubOrientationOnRobot.xyzOrientation;
+
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 /*
  * Sample tracking wheel localizer implementation assuming the standard configuration:
@@ -37,7 +49,7 @@ public class PYZLocalizer implements Localizer {
     public static double LATERAL_DISTANCE = 6.7;
 
     private final Encoder leftEncoder, rightEncoder, frontEncoder;
-    private final BNO055IMU imu;
+    private final IMU imu;
 
     private Pose2d poseEstimate = new Pose2d(0, 0, 0);
     private Pose2d poseVelocity = new Pose2d(0, 0, 0);
@@ -47,7 +59,7 @@ public class PYZLocalizer implements Localizer {
     private double last_time, last_rotation;
     private int rev_num = 0;
 
-    public PYZLocalizer(HardwareMap hardwareMap, BNO055IMU imu) {
+    public PYZLocalizer(HardwareMap hardwareMap, IMU imu) {
         this.imu = imu;
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rearLeft"));
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
@@ -62,7 +74,7 @@ public class PYZLocalizer implements Localizer {
         last_left_pos = leftEncoder.getCurrentPosition();
         last_front_pos = frontEncoder.getCurrentPosition();
         last_time = time.seconds();
-        last_rotation = imu.getAngularOrientation().firstAngle;
+        last_rotation = Math.toRadians(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
     }
 
     public static double encoderTicksToInches(double ticks) {
@@ -88,7 +100,7 @@ public class PYZLocalizer implements Localizer {
         int current_right = rightEncoder.getCurrentPosition();
         int current_left = leftEncoder.getCurrentPosition();
         int current_front = frontEncoder.getCurrentPosition();
-        double rotation = imu.getAngularOrientation().firstAngle - heading_rad_correct;
+        double rotation = Math.toRadians(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)) - heading_rad_correct;
         double current_time = time.seconds();
         double corrected_rotation = rotation + Math.PI * 2 * rev_num;
         if (corrected_rotation - last_rotation > Math.PI) {
@@ -115,12 +127,12 @@ public class PYZLocalizer implements Localizer {
         Vector2d d_pos = (new Vector2d(d_x, d_y)).rotated(corrected_rotation);
 
         poseEstimate = new Pose2d(poseEstimate.vec().plus(d_pos), rotation);
-        poseVelocity = new Pose2d(d_pos.div(d_time), imu.getAngularVelocity().zRotationRate);
+        poseVelocity = new Pose2d(d_pos.div(d_time),imu.getRobotAngularVelocity(AngleUnit.DEGREES).yRotationRate);
     }
 
     @Override
     public void setPoseEstimate(@NonNull Pose2d poseEstimate) {
-        heading_rad_correct = imu.getAngularOrientation().firstAngle - poseEstimate.getHeading();
+        heading_rad_correct = Math.toRadians(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS)) - poseEstimate.getHeading();
         this.poseEstimate = poseEstimate;
         last_rotation = poseEstimate.getHeading();
     }

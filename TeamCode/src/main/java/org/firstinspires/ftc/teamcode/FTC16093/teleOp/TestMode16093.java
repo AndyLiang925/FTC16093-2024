@@ -75,15 +75,18 @@ public class TestMode16093 extends LinearOpMode {
             }else if(gamepad2.left_stick_y<0){
                 wrtp=wrtp+(gamepad2.left_stick_y/70)<0?0:wrtp+(gamepad2.left_stick_y/70);
             }
-            if (gamepad2.left_trigger>0) {
-                gb1.setPosition(0.22);
-            }else if(gamepad2.left_bumper){
-                gb1.setPosition(0.53);
-            }
-            if (gamepad2.right_trigger>0) {
-                gb2.setPosition(0.76);
-            }else if(gamepad2.right_bumper){
-                gb2.setPosition(0.45);
+//            if (gamepad2.left_trigger>0) {
+//                gb1.setPosition(0.22);
+//            }else if(gamepad2.left_bumper){
+//                gb1.setPosition(0.53);
+//            }
+//            if (gamepad2.right_trigger>0) {
+//                gb2.setPosition(0.76);
+//            }else if(gamepad2.right_bumper){
+//                gb2.setPosition(0.45);
+//            }
+            if(gamepad1.left_bumper){
+
             }
             telemetry.addData("Manual","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             //hangLeft.setPower(gamepad1.right_bumper?-1:(gamepad1.left_bumper?1:0));
