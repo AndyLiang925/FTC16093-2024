@@ -166,6 +166,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         leftBackDrive.setDirection(DcMotorEx.Direction.FORWARD);
         rightFrontDrive.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotorEx.Direction.REVERSE);
+
         hangLeft.setDirection(DcMotorEx.Direction.FORWARD);
         hangRight.setDirection(DcMotorEx.Direction.REVERSE);
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
