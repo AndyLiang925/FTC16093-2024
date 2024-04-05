@@ -151,7 +151,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         imu = hardwareMap.get(IMU.class, "imu");
 
 //        if(slowMode.get()){
-//            speed=0.53;
+//            speed=0.48;
 //        }else{
 //            speed=1;
 //        }
@@ -185,7 +185,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
         gb1.setPosition(0.64);
-        gb2.setPosition(0.53);
+        gb2.setPosition(0.48);
         plnp=0.2;
         plane.setPosition(plnp);
         brkp=0.5;
@@ -205,7 +205,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 }else{
                     brkp=0.5;
                 }
-                //brkp=0.531;
+                //brkp=0.481;
                 brake.setPosition(brkp);
             }
             if(slowMode.get()){
@@ -244,7 +244,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 if(sequence==Sequence.RELEASE){
                     speed=1;
                 }
-                if(sequence==Sequence.AIM){
+                if(sequence==Sequence.AIM&&wrtp==0.45){
                     speed=1;
                     sleep_with_drive(500);
                 }
@@ -297,7 +297,7 @@ public class  DPDrive16093 extends LinearOpMode {//
             if(sequence==DPDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(200);
+                    setArmPosition(220);
                     sleep_with_drive(200);
                     setArmLength(432);
                     wrtp=0.45;
@@ -314,7 +314,7 @@ public class  DPDrive16093 extends LinearOpMode {//
 //                        leftGrabOpen=!leftGrabOpen;
 //                    }
 //                    if(rightGrab.toTrue()){
-//                        gb2.setPosition(rightGrabOpen?0.53:0.3);
+//                        gb2.setPosition(rightGrabOpen?0.48:0.3);
 //                        rightGrabOpen=!rightGrabOpen;
 //                    }
                 if(colorSensorUsed){
@@ -343,7 +343,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                         rightGrabOpen=false;
                         leftGrabOpen=false;
                         gb1.setPosition(leftGrabOpen?0.91:0.64);
-                        gb2.setPosition(rightGrabOpen?0.3:0.53);
+                        gb2.setPosition(rightGrabOpen?0.3:0.48);
                         sleep_with_drive(300);
                         setArmLength(0);
                         setArmPosition(0);
@@ -352,14 +352,14 @@ public class  DPDrive16093 extends LinearOpMode {//
                         sequence=DPDrive16093.Sequence.RUN;
                         telemetry.addData("run",0);
                     }
-                    gb2.setPosition(rightGrabOpen?0.3:0.53);
+                    gb2.setPosition(rightGrabOpen?0.3:0.48);
                 }else{
                     if (leftGrab.toTrue()) {
                         gb1.setPosition(leftGrabOpen?0.91:0.64);
                         leftGrabOpen = !leftGrabOpen;
                     }
                     if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.3:0.53);
+                        gb2.setPosition(rightGrabOpen?0.3:0.48);
                         rightGrabOpen = !rightGrabOpen;
                     }
                 }
@@ -371,7 +371,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 speed=1;
                 gb1.setPosition(0.64);
-                gb2.setPosition(0.53);
+                gb2.setPosition(0.48);
             }
             if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
                 setArmLength(armLengthLevels[index]);
@@ -394,11 +394,11 @@ public class  DPDrive16093 extends LinearOpMode {//
                 if (gamepad2.right_stick_y>0) {
                     armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=0.53;
+                    rotation_speed=0.48;
                 }else if(gamepad2.right_stick_y<0){
                     armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=0.53;
+                    rotation_speed=0.48;
                 }else if(pdArm==0){
                     armp=armPosLevels[index];
                     rotation_speed=1;
@@ -419,7 +419,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                     wrtp=wrtLevels[index];
                 }
                 if(movePixel.toTrue()){
-                    wrtp=0.530;
+                    wrtp=0.480;
                     pd=1;
                 }
                 wrt.setPosition(wrtp);
@@ -432,7 +432,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                     rightGrabOpen = !rightGrabOpen;
                 }
                 gb1.setPosition(leftGrabOpen?0.91:0.64);
-                gb2.setPosition(rightGrabOpen?0.3:0.53);
+                gb2.setPosition(rightGrabOpen?0.3:0.48);
                 ////
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?0.91:0.64);
@@ -442,7 +442,7 @@ public class  DPDrive16093 extends LinearOpMode {//
 ////                        setArmPosition(armPosLevels[index]);
 //                    }
 //                    if (rightGrab.toTrue()) {
-//                        gb2.setPosition(rightGrabOpen?0.53:0.3);
+//                        gb2.setPosition(rightGrabOpen?0.48:0.3);
 //                        rightGrabOpen = !rightGrabOpen;
 ////                        setArmPosition(armPosLevels[index]-130);
 ////                        sleep(300);
@@ -527,12 +527,12 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setPower(1);
     }
     public void setArmPosition(int pos){
-        if(armDrive.getCurrentPosition()<=500&&pos<=armDrive.getCurrentPosition()){
-            armDrive.setPower(0.5);
+        if(armDrive.getCurrentPosition()<=300&&pos<=armDrive.getCurrentPosition()){
+            armDrive.setPower(0.6);
         }else if(armDrive.getCurrentPosition()<1300){
             armDrive.setPower(1);
         }else if(pos<=armDrive.getCurrentPosition()){
-            armDrive.setPower(0.5);
+            armDrive.setPower(0.6);
         }else{
             armDrive.setPower(1);
         }

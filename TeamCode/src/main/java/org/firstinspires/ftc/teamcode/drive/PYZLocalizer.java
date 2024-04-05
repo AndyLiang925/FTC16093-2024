@@ -67,7 +67,7 @@ public class PYZLocalizer implements Localizer {
 
         leftEncoder.setDirection(Encoder.Direction.REVERSE);
 //        rightEncoder.setDirection(Encoder.Direction.REVERSE);
-        frontEncoder.setDirection(Encoder.Direction.FORWARD);
+//        frontEncoder.setDirection(Encoder.Direction.REVERSE);
         time = NanoClock.system();
 
         last_right_pos = rightEncoder.getCurrentPosition();
