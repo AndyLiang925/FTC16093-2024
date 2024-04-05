@@ -19,17 +19,24 @@ public class AutoTestBlueFar extends AutoMaster {
         sleep(wait_time);
 
         upper.grab2_open(); //yellow
-        upper.setArmPosition(1870);
+        upper.setArmPosition(1880);
         sleep(200);
-        upper.grab2_close();
 
         backDrop_move();
-        sleep(sleep_2);
+
         putOnBackDrop_grab1();
         sleep(sleep_3);
         setUpAuto();
-        sleep(2500);
-        parking(2);
+        sleep(1500);
+        //parking(2);
+        ecByCenter();
+
+        upper.setArmPosition(1900);
+        sleep(800);
+        putOnBackDrop_grab1();
+        sleep(sleep_3);
+        setUpAuto();
+        sleep(1500);
     }
 }
 

@@ -61,11 +61,11 @@ public class PYZLocalizer implements Localizer {
 
     public PYZLocalizer(HardwareMap hardwareMap, IMU imu) {
         this.imu = imu;
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rearLeft"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontRight"));
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rearLeft"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "frontLeft"));
 
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        leftEncoder.setDirection(Encoder.Direction.FORWARD);
 //        rightEncoder.setDirection(Encoder.Direction.REVERSE);
         frontEncoder.setDirection(Encoder.Direction.FORWARD);
         time = NanoClock.system();

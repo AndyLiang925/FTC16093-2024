@@ -19,6 +19,7 @@ public class AutoTestRedFar extends AutoMaster {
         sleep(300);
         upper.setArmPosition(1950);
         sleep(wait_time);
+
         upper.grab2_open(); //yellow
         upper.setArmPosition(1870);
         sleep(200);
