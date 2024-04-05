@@ -1,31 +1,33 @@
 package org.firstinspires.ftc.teamcode.FTC16093.teleOp;
-
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.util.NanoClock;
-import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.FTC16093.XCYBoolean;
 import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 
+
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.util.NanoClock;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.view.View;
+
 import java.util.List;
 
 @TeleOp
-public class Tank_DPDrive16093 extends LinearOpMode {//
+public class  Tank_DPDrive16093 extends LinearOpMode {//
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
@@ -49,11 +51,12 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
     //time of this period (sec)
     private double period_time_sec;
     public double speed=1.0;
-    public double drive;
-    public double turn;
-    public double strafe;
     public double driver_speed=1.0;//手动慢速档 driver controlled slow mode speed
     public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
+
+    double  drive           = 0;        // Desired forward power/speed (-1 to +1)
+    double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
+    double  turn            = 0;        // Desired turning power/speed (-1 to +1)
     private double heading_target;//heading target
     private BarkMecanumDrive bdrive;
 
@@ -107,7 +110,7 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {20,157,247,294,373,432,432};
         int armPosLevels[] = {1950,1814,1747,1740,1740,1730,1850};
-        double wrtLevels[] = {1,1,1,1,1,1,0.12};
+        double wrtLevels[] = {0.95,0.95,0.95,0.95,0.95,0.95,0.28};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=true;
@@ -145,14 +148,14 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
         armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
         amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
         wrt = hardwareMap.get(Servo.class, "wrist");
-        gb1 = hardwareMap.get(Servo.class, "grab2");
-        gb2 = hardwareMap.get(Servo.class, "grab1");
+        gb1 = hardwareMap.get(Servo.class, "grab1");
+        gb2 = hardwareMap.get(Servo.class, "grab2");
         brake = hardwareMap.get(Servo.class, "brake");
         plane = hardwareMap.get(Servo.class, "plane");
         imu = hardwareMap.get(IMU.class, "imu");
 
 //        if(slowMode.get()){
-//            speed=0.3;
+//            speed=0.53;
 //        }else{
 //            speed=1;
 //        }
@@ -160,7 +163,7 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
         //手动慢速 driver-controlled slow mode
         //parameter box
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
         leftFrontDrive.setDirection(DcMotorEx.Direction.FORWARD);
@@ -185,8 +188,8 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
         amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
-        gb1.setPosition(0.53);
-        gb2.setPosition(0.76);
+        gb1.setPosition(0.64);
+        gb2.setPosition(0.53);
         plnp=0.2;
         plane.setPosition(plnp);
         brkp=0.5;
@@ -200,18 +203,17 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
             NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             logic_period();
-
             if(brake_start.toTrue()){
-                if(brkp==0.31){
-                    brkp=0.5;
+                if(brkp==0.5){
+                    brkp=0.1;
                 }else{
-                    brkp=0.29;
+                    brkp=0.5;
                 }
-                //brkp=0.31;
+                //brkp=0.531;
                 brake.setPosition(brkp);
             }
             if(slowMode.get()){
-                driver_speed=0.7;
+                driver_speed=0.64;
             }else{
                 driver_speed=1;
             }
@@ -239,25 +241,25 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
-                if(sequence== Sequence.AIM){
+                if(sequence==Sequence.AIM){
                     setArmPosition(0);
                 }
                 setArmLength(0);
-                if(sequence== Sequence.RELEASE){
+                if(sequence==Sequence.RELEASE){
                     speed=1;
                 }
-                if(sequence== Sequence.AIM){
+                if(sequence==Sequence.AIM){
                     speed=1;
                     sleep_with_drive(500);
                 }
                 setArmPosition(0);
-                if(sequence== Sequence.RELEASE){
+                if(sequence==Sequence.RELEASE){
                     speed=1;
                     sleep_with_drive(500);
                 }
-                wrtp=1;
+                wrtp=0.9;
                 wrt.setPosition(wrtp);
-                sequence= Tank_DPDrive16093.Sequence.RUN;
+                sequence=Tank_DPDrive16093.Sequence.RUN;
                 telemetry.addData("run",0);
             }
             if(drop.toTrue()){
@@ -268,7 +270,7 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 pd=0;
                 pdArm=0;
-                sequence= Tank_DPDrive16093.Sequence.RELEASE;
+                sequence=Tank_DPDrive16093.Sequence.RELEASE;
                 telemetry.addData("release",0);
                 leftGrabOpen=false;
                 rightGrabOpen=false;
@@ -277,9 +279,9 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
             if(aim.toTrue()){
                 setArmLength(0);
                 setArmPosition(0);
-                wrtp=0.34;
+                wrtp=0.51;
                 wrt.setPosition(wrtp);
-                sequence= Tank_DPDrive16093.Sequence.AIM;
+                sequence=Tank_DPDrive16093.Sequence.AIM;
                 telemetry.addData("aim",0);
 //                if(colorSensorUsed&&!grabbed(colors)){
 //                    rightGrabOpen=true;
@@ -296,27 +298,27 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                 colorSensorUsed=false;
             }
 
-            if(sequence== Tank_DPDrive16093.Sequence.AIM){
+            if(sequence==Tank_DPDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
                     setArmPosition(200);
                     sleep_with_drive(200);
                     setArmLength(432);
-                    wrtp=0.23;
+                    wrtp=0.45;
                     wrt.setPosition(wrtp);
                 }
                 if(proximal.toTrue()){
                     setArmLength(0);
-                    wrtp=0.34;
+                    wrtp=0.51;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
                 }
 //                    if(leftGrab.toTrue()){
-//                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+//                        gb1.setPosition(leftGrabOpen?0.91:0.64);
 //                        leftGrabOpen=!leftGrabOpen;
 //                    }
 //                    if(rightGrab.toTrue()){
-//                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+//                        gb2.setPosition(rightGrabOpen?0.53:0.3);
 //                        rightGrabOpen=!rightGrabOpen;
 //                    }
                 if(colorSensorUsed){
@@ -330,7 +332,7 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                         leftGrabOpen=false;
                         leftColorRe=false;
                     }
-                    gb1.setPosition(leftGrabOpen?0.22:0.53);
+                    gb1.setPosition(leftGrabOpen?0.91:0.64);
                     if (rightGrab.toTrue()) {
                         rightGrabOpen = !rightGrabOpen;
                     }
@@ -344,42 +346,42 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                     if(colorSensorUsed&&grabbed(colors)&&grabbed(colors2)){
                         rightGrabOpen=false;
                         leftGrabOpen=false;
-                        gb1.setPosition(leftGrabOpen?0.22:0.53);
-                        gb2.setPosition(rightGrabOpen?0.45:0.76);
+                        gb1.setPosition(leftGrabOpen?0.91:0.64);
+                        gb2.setPosition(rightGrabOpen?0.3:0.53);
                         sleep_with_drive(300);
                         setArmLength(0);
                         setArmPosition(0);
-                        wrtp=1;
+                        wrtp=0.9;
                         wrt.setPosition(wrtp);
-                        sequence= Tank_DPDrive16093.Sequence.RUN;
+                        sequence=Tank_DPDrive16093.Sequence.RUN;
                         telemetry.addData("run",0);
                     }
-                    gb2.setPosition(rightGrabOpen?0.45:0.76);
+                    gb2.setPosition(rightGrabOpen?0.3:0.53);
                 }else{
                     if (leftGrab.toTrue()) {
-                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+                        gb1.setPosition(leftGrabOpen?0.91:0.64);
                         leftGrabOpen = !leftGrabOpen;
                     }
                     if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.45:0.76);
+                        gb2.setPosition(rightGrabOpen?0.3:0.53);
                         rightGrabOpen = !rightGrabOpen;
                     }
                 }
             }
-            if(sequence== Tank_DPDrive16093.Sequence.RUN){
+            if(sequence==Tank_DPDrive16093.Sequence.RUN){
                 setArmLength(0);
                 setArmPosition(0);
-                wrtp=1;
+                wrtp=0.9;
                 wrt.setPosition(wrtp);
                 speed=1;
-                gb1.setPosition(0.53);
-                gb2.setPosition(0.76);
+                gb1.setPosition(0.64);
+                gb2.setPosition(0.53);
             }
             if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
                 setArmLength(armLengthLevels[index]);
                 mode=0;
             }
-            if(sequence== Tank_DPDrive16093.Sequence.RELEASE) {
+            if(sequence==Tank_DPDrive16093.Sequence.RELEASE) {
                 speed = 0.4;
                 if (distal.toTrue()) {
                     index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
@@ -396,11 +398,11 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                 if (gamepad2.right_stick_y>0) {
                     armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=0.3;
+                    rotation_speed=0.53;
                 }else if(gamepad2.right_stick_y<0){
                     armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=0.3;
+                    rotation_speed=0.53;
                 }else if(pdArm==0){
                     armp=armPosLevels[index];
                     rotation_speed=1;
@@ -421,7 +423,7 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
                     wrtp=wrtLevels[index];
                 }
                 if(movePixel.toTrue()){
-                    wrtp=0.30;
+                    wrtp=0.530;
                     pd=1;
                 }
                 wrt.setPosition(wrtp);
@@ -433,18 +435,18 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
 
                     rightGrabOpen = !rightGrabOpen;
                 }
-                gb1.setPosition(leftGrabOpen?0.22:0.53);
-                gb2.setPosition(rightGrabOpen?0.45:0.76);
+                gb1.setPosition(leftGrabOpen?0.91:0.64);
+                gb2.setPosition(rightGrabOpen?0.3:0.53);
                 ////
 //                    if (leftGrab.toTrue()) {
-//                        gb1.setPosition(leftGrabOpen?0.22:0.53);
+//                        gb1.setPosition(leftGrabOpen?0.91:0.64);
 //                        leftGrabOpen = !leftGrabOpen;
 ////                        setArmPosition(armPosLevels[index]-130);//
 ////                        sleep(300);
 ////                        setArmPosition(armPosLevels[index]);
 //                    }
 //                    if (rightGrab.toTrue()) {
-//                        gb2.setPosition(rightGrabOpen?0.76:0.45);
+//                        gb2.setPosition(rightGrabOpen?0.53:0.3);
 //                        rightGrabOpen = !rightGrabOpen;
 ////                        setArmPosition(armPosLevels[index]-130);
 ////                        sleep(300);
@@ -466,7 +468,7 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
             plane.setPosition(plnp);
             telemetry.addData("imu_radian :",imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
             telemetry.addData("target_radian :",heading_target);
-            telemetry.addData("操作模式:", sequence== Tank_DPDrive16093.Sequence.AIM?"aim1":(sequence== Tank_DPDrive16093.Sequence.RUN?"run":(sequence== Tank_DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
+            telemetry.addData("操作模式:", sequence==Tank_DPDrive16093.Sequence.AIM?"aim1":(sequence==Tank_DPDrive16093.Sequence.RUN?"run":(sequence==Tank_DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
             telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());//arm expand position
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());//arm position
             telemetry.addData("底盘速度:",speed);// robot speed
@@ -529,12 +531,14 @@ public class Tank_DPDrive16093 extends LinearOpMode {//
         amlDrive.setPower(1);
     }
     public void setArmPosition(int pos){
-        if(armDrive.getCurrentPosition()<=200&&pos<=armDrive.getCurrentPosition()){
+        if(armDrive.getCurrentPosition()<=500&&pos<=armDrive.getCurrentPosition()){
             armDrive.setPower(0.5);
         }else if(armDrive.getCurrentPosition()<1300){
             armDrive.setPower(1);
-        }else{
+        }else if(pos<=armDrive.getCurrentPosition()){
             armDrive.setPower(0.5);
+        }else{
+            armDrive.setPower(1);
         }
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);

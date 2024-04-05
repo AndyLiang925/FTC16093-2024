@@ -95,7 +95,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         double  turn            = 0;        // Desired turning power/speed (-1 to +1)
         double wrtp = 0.23;
         double plnp=0.2;//plane pos
-        double backPower=-0.2;//the power going back
+        double backPower=-0.3;//the power going back
         double brkp;//brake's pos
         int amlp=0;
         int armp=0;
@@ -119,8 +119,8 @@ public class  DPDrive16093 extends LinearOpMode {//
         XCYBoolean drop = new XCYBoolean(()->gamepad2.y);
         XCYBoolean brake_start = new XCYBoolean(()->gamepad1.b);
         //XCYBoolean back = new XCYBoolean(()->gamepad2.x);
-        XCYBoolean leftGrab = new XCYBoolean(()->gamepad2.left_trigger>0);
-        XCYBoolean rightGrab = new XCYBoolean(()->gamepad2.right_trigger>0);
+        XCYBoolean leftGrab = new XCYBoolean(()->gamepad2.right_trigger>0);
+        XCYBoolean rightGrab = new XCYBoolean(()->gamepad2.left_trigger>0);
         XCYBoolean humanGrab = new XCYBoolean(()->gamepad2.back);
         XCYBoolean toRun = new XCYBoolean(()->gamepad2.x);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
