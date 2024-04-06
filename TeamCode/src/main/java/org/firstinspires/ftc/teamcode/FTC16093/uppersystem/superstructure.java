@@ -133,9 +133,9 @@ public class superstructure {
         newSleep(600);
         grab1_open();
         newSleep(300);
-        wrt.setPosition(0.45);
+        wrt.setPosition(0.51);
         newSleep(100);
-        setArmLength(400);
+        setArmLength(432);
     }
     public void wrist_grab_proximal(){
         setArmLength(0);
@@ -177,6 +177,12 @@ public class superstructure {
 
         newSleep(200);
         grab2_close();
+    }
+    public void init_armExpand(){
+        setArmLength(-20);
+        newSleep(500);
+        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 }

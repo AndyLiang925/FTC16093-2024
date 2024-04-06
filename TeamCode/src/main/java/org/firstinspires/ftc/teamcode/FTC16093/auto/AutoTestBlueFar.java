@@ -11,11 +11,13 @@ public class AutoTestBlueFar extends AutoMaster {
         side_color = BLUE;
 
         initHardware();
+        //upper.init_armExpand();
+
         spikeMarkDump();
         putOnSpikeMark();
         DistalBackDropDump();
         sleep(300);
-        upper.setArmPosition(2000);
+        upper.setArmPosition(2077);
         sleep(wait_time);
 
         upper.grab2_open(); //yellow
