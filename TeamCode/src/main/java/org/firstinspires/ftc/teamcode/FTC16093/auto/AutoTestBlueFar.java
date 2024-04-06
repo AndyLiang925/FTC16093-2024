@@ -14,8 +14,8 @@ public class AutoTestBlueFar extends AutoMaster {
         spikeMarkDump();
         putOnSpikeMark();
 
-        //DistalBackDropDump();
-        DistalBackDropDump_farGrab();
+        DistalBackDropDump();
+        //DistalBackDropDump_farGrab();
         sleep(300);
         upper.setArmPosition(2077);
         sleep(300);
