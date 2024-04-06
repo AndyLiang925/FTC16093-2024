@@ -114,7 +114,7 @@ public class PYZLocalizer implements Localizer {
         int d_left = current_left - last_left_pos;
         int d_front = current_front - last_front_pos;
         double d_time = last_time - current_time;
-        double d_rotation = corrected_rotation - last_rotation;
+        double d_rotation = corrected_rotation - last_rotation;//
 
         last_right_pos = current_right;
         last_left_pos = current_left;
