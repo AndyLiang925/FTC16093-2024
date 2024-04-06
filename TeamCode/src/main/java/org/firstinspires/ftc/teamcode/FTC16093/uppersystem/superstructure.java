@@ -67,16 +67,16 @@ public class superstructure {
         amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void grab1_close(){
+    public void grab2_close(){
         gb1.setPosition(0.66);
     }
-    public void grab2_close(){
+    public void grab1_close(){
         gb2.setPosition(0.48);
     }
-    public void grab1_open(){
+    public void grab2_open(){
         gb1.setPosition(0.91);
     }
-    public void grab2_open(){
+    public void grab1_open(){
         gb2.setPosition(0.23);
     }
     public void wrist_grab_distal(){
@@ -109,7 +109,7 @@ public class superstructure {
         grab1_open();
 
         newSleep(300);
-        wrt.setPosition(0.23);
+        wrt.setPosition(0.51);
         newSleep(300);
     }
     public void autoGrabFinish(){
@@ -118,14 +118,22 @@ public class superstructure {
         wrt.setPosition(1);
         setArmPosition(0);
     }
-    public void wrist_grab_distalAuto(int armPos){
-
+    public void wrist_grab2_distalAuto(int armPos){
         setArmPosition(armPos);
         //try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
         newSleep(600);
         grab2_open();
         newSleep(300);
-        wrt.setPosition(0.23);
+        wrt.setPosition(0.45);
+        newSleep(100);
+        setArmLength(400);
+    }
+    public void wrist_grab1_distalAuto(int armPos){
+        setArmPosition(armPos);
+        newSleep(600);
+        grab1_open();
+        newSleep(300);
+        wrt.setPosition(0.45);
         newSleep(100);
         setArmLength(400);
     }
@@ -152,7 +160,7 @@ public class superstructure {
     }
 
     public void wrist_to_middle(){
-        wrt.setPosition(1); // initial 0.55
+        wrt.setPosition(0.9); // initial 0.55
     }
     public void wrist_to_down(){
         wrt.setPosition(0.34); // initial 0.55

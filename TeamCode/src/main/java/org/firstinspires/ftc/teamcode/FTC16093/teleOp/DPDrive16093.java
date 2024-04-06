@@ -185,14 +185,17 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
+
         gb1.setPosition(0.66);
         gb2.setPosition(0.48);
+        wrt.setPosition(0.9);
         plnp=0.2;
         plane.setPosition(plnp);
         brkp=0.5;
         brake.setPosition(brkp);
         heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         waitForStart();
+
         while (opModeIsActive()){
             colorSensor.setGain(gain);
             colorSensor2.setGain(gain);

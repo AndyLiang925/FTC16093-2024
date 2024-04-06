@@ -15,11 +15,11 @@ public class AutoTestBlueFar extends AutoMaster {
         putOnSpikeMark();
         DistalBackDropDump();
         sleep(300);
-        upper.setArmPosition(1950);
+        upper.setArmPosition(2000);
         sleep(wait_time);
 
         upper.grab2_open(); //yellow
-        upper.setArmPosition(1880);
+        upper.setArmPosition(1980);
         sleep(200);
 
         backDrop_move();
@@ -31,7 +31,7 @@ public class AutoTestBlueFar extends AutoMaster {
         //parking(2);
         ecByCenter();
 
-        upper.setArmPosition(1900);
+        upper.setArmPosition(1980);
         sleep(800);
         putOnBackDrop_grab1();
         sleep(sleep_3);
