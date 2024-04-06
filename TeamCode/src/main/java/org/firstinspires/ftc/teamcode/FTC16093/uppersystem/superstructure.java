@@ -133,7 +133,7 @@ public class superstructure {
         newSleep(600);
         grab1_open();
         newSleep(300);
-        wrt.setPosition(0.51);
+        wrt.setPosition(0.45);
         newSleep(100);
         setArmLength(432);
     }
