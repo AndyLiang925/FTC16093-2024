@@ -86,7 +86,7 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     private List<DcMotorEx> motors;
 
-    private IMU imu;
+    private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
     private List<Integer> lastEncPositions = new ArrayList<>();
@@ -107,11 +107,11 @@ public class BarkMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(IMU.class, "imu");
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.UP;
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu.initialize(parameters);
+        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
         leftFront = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftRear = hardwareMap.get(DcMotorEx.class, "rearLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "rearRight");
@@ -143,11 +143,10 @@ public class BarkMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
-        leftFront.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftRear.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
+        rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
@@ -189,7 +188,7 @@ public class BarkMecanumDrive extends MecanumDrive {
         setArmLength(1150);
         wrt.setPosition(0.23);
     }
-//    public void correct_heading(double target_heading_correction){
+    //    public void correct_heading(double target_heading_correction){
 //        while(Math.abs(Math.toRadians(imu.getAngularOrientation().firstAngle)-target_heading_correction)<2.5){
 //            if(Math.toRadians(imu.getAngularOrientation().firstAngle)<target_heading_correction){
 //                leftFront.setPower(1);
@@ -246,7 +245,7 @@ public class BarkMecanumDrive extends MecanumDrive {
         wrt.setPosition(0.4);
         setArmPosition(20);
         gb1.setPosition(0.22);
-        
+
         wrt.setPosition(0.7);
         gb1.setPosition(0.53);
         wrt.setPosition(1);
@@ -366,7 +365,7 @@ public class BarkMecanumDrive extends MecanumDrive {
         }
     }
     public double getYaw(){
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return imu.getAngularOrientation().firstAngle;
     }
 
 
@@ -412,7 +411,7 @@ public class BarkMecanumDrive extends MecanumDrive {
     }
 
     public void setGlobalPower(double x, double y, double rx){
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        double botHeading = imu.getAngularOrientation().firstAngle;
 
 
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
@@ -469,7 +468,7 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return imu.getAngularOrientation().firstAngle;
     }
 
 //    @Override
