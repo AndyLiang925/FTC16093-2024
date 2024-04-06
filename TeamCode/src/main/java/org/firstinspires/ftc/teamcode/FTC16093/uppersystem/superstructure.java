@@ -48,8 +48,8 @@ public class superstructure {
         armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
         amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
         wrt = hardwareMap.get(Servo.class, "wrist");
-        gb1 = hardwareMap.get(Servo.class, "grab2");
-        gb2 = hardwareMap.get(Servo.class, "grab1");
+        gb1 = hardwareMap.get(Servo.class, "grab1");
+        gb2 = hardwareMap.get(Servo.class, "grab2");
         armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
