@@ -185,7 +185,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
-        gb1.setPosition(0.64);
+        gb1.setPosition(0.66);
         gb2.setPosition(0.48);
         plnp=0.2;
         plane.setPosition(plnp);
@@ -210,7 +210,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 brake.setPosition(brkp);
             }
             if(slowMode.get()){
-                driver_speed=0.64;
+                driver_speed=0.5;
             }else{
                 driver_speed=1;
             }
@@ -311,7 +311,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                     setArmPosition(0);
                 }
 //                    if(leftGrab.toTrue()){
-//                        gb1.setPosition(leftGrabOpen?0.91:0.64);
+//                        gb1.setPosition(leftGrabOpen?0.91:0.66);
 //                        leftGrabOpen=!leftGrabOpen;
 //                    }
 //                    if(rightGrab.toTrue()){
@@ -329,7 +329,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                         leftGrabOpen=false;
                         leftColorRe=false;
                     }
-                    gb1.setPosition(leftGrabOpen?0.91:0.64);
+                    gb1.setPosition(leftGrabOpen?0.91:0.66);
                     if (rightGrab.toTrue()) {
                         rightGrabOpen = !rightGrabOpen;
                     }
@@ -343,8 +343,8 @@ public class  DPDrive16093 extends LinearOpMode {//
                     if(colorSensorUsed&&grabbed(colors)&&grabbed(colors2)){
                         rightGrabOpen=false;
                         leftGrabOpen=false;
-                        gb1.setPosition(leftGrabOpen?0.91:0.64);
-                        gb2.setPosition(rightGrabOpen?0.3:0.48);
+                        gb1.setPosition(leftGrabOpen?0.91:0.66);
+                        gb2.setPosition(rightGrabOpen?0.23:0.48);
                         sleep_with_drive(300);
                         setArmLength(0);
                         setArmPosition(0);
@@ -353,14 +353,14 @@ public class  DPDrive16093 extends LinearOpMode {//
                         sequence=DPDrive16093.Sequence.RUN;
                         telemetry.addData("run",0);
                     }
-                    gb2.setPosition(rightGrabOpen?0.3:0.48);
+                    gb2.setPosition(rightGrabOpen?0.23:0.48);
                 }else{
                     if (leftGrab.toTrue()) {
-                        gb1.setPosition(leftGrabOpen?0.91:0.64);
+                        gb1.setPosition(leftGrabOpen?0.91:0.66);
                         leftGrabOpen = !leftGrabOpen;
                     }
                     if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.3:0.48);
+                        gb2.setPosition(rightGrabOpen?0.23:0.48);
                         rightGrabOpen = !rightGrabOpen;
                     }
                 }
@@ -371,7 +371,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 wrtp=0.9;
                 wrt.setPosition(wrtp);
                 speed=1;
-                gb1.setPosition(0.64);
+                gb1.setPosition(0.66);
                 gb2.setPosition(0.48);
             }
             if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
@@ -432,11 +432,11 @@ public class  DPDrive16093 extends LinearOpMode {//
 
                     rightGrabOpen = !rightGrabOpen;
                 }
-                gb1.setPosition(leftGrabOpen?0.91:0.64);
-                gb2.setPosition(rightGrabOpen?0.3:0.48);
+                gb1.setPosition(leftGrabOpen?0.91:0.66);
+                gb2.setPosition(rightGrabOpen?0.23:0.48);
                 ////
 //                    if (leftGrab.toTrue()) {
-//                        gb1.setPosition(leftGrabOpen?0.91:0.64);
+//                        gb1.setPosition(leftGrabOpen?0.91:0.66);
 //                        leftGrabOpen = !leftGrabOpen;
 ////                        setArmPosition(armPosLevels[index]-130);//
 ////                        sleep(300);
@@ -544,7 +544,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
         double x = -gamepad1.left_stick_x;
         double y = gamepad1.left_stick_y;
-        double rx = (gamepad1.right_stick_x) * 0.64;
+        double rx = (gamepad1.right_stick_x) * 0.5;
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) - Math.abs(rx), 1);
