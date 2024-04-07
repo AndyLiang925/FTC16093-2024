@@ -777,14 +777,14 @@ public class AutoMaster extends LinearOpMode {
         Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_x,intake_near_y*side_color,Math.toRadians(180))) //!metion
                 .lineToConstantHeading(new Vector2d(30,intermediate_y*side_color))
                 .build();
-        Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
-                .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
-                .build();
+//        Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
+//                .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+//                .build();
 
         drive.followTrajectory(intake);
         intake2_byGrab1();
         drive.followTrajectory(fromIntermediateToProximal);
-        drive.followTrajectory(drop);
+//        drive.followTrajectory(drop);
     }
 
 
