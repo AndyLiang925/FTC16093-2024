@@ -730,6 +730,19 @@ public class AutoMaster extends LinearOpMode {
         sleep(200);
         upper.setArmPosition(0);
     }
+    public void dropGround(){
+        upper.wrist_grab1_distalAuto(armPos);
+        sleep(500);
+        upper.grab1_open();
+        sleep(200);
+        intake_throw();
+        sleep(200);
+        upper.wrist_to_middle();
+        sleep(200);
+        upper.setArmLength(0);
+        sleep(200);
+        upper.setArmPosition(0);
+    }
     public void intake1_byGrab1(){
         upper.wrist_grab1_distalAuto(armPos);
         sleep(500);
@@ -786,6 +799,12 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(fromIntermediateToProximal);
 //        drive.followTrajectory(drop);
     }
-
+    public void putOnGround(){
+        Trajectory turnHeading = drive.trajectoryBuilder(new Pose2d(30,intermediate_y*side_color,Math.toRadians(180))) //!metion
+                .lineToLinearHeading(new Pose2d(30,intermediate_y*side_color,Math.toRadians(0)))
+                .build();
+        drive.followTrajectory(turnHeading);
+        dropGround();
+    }
 
 }
