@@ -359,11 +359,11 @@ public class  DPDrive16093 extends LinearOpMode {//
                     gb2.setPosition(rightGrabOpen?0.23:0.48);
                 }else{
                     if (leftGrab.toTrue()) {
-                        gb1.setPosition(leftGrabOpen?0.91:0.66);
+                        gb1.setPosition(leftGrabOpen?0.91:0.66); //0.91
                         leftGrabOpen = !leftGrabOpen;
                     }
                     if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?0.23:0.48);
+                        gb2.setPosition(rightGrabOpen?0.23:0.48); //0.23
                         rightGrabOpen = !rightGrabOpen;
                     }
                 }
@@ -428,15 +428,14 @@ public class  DPDrive16093 extends LinearOpMode {//
                 }
                 wrt.setPosition(wrtp);
                 if (leftGrab.toTrue()) {
-
                     leftGrabOpen = !leftGrabOpen;
                 }
                 if (rightGrab.toTrue()) {
 
                     rightGrabOpen = !rightGrabOpen;
                 }
-                gb1.setPosition(leftGrabOpen?0.91:0.66);
-                gb2.setPosition(rightGrabOpen?0.23:0.48);
+                gb1.setPosition(leftGrabOpen?0.83:0.66);
+                gb2.setPosition(rightGrabOpen?0.32:0.48);
                 ////
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?0.91:0.66);

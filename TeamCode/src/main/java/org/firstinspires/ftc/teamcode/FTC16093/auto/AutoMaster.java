@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 
 
+import android.text.style.UpdateAppearance;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -78,9 +80,9 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMarkCenterProximal_x = 20,spikeMarkCenterProximal_y = 33; // x initial 45
     public static double spikeMarkCenterDistal_x = -59,spikeMarkCenterDistal_y = 30;
 
-    public static double spikeMark_blue_DistalLeft_x = -36, spikeMark_blue_DistalLeft_y = 24;
+    public static double spikeMark_blue_DistalLeft_x = -36, spikeMark_blue_DistalLeft_y = 27;
     public static double spikeMark_blue_DistalCenter_x = -43, spikeMark_blue_DistalCenter_y = 15;
-    public static double spikeMark_blue_DistalRight_x = -37, spikeMark_blue_DistalRight_y = 34;
+    public static double spikeMark_blue_DistalRight_x = -37, spikeMark_blue_DistalRight_y = 30;
 
     public static double spikeMark_Red_DistalLeft_x = -35, spikeMark_Red_DistalLeft_y = -20;
     public static double spikeMark_Red_DistalCenter_x = -43, spikeMark_Red_DistalCenter_y = -15;
@@ -93,8 +95,8 @@ public class AutoMaster extends LinearOpMode {
     public static double BackDrop_blueCenter_x = 47.5, BackDrop_blueCenter_y = 29;
     public static double BackDrop_blueLeft_x =47.3,BackDrop_blueLeft_y = 34; //x change to 50, initial 51
 
-    public static double backDrop_blue_distalRight_x = 48,backDrop_blue_distalRight_y = 24;
-    public static double backDrop_blue_distalCenter_x = 48,backDrop_blue_distalCenter_y = 29; //
+    public static double backDrop_blue_distalRight_x = 48.5,backDrop_blue_distalRight_y = 23;
+    public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28; //
     public static double backDrop_blue_distalLeft_x = 48,backDrop_blue_distalLeft_y = 34;
 
     public static double backDrop_red_distalLeft_x = 47,backDrop_red_distalLeft_y = -24;
@@ -103,6 +105,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double detectedBackDrop_x,detectedBackDrop_y, detectedBackDrop_heading=180;
 
+    public static double ec_backDrop_blue_distalLeft_y = 24;
     public static double intake_blue_near_x = -57, intake_blue_left_near_y = 9;
     public static double intake_blue_center_near_y = 18;
 
@@ -111,11 +114,13 @@ public class AutoMaster extends LinearOpMode {
 
     public static double intake_red_center_near_y = - 57, intake_red_right_near_y = -6;
 
+    public static double intake_blue_far_x = -46;
+
 
     public static double park_x = 43, park_inside=56 , park_outside = 6;
 
     public static double intake_x = -45, intake_y = 30.5 ;
-    public static double intake_near_x = -58, intake_near_y = 9;
+    public static double intake_near_x = -58.5, intake_near_y = 9;
     public static double intake_medi_x = -35;
     public static double intake_center_far_x= -43, intake_center_far_y= 34;
 
@@ -255,7 +260,7 @@ public class AutoMaster extends LinearOpMode {
 
                 intake_near_y = intake_blue_left_near_y;
                 ec_backDrop_x = backDrop_blue_distalRight_x;
-                ec_backDrop_y = backDrop_blue_distalRight_y;
+                ec_backDrop_y = ec_backDrop_blue_distalLeft_y;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == BLUE) {
                 DesiredTagId = 2;
                 spikeMark_x=spikeMark_blue_DistalCenter_x;
@@ -410,7 +415,7 @@ public class AutoMaster extends LinearOpMode {
         upper.autoGrabFinish();
 
         drive.followTrajectory(fromIntermediateToProximal);
-        upper.setArmPosition(1880);
+        upper.setArmPosition(1780);
         drive.followTrajectory(fromProximalToBackdrop);
     }
 
@@ -428,6 +433,7 @@ public class AutoMaster extends LinearOpMode {
         Trajectory fromProximalToBackdrop = drive.trajectoryBuilder(new Pose2d(29.39,intermediate_y*side_color,Math.toRadians(180)))
                 .lineTo(new Vector2d(detectedBackDrop_x,detectedBackDrop_y))
                 .build();
+
         drive.followTrajectory(toIntakeByLine);
         intake1_byGrab1();
         drive.followTrajectory(toMedi);
@@ -668,7 +674,6 @@ public class AutoMaster extends LinearOpMode {
     public void putOnBackDrop_grab1(){
         upper.grab1_open(); //white
         sleep(200);
-        upper.grab1_close();
     }
 
     public void intake2_grab1_near_prepare(){
@@ -704,7 +709,7 @@ public class AutoMaster extends LinearOpMode {
         sleep(200);
         upper.setArmPosition(0);
     }
-    public void intake2_low_grab1(){
+    public void intake2_lowfar_grab1(){
         upper.wrist_grab1_distalAuto(armPos_far_low);
         sleep(900);
         upper.grab1_close();
@@ -730,6 +735,19 @@ public class AutoMaster extends LinearOpMode {
         sleep(200);
         upper.setArmPosition(0);
     }
+    public void intake2_lowNear_byGrab1(){
+        upper.wrist_grab1_distalAuto(armPos_near_low);
+        sleep(500);
+        upper.grab1_close();
+        sleep(200);
+        intake_throw();
+        sleep(200);
+        upper.wrist_to_middle();
+        sleep(200);
+        upper.setArmLength(0);
+        sleep(200);
+        upper.setArmPosition(0);
+    }
     public void dropGround(){
         upper.wrist_grab1_distalAuto(armPos);
         sleep(500);
@@ -742,6 +760,13 @@ public class AutoMaster extends LinearOpMode {
         upper.setArmLength(0);
         sleep(200);
         upper.setArmPosition(0);
+    }
+    public void dropGround_low(){
+        upper.wristDown();
+        sleep(100);
+        upper.grab1_open();
+        sleep(200);
+        upper.wrist_to_middle();
     }
     public void intake1_byGrab1(){
         upper.wrist_grab1_distalAuto(armPos);
@@ -761,22 +786,24 @@ public class AutoMaster extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(intake_x, intake_near_y*side_color))
                 .build();
 
-        Trajectory moveForward = drive.trajectoryBuilder(new Pose2d(intake_medi_x,intake_near_y*side_color,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(intake_near_x,intake_near_y*side_color))
+        Trajectory moveForward = drive.trajectoryBuilder(new Pose2d(intake_x,intake_near_y*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(intake_near_x-2,intake_near_y*side_color))
                 .build();
 
-        Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_near_x,intake_near_y*side_color,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(30,intermediate_y*side_color))
+        Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_near_x-2,intake_near_y*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(35,intermediate_y*side_color))
                 .build();
-        Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
+        Trajectory drop = drive.trajectoryBuilder(new Pose2d(35, intermediate_y*side_color,Math.toRadians(180)))
                 .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
                 .build();
 
         drive.followTrajectory(intake);
-
         intake2_grab1_near_prepare();
         drive.followTrajectory(moveForward);
+
         upper.grab1_close();
+        sleep(150);
+        upper.wrist_to_middle();
         upper.setArmPosition(0);
         drive.followTrajectory(fromIntermediateToProximal);
         drive.followTrajectory(drop);
@@ -788,23 +815,31 @@ public class AutoMaster extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(intake_x, intake_near_y*side_color))
                 .build();
         Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_x,intake_near_y*side_color,Math.toRadians(180))) //!metion
-                .lineToConstantHeading(new Vector2d(30,intermediate_y*side_color))
+                .lineToConstantHeading(new Vector2d(10,intermediate_y*side_color))
                 .build();
-//        Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
-//                .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
-//                .build();
+        Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
+                .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+                .build();
 
         drive.followTrajectory(intake);
         intake2_byGrab1();
         drive.followTrajectory(fromIntermediateToProximal);
-//        drive.followTrajectory(drop);
+        drive.followTrajectory(drop);
     }
-    public void putOnGround(){
-        Trajectory turnHeading = drive.trajectoryBuilder(new Pose2d(30,intermediate_y*side_color,Math.toRadians(180))) //!metion
-                .lineToLinearHeading(new Pose2d(30,intermediate_y*side_color,Math.toRadians(0)))
+
+    public void ec_far_putOnGround(){
+        Trajectory intake = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x, detectedBackDrop_y, Math.toRadians(180.00)))
+                .splineTo(new Vector2d(10,intake_near_y*side_color),Math.toRadians(180))
+                .lineToConstantHeading(new Vector2d(intake_x, intake_near_y*side_color))
                 .build();
-        drive.followTrajectory(turnHeading);
-        dropGround();
+        Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_x,intake_near_y*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(45,intermediate_y*side_color,Math.toRadians(0)))
+                .build();
+
+        drive.followTrajectory(intake);
+        intake2_lowfar_grab1();
+        drive.followTrajectory(fromIntermediateToProximal);
+        dropGround_low();
     }
 
 }

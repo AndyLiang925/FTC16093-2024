@@ -110,7 +110,6 @@ public class superstructure {
 
         newSleep(300);
         wrt.setPosition(0.51);
-        newSleep(300);
     }
     public void autoGrabFinish(){
         grab1_close();
@@ -130,10 +129,10 @@ public class superstructure {
     }
     public void wrist_grab1_distalAuto(int armPos){
         setArmPosition(armPos);
+        wrt.setPosition(0.45);
         newSleep(600);
         grab1_open();
         newSleep(300);
-        wrt.setPosition(0.45);
         newSleep(100);
         setArmLength(432);
     }
