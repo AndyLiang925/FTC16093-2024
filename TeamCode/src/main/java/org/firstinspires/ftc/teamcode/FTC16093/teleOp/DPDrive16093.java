@@ -121,7 +121,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         //XCYBoolean back = new XCYBoolean(()->gamepad2.x);
         XCYBoolean leftGrab = new XCYBoolean(()->gamepad2.right_trigger>0);
         XCYBoolean rightGrab = new XCYBoolean(()->gamepad2.left_trigger>0);
-        XCYBoolean humanGrab = new XCYBoolean(()->gamepad2.back);
+        XCYBoolean humanGrab = new XCYBoolean(()->gamepad1.back);
         XCYBoolean toRun = new XCYBoolean(()->gamepad2.x);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
         XCYBoolean armExpandBack = new XCYBoolean(()->gamepad2.right_bumper);
@@ -131,7 +131,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         XCYBoolean TankRightward = new XCYBoolean(()->gamepad1.dpad_right);
         XCYBoolean hangLower = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean hangUp = new XCYBoolean(()->gamepad1.right_bumper);
-        XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.x);
+        XCYBoolean plane_shoot = new XCYBoolean(()->gamepad2.back);
         XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
         XCYBoolean dpad = new XCYBoolean(()->gamepad1.dpad_left||gamepad1.dpad_up||gamepad1.dpad_down);
         XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
@@ -180,10 +180,10 @@ public class  DPDrive16093 extends LinearOpMode {//
         hangRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
 
         gb1.setPosition(0.66);

@@ -119,12 +119,11 @@ public class superstructure {
     }
     public void wrist_grab2_distalAuto(int armPos){
         setArmPosition(armPos);
+        wrt.setPosition(0.45);
         //try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }//test for sleeping
         newSleep(600);
         grab2_open();
         newSleep(300);
-        wrt.setPosition(0.45);
-        newSleep(100);
         setArmLength(400);
     }
     public void wrist_grab1_distalAuto(int armPos){
@@ -133,7 +132,6 @@ public class superstructure {
         newSleep(600);
         grab1_open();
         newSleep(300);
-        newSleep(100);
         setArmLength(432);
     }
     public void wrist_grab_proximal(){
