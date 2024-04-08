@@ -11,17 +11,19 @@ public class AutoTestBlueNear extends AutoMaster {
         side_color = BLUE;
         initHardware();
 
-        //setKickProp();
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
 
-        raiseArm();
-        putOnBackDrop_grab2();
+        upper.setArmPosition(2050);
+        sleep(500);
+        upper.grab2_open();
+        sleep(300);
         setUpAuto();
 
         //extraCredit();
         ecByCenter_farCenter();
+        //ec_lowFar_edgeSpline_blue();
         raiseArm();
         putOnBackDrop_grab2();
         sleep(300);

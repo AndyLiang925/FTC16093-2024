@@ -15,22 +15,23 @@ public class AutoTestRedFar extends AutoMaster {
         initHardware();
         spikeMarkDump();
         putOnSpikeMark();
+
         DistalBackDropDump();
         sleep(300);
-        upper.setArmPosition(1950);
-        sleep(wait_time);
-
+        upper.setArmPosition(2100);
+        sleep(500);
         upper.grab2_open(); //yellow
-        upper.setArmPosition(1870);
-        sleep(200);
-        upper.grab2_close();
+        upper.setArmPosition(1900);
+        sleep(300);
 
         backDrop_move();
-        sleep(sleep_2);
+
         putOnBackDrop_grab1();
-        sleep(sleep_3);
+        sleep(200);
         setUpAuto();
-        sleep(2500);
+        //sleep(1500);
+        //parking(2);
+        ec_far_putOnGround();
     }
 }
 

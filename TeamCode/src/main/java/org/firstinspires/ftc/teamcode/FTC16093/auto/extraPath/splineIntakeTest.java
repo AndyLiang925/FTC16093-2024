@@ -19,7 +19,7 @@ public class splineIntakeTest extends AutoMaster {
         putOnBackDrop_grab2();
         setUpAuto();
 
-        extraIntakeSpline();
+        //extraIntakeSpline();
 
         setUpAuto();
     }
