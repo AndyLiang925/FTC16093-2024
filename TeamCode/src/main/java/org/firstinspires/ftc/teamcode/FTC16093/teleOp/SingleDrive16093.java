@@ -97,6 +97,7 @@ public class SingleDrive16093 extends LinearOpMode {//
         int minIndex=0;
         int pd=0;//判断手腕是否手动微调
         int pdArm=0;//判断大臂是否微调
+        int stateAim = 0;
         int armLengthLevels[] = {50,400,630,750,950,1100};
         int armPosLevels[] = {1820,1814,1747,1740,1740,1730};
         double wrtLevels[] = {1,1,1,1,1,1};
@@ -111,8 +112,8 @@ public class SingleDrive16093 extends LinearOpMode {//
         XCYBoolean leftGrab = new XCYBoolean(()->gamepad1.left_trigger>0);
         XCYBoolean rightGrab = new XCYBoolean(()->gamepad1.right_trigger>0);
         XCYBoolean toRun = new XCYBoolean(()->gamepad1.x);
-        XCYBoolean armBack = new XCYBoolean(()->gamepad1.touchpad);
-        XCYBoolean armExpandBack = new XCYBoolean(()->gamepad1.touchpad);
+        XCYBoolean armBack = new XCYBoolean(()->gamepad1.dpad_left);
+        XCYBoolean armExpandBack = new XCYBoolean(()->gamepad1.dpad_right);
         XCYBoolean hangLower = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean hangUp = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.x);
@@ -126,8 +127,8 @@ public class SingleDrive16093 extends LinearOpMode {//
         armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
         amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
         wrt = hardwareMap.get(Servo.class, "wrist");
-        gb1 = hardwareMap.get(Servo.class, "grab2");
-        gb2 = hardwareMap.get(Servo.class, "grab1");
+        gb1 = hardwareMap.get(Servo.class, "grab1");
+        gb2 = hardwareMap.get(Servo.class, "grab2");
         brake = hardwareMap.get(Servo.class, "brake");
         plane = hardwareMap.get(Servo.class, "plane");
         imu = hardwareMap.get(IMU.class, "imu");
@@ -166,8 +167,8 @@ public class SingleDrive16093 extends LinearOpMode {//
         //amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         sequence = Sequence.RUN;
-        gb1.setPosition(0.53);
-        gb2.setPosition(0.76);
+        gb1.setPosition(0.64);
+        gb2.setPosition(0.51);
         plnp=0.2;
         plane.setPosition(plnp);
         brkp=0.5;
@@ -227,28 +228,46 @@ public class SingleDrive16093 extends LinearOpMode {//
                 telemetry.addData("release",0);
             }
             if(aim.toTrue()){
-                setArmLength(0);
-                setArmPosition(0);
-                wrtp=0.34;
-                wrt.setPosition(wrtp);
+//                setArmLength(0);
+//                setArmPosition(0);
+//                wrtp=0.34;
+//                wrt.setPosition(wrtp);
                 sequence= SingleDrive16093.Sequence.AIM;
+                if(stateAim == 1) stateAim = 0;
+                else if(stateAim == 0) stateAim = 1;
+
                 telemetry.addData("aim",0);
+
             }
             if(sequence== SingleDrive16093.Sequence.AIM){
+
                 speed = 0.5;
-                if(distal.toTrue()){
-                    setArmPosition(200);
-                    sleep_with_drive(200);
-                    setArmLength(1150);
-                    wrtp=0.23;
-                    wrt.setPosition(wrtp);
-                }
-                if(proximal.toTrue()){
+                if(stateAim == 0){
                     setArmLength(0);
-                    wrtp=0.34;
-                    wrt.setPosition(wrtp);
                     setArmPosition(0);
+                    wrtp = 0.51;
+                    wrt.setPosition(wrtp);
                 }
+                if(stateAim == 1){
+                    setArmPosition(220);
+                    sleep_with_drive(200);
+                    setArmLength(432);
+                    wrtp=0.45;
+                    wrt.setPosition(wrtp);
+                }
+//                if(distal.toTrue()){
+//                    setArmPosition(200);
+//                    sleep_with_drive(200);
+//                    setArmLength(1150);
+//                    wrtp=0.23;
+//                    wrt.setPosition(wrtp);
+//                }
+//                if(proximal.toTrue()){
+//                    setArmLength(0);
+//                    wrtp=0.34;
+//                    wrt.setPosition(wrtp);
+//                    setArmPosition(0);
+//                }
 //                    if(leftGrab.toTrue()){
 //                        gb1.setPosition(leftGrabOpen?0.22:0.53);
 //                        leftGrabOpen=!leftGrabOpen;
@@ -257,8 +276,8 @@ public class SingleDrive16093 extends LinearOpMode {//
 //                        gb2.setPosition(rightGrabOpen?0.76:0.45);
 //                        rightGrabOpen=!rightGrabOpen;
 //                    }
-                gb1.setPosition(leftGrab.get()?0.22:0.53);
-                gb2.setPosition(rightGrab.get()?0.45:0.76);
+                gb1.setPosition(leftGrab.get()?0.91:0.64);
+                gb2.setPosition(rightGrab.get()?0.23:0.51);
             }
             if(sequence== SingleDrive16093.Sequence.RUN){
                 setArmLength(0);
@@ -319,8 +338,8 @@ public class SingleDrive16093 extends LinearOpMode {//
                     pd=1;
                 }
                 wrt.setPosition(wrtp);
-                gb1.setPosition(leftGrab.get()?0.22:0.53);
-                gb2.setPosition(rightGrab.get()?0.45:0.76);
+                gb1.setPosition(leftGrab.get()?0.91:0.64);
+                gb2.setPosition(rightGrab.get()?0.23:0.51);
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?0.22:0.53);
 //                        leftGrabOpen = !leftGrabOpen;

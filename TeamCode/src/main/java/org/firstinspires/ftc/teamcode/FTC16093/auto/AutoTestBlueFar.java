@@ -20,6 +20,8 @@ public class AutoTestBlueFar extends AutoMaster {
         upper.setArmPosition(2100);
         sleep(500);
 
+
+
         upper.grab2_open(); //yellow
         upper.setArmPosition(1900);
         sleep(300);

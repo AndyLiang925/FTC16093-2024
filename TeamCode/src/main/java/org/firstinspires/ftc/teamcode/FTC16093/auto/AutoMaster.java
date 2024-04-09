@@ -101,7 +101,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double backDrop_red_distalLeft_x = 48,backDrop_red_distalLeft_y = -27;
     public static double backDrop_red_distalCenter_x = 48,backDrop_red_distalCenter_y = -34;
-    public static double backDrop_red_distalRight_x = 48,backDrop_red_distalRight_y = -38;
+    public static double backDrop_red_distalRight_x = 48,backDrop_red_distalRight_y = -40;
 
     public static double detectedBackDrop_x,detectedBackDrop_y, detectedBackDrop_heading=180;
 
@@ -136,7 +136,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near1 = 140, armPos_near_low = 50, armPos_far_low = 100;//175
+    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 100;//175 armposnear1=140
     public static int wait_time = 800,sleep_2=200,sleep_3=1000;
 
     @Override

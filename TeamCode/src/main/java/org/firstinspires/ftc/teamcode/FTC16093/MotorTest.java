@@ -24,7 +24,7 @@ public class MotorTest extends LinearOpMode {
     public static boolean reverse_1 = false;
     public static boolean reset = true;
     public static boolean set_power_mode_or_set_position_mode = false;
-    public static String motor_name_0 = "lift";
+    public static String motor_name_0 = "fl";
 
 
 

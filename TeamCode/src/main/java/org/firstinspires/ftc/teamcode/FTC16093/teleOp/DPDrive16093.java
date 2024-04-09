@@ -177,6 +177,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
+        brake.setDirection(Servo.Direction.REVERSE);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
