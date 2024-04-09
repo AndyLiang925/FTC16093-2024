@@ -11,7 +11,7 @@ public class DropTest16093 extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         initHardware();
         //prepare_drop_upward();
-        raiseArm(1800);
+        //raiseArm(1800);
         putOnBackDrop_grab2();
         sleep(300);
         setUpAuto();

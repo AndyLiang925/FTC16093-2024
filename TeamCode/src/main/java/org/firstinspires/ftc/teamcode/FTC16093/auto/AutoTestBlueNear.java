@@ -17,7 +17,7 @@ public class AutoTestBlueNear extends AutoMaster {
         putOnSpikeMark();
         backDropDump();
 
-        upper.setArmPosition(2050);
+        upper.setArmPosition(2100);
         sleep(500);
         upper.grab2_open();
         sleep(300);
@@ -26,9 +26,11 @@ public class AutoTestBlueNear extends AutoMaster {
         //extraCredit();
         ecByCenter_farCenter();
         //ec_lowFar_edgeSpline_blue();
-        raiseArm(armPosUpward);
+        raiseArm_slow(armPosUpward);
         putOnBackDrop_grab2();
-        sleep(300);
+        raiseArm_slow(armPosUpward-30);
+        sleep(500);
+        upper.setArmPosition_slow(armPosUpward-120);
         setUpAuto();
         sleep(1000);
         parking(1);

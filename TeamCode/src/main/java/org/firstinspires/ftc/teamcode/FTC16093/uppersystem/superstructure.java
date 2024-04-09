@@ -68,10 +68,10 @@ public class superstructure {
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void grab2_close(){
-        gb1.setPosition(0.66);
+        gb1.setPosition(0.64);
     }
     public void grab1_close(){
-        gb2.setPosition(0.48);
+        gb2.setPosition(0.51);
     }
     public void grab2_open(){
         gb1.setPosition(0.91);
@@ -155,7 +155,11 @@ public class superstructure {
         armDrive.setTargetPosition(pos);
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-
+    public void setArmPosition_slow(int pos){
+        armDrive.setPower(0.3);
+        armDrive.setTargetPosition(pos);
+        armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
     public void wrist_to_middle(){
         wrt.setPosition(0.9); // initial 0.55
     }
