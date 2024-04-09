@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous
+@Config
 public class AutoTestBlueNear extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
@@ -24,7 +26,7 @@ public class AutoTestBlueNear extends AutoMaster {
         //extraCredit();
         ecByCenter_farCenter();
         //ec_lowFar_edgeSpline_blue();
-        raiseArm();
+        raiseArm(armPosUpward);
         putOnBackDrop_grab2();
         sleep(300);
         setUpAuto();

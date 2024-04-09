@@ -129,6 +129,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double edge_medi_y = 57;
     public static double ec_backDrop_x, ec_backDrop_y;
+    public static int armPosUpward=2000;
 
     public static boolean closeToIntake = false;
 
@@ -659,8 +660,8 @@ public class AutoMaster extends LinearOpMode {
         sleep(200);
         upper.grab2_close();
     }
-    public void raiseArm(){
-        upper.setArmPosition(2000);
+    public void raiseArm(int pos){
+        upper.setArmPosition(pos);
         sleep(1500);
     }
     public void backDrop_move(){
@@ -681,7 +682,6 @@ public class AutoMaster extends LinearOpMode {
         upper.grab1_open();
         upper.wristDown();
     }
-
 
     public void intake_throw(){
         upper.setArmLength(300);
@@ -858,6 +858,8 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(intake);
         intake2_lowFar_grab2();
         drive.followTrajectory(fromIntermediateToProximal);
+        upper.wrist_to_upward();
+        upper.setArmPosition(1600);
         drive.followTrajectory(drop);
     }
 
