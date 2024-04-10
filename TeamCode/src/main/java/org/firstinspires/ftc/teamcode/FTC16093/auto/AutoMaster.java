@@ -91,7 +91,7 @@ public class AutoMaster extends LinearOpMode {
     public static double BackDrop_RedLeft_x = 46.8, BackDrop_RedLeft_y = -22;
     public static double BackDrop_RedCenter_x = 46.8, BackDrop_RedCenter_y = -28;
     public static double BackDrop_RedRight_x = 46.8, BackDrop_RedRight_y = -36.5;
-    public static double BackDrop_blueRight_x = 47.3,BackDrop_blueRight_y = 24;
+    public static double BackDrop_blueRight_x = 48.3,BackDrop_blueRight_y = 24;
     public static double BackDrop_blueCenter_x = 47.5, BackDrop_blueCenter_y = 29;
     public static double BackDrop_blueLeft_x =47.3,BackDrop_blueLeft_y = 34; //x change to 50, initial 51
 
@@ -120,7 +120,7 @@ public class AutoMaster extends LinearOpMode {
     public static double park_x = 43, park_inside=56 , park_outside = 6;
 
     public static double intake_x = -46, intake_y = 30.5 ;
-    public static double intake_oblique_blue_x = -48.5, intake_oblique_blue_y = 13;
+    public static double intake_oblique_blue_x = -48.5, intake_oblique_blue_y = 11;
     public static double intake_near_x = -58, intake_near_y = 9, intake_red_near_y = -5;
     public static double intake_distal_near_y = 9;
     public static double intake_medi_x = -35;
@@ -847,7 +847,7 @@ public class AutoMaster extends LinearOpMode {
                 .build();
 
         Trajectory intake = drive.trajectoryBuilder(new Pose2d(intake_medi_x,intermediate_y*side_color, Math.toRadians(180.00)))
-                .lineToLinearHeading(new Pose2d(intake_oblique_blue_x,intake_oblique_blue_y*side_color,Math.toRadians(165)))
+                .lineToLinearHeading(new Pose2d(intake_oblique_blue_x,intake_oblique_blue_y*side_color,Math.toRadians(-side_color*180-15)))
                 .build();
         Trajectory moveToMiddle = drive.trajectoryBuilder(new Pose2d(intake_oblique_blue_x,intake_oblique_blue_y*side_color,Math.toRadians(180))) //!metion
                 .lineToConstantHeading(new Vector2d(intake_oblique_blue_x,intermediate_y*side_color))

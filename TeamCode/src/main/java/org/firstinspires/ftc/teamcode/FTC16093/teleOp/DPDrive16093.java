@@ -99,7 +99,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         double  strafe          = 0;        // Desired strafe power/speed (-1 to +1)
         double  turn            = 0;        // Desired turning power/speed (-1 to +1)
         double wrtp = grab2_open;
-        double plnp=0.2;//plane pos
+        double plnp=0.6;//plane pos
         double backPower=-0.3;//the power going back
         double brkp;//brake's pos
         int amlp=0;
@@ -136,7 +136,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         XCYBoolean TankRightward = new XCYBoolean(()->gamepad1.dpad_right);
         XCYBoolean hangLower = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean hangUp = new XCYBoolean(()->gamepad1.right_bumper);
-        XCYBoolean plane_shoot = new XCYBoolean(()->gamepad2.back);
+        XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.y);
         XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
         XCYBoolean dpad = new XCYBoolean(()->gamepad1.dpad_left||gamepad1.dpad_up||gamepad1.dpad_down);
         XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
@@ -177,7 +177,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
-        brake.setDirection(Servo.Direction.REVERSE);
+        brake.setDirection(Servo.Direction.FORWARD);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         rightFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -195,7 +195,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         gb1.setPosition(grab1_close);
         gb2.setPosition(grab2_close);
         wrt.setPosition(0.9);
-        plnp=0.2;
+        plnp=0.6;
         plane.setPosition(plnp);
         brkp=0.5;
         brake.setPosition(brkp);
@@ -211,7 +211,7 @@ public class  DPDrive16093 extends LinearOpMode {//
             logic_period();
             if(brake_start.toTrue()){
                 if(brkp==0.5){
-                    brkp=0.1;
+                    brkp=0.93;
                 }else{
                     brkp=0.5;
                 }
@@ -232,7 +232,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
             if(plane_shoot.get()){
-                plnp=0.5;
+                plnp=0.9;
             }
             if(armExpandBack.toTrue()) {
                 amlDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -404,11 +404,11 @@ public class  DPDrive16093 extends LinearOpMode {//
                 if (gamepad2.right_stick_y>0) {
                     armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=grab2_close;
+                    rotation_speed=0.5;
                 }else if(gamepad2.right_stick_y<0){
                     armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
                     pdArm=1;
-                    rotation_speed=grab2_close;
+                    rotation_speed=0.5;
                 }else if(pdArm==0){
                     armp=armPosLevels[index];
                     rotation_speed=1;
