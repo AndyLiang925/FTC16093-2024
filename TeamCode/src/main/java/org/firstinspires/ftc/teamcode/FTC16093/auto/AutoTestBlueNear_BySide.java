@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous
 @Config
-public class AutoTestBlueNear extends AutoMaster {
+public class AutoTestBlueNear_BySide extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
 
@@ -15,17 +15,16 @@ public class AutoTestBlueNear extends AutoMaster {
 
         spikeMarkDump();
         putOnSpikeMark();
-
         backDropDump();
 
-        upper.setArmPosition(2100);
-        sleep(500);
+        upper.setArmPosition_slow(2100);
+        sleep(1500);
         upper.grab2_open();
         sleep(300);
         setUpAuto();
 
         //extraCredit();
-        ecByCenter_farCenter();
+        ecBySide();
         //ec_lowFar_edgeSpline_blue();
         raiseArm_slow(armPosUpward);
         putOnBackDrop_grab2();
