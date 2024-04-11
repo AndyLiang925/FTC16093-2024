@@ -34,7 +34,6 @@ public class AutoTestBlueFar extends AutoMaster {
         sleep(1500);
         //parking(2);
         //ecByCenter_far();
-        ecByCenter_far();
         ec_far_putOnGround();
         upper.setArmPosition(1980);
         sleep(800);

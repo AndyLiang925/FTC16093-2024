@@ -33,8 +33,9 @@ public class AutoTestBlueNear extends AutoMaster {
         sleep(500);
         upper.setArmPosition_slow(armPosUpward-120);
         setUpAuto();
-        sleep(1000);
-        parking(1);
+        backTo_StartPos();
+//        sleep(1000);
+//        parking(1);
     }
 
 }
