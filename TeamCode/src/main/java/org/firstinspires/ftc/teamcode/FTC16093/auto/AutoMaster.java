@@ -67,9 +67,9 @@ public class AutoMaster extends LinearOpMode {
 
     public static double startPos_x=12.125, startPos_y=59,startPos_heading=90;
     public static double spikeMark_x,spikeMark_y,spikeMark_heading=0;
-    public static double spikeMark_RedLeft_x=12,spikeMark_RedLeft_y= -30;
-    public static double spikeMark_RedCenter_x=20.5,spikeMark_RedCenter_y= -20;
-    public static double spikeMark_RedRight_x = 36 ,spikeMark_RedRight_y = -30;
+    public static double spikeMark_RedLeft_x=12,spikeMark_RedLeft_y= -22;
+    public static double spikeMark_RedCenter_x=20.5,spikeMark_RedCenter_y= -18;
+    public static double spikeMark_RedRight_x = 36 ,spikeMark_RedRight_y = -22;
 
     public static double spikeMark_blueLeft_x = 35.0, spikeMark_blueLeft_y = 26; // y initial 30
     public static double spikeMark_blueCenter_x = 26, spikeMark_blueCenter_y = 21;
@@ -88,15 +88,16 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMark_Red_DistalCenter_x = -43, spikeMark_Red_DistalCenter_y = -18;
     public static double spikeMark_Red_DistalRight_x = -35, spikeMark_Red_DistalRight_y = -26;
 
-    public static double BackDrop_RedLeft_x = 46.8, BackDrop_RedLeft_y = -22;
-    public static double BackDrop_RedCenter_x = 46.8, BackDrop_RedCenter_y = -28;
-    public static double BackDrop_RedRight_x = 46.8, BackDrop_RedRight_y = -36.5;
+    public static double BackDrop_RedLeft_x = 48.5, BackDrop_RedLeft_y = -28;  // y: -27.3 left -28.5 right
+    public static double BackDrop_RedCenter_x = 48.5, BackDrop_RedCenter_y = -33;
+    public static double BackDrop_RedRight_x = 48.5, BackDrop_RedRight_y = -38;
+
     public static double BackDrop_blueRight_x = 48.3,BackDrop_blueRight_y = 24;
     public static double BackDrop_blueCenter_x = 47.5, BackDrop_blueCenter_y = 29;
-    public static double BackDrop_blueLeft_x =47.3,BackDrop_blueLeft_y = 34; //x change to 50, initial 51
+    public static double BackDrop_blueLeft_x =47.3,BackDrop_blueLeft_y = 34;
 
     public static double backDrop_blue_distalRight_x = 48.5,backDrop_blue_distalRight_y = 23;
-    public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28; //
+    public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28;
     public static double backDrop_blue_distalLeft_x = 48,backDrop_blue_distalLeft_y = 34;
 
     public static double backDrop_red_distalLeft_x = 48,backDrop_red_distalLeft_y = -27;
@@ -132,7 +133,7 @@ public class AutoMaster extends LinearOpMode {
     public static double ec_backDrop_x, ec_backDrop_y;
     public static int armPosUpward=2000;
 
-    public static boolean closeToIntake = false;
+    public static boolean closeToIntake = false, kickProp = false;
 
     public static double forwardDistance=3;
     public superstructure upper;
@@ -228,6 +229,7 @@ public class AutoMaster extends LinearOpMode {
 
                 ec_backDrop_x = BackDrop_RedRight_x;
                 ec_backDrop_y = BackDrop_RedRight_y;
+                kickProp = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark_x = spikeMark_RedCenter_x ;
@@ -371,6 +373,13 @@ public class AutoMaster extends LinearOpMode {
         moveToSpikeMark = drive.trajectoryBuilder(startPos)
                 .lineToLinearHeading(new Pose2d(spikeMark_x, spikeMark_y,Math.toRadians(spikeMark_heading)))
                 .build();
+
+        if(kickProp){
+            moveToSpikeMark = drive.trajectoryBuilder(new Pose2d(spikeMarkCenter_x,spikeMarkCenter_y*side_color,Math.toRadians(spikeMark_heading))) //can change to start pos
+                    .lineToLinearHeading(new Pose2d(spikeMark_x, spikeMark_y,Math.toRadians(spikeMark_heading)))
+                    .build();
+        }
+
         drive.followTrajectory(moveToSpikeMark);
     }
 
@@ -595,17 +604,17 @@ public class AutoMaster extends LinearOpMode {
     public void parking(int side){//side==1: inside         side==2: outside
         if(isStopRequested()) return;
         Trajectory moveToPark = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,ec_backDrop_y,Math.toRadians(180)))
-                .lineToLinearHeading(new Pose2d(park_x,park_inside*side_color,Math.toRadians(270)))
+                .lineToLinearHeading(new Pose2d(park_x,park_inside*side_color,Math.toRadians(-90*side_color)))
                 .build();
-        Trajectory moveToBack=drive.trajectoryBuilder(new Pose2d(park_x,park_inside*side_color,Math.toRadians(270)))
-                .strafeLeft(15)
+        Trajectory moveToBack=drive.trajectoryBuilder(new Pose2d(park_x,park_inside*side_color,Math.toRadians(-90*side_color)))
+                .lineToConstantHeading(new Vector2d(park_x+15,park_inside*side_color))
                 .build();
         if (side==2){
             moveToPark = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,ec_backDrop_y,Math.toRadians(180)))
-                    .lineToLinearHeading(new Pose2d(park_x,park_outside*side_color,Math.toRadians(270)))
+                    .lineToLinearHeading(new Pose2d(park_x,park_outside*side_color,Math.toRadians(-90*side_color)))
                     .build();
-            moveToBack=drive.trajectoryBuilder(new Pose2d(park_x,park_outside*side_color,Math.toRadians(270)))
-                    .strafeLeft(15)
+            moveToBack=drive.trajectoryBuilder(new Pose2d(park_x,park_outside*side_color,Math.toRadians(-90*side_color)))
+                    .lineToConstantHeading(new Vector2d(park_x+15,park_outside*side_color))
                     .build();
         }
 
@@ -861,7 +870,11 @@ public class AutoMaster extends LinearOpMode {
 
         drive.followTrajectory(moveToPixel);
         drive.followTrajectory(intake);
-        intake2_lowFar_grab2();
+        if(side_color == BLUE){
+            intake2_lowFar_grab2();
+        }else{
+            intake2_lowfar_grab1();
+        }
         drive.followTrajectory(moveToMiddle);
         drive.followTrajectory(fromIntermediateToProximal);
         upper.wrist_to_upward();
@@ -884,6 +897,12 @@ public class AutoMaster extends LinearOpMode {
         intake2_lowfar_grab1();
         drive.followTrajectory(fromIntermediateToProximal);
         dropGround_low();
+    }
+    public void backTo_StartPos(){
+        Trajectory startpos = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(180)))
+                .lineToLinearHeading(startPos)
+                .build();
+        drive.followTrajectory(startpos);
     }
 
 }

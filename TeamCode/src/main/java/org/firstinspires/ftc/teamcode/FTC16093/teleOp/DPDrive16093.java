@@ -54,10 +54,10 @@ public class  DPDrive16093 extends LinearOpMode {//
     public double driver_speed=1.0;//手动慢速档 driver controlled slow mode speed
     public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
     private double heading_target;//heading target
-    private double grab1_open=0.91;
-    private double grab1_close=0.64;
+    private double grab1_open=0.6;
+    private double grab1_close=0.86;
     private double grab2_open=0.23;
-    private double grab2_close=0.51;
+    private double grab2_close=0.5;
 
     private BarkMecanumDrive bdrive;
 
@@ -440,7 +440,7 @@ public class  DPDrive16093 extends LinearOpMode {//
 
                     rightGrabOpen = !rightGrabOpen;
                 }
-                gb1.setPosition(leftGrabOpen?0.83:grab1_close);
+                gb1.setPosition(leftGrabOpen?0.7:grab1_close);
                 gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 ////
 //                    if (leftGrab.toTrue()) {

@@ -12,28 +12,32 @@ public class AutoTestRedNear extends AutoMaster {
         startSide = PROXIMAL;
         side_color = RED;
         initHardware();
-
+        if(kickProp) {
+            moveToCenter();
+            upper.wristDown();
+        }
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
 
-        upper.setArmPosition(2100);
+        upper.setArmPosition(2146);
         sleep(500);
         upper.grab2_open();
         sleep(300);
         setUpAuto();
 
         //extraCredit();
-        ecByCenter_farCenter();
-        //ec_lowFar_edgeSpline_blue();
-        raiseArm_slow(armPosUpward);
-        putOnBackDrop_grab2();
-        raiseArm_slow(armPosUpward-30);
-        sleep(500);
-        upper.setArmPosition_slow(armPosUpward-120);
-        setUpAuto();
-        sleep(1000);
-        parking(1);
+//        ecByCenter_farCenter();
+//        //ec_lowFar_edgeSpline_blue();
+//        raiseArm_slow(armPosUpward);
+//        putOnBackDrop_grab2();
+//        raiseArm_slow(armPosUpward-30);
+//        sleep(500);
+//        upper.setArmPosition_slow(armPosUpward-120);
+//        setUpAuto();
+//        sleep(1000);
+//        parking(1);
+        backTo_StartPos();
     }
 
 }

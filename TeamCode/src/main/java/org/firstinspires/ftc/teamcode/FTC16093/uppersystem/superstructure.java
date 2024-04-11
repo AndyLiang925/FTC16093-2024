@@ -60,6 +60,7 @@ public class superstructure {
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
+
         amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -68,17 +69,21 @@ public class superstructure {
         amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void grab2_close(){
-        gb1.setPosition(0.64);
+        gb1.setPosition(0.86);
     }
     public void grab1_close(){
         gb2.setPosition(0.51);
     }
     public void grab2_open(){
-        gb1.setPosition(0.91);
+        gb1.setPosition(0.6);
     }
     public void grab1_open(){
         gb2.setPosition(0.23);
     }
+    public void grab2_openDrop(){
+        gb1.setPosition(0.7);
+    }
+
     public void wrist_grab_distal(){
         setArmPosition(200);
         setArmLength(1150);
