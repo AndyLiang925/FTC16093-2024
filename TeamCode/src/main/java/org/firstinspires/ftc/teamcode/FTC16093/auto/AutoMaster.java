@@ -311,14 +311,13 @@ public class AutoMaster extends LinearOpMode {
                 DesiredTagId = 5;
                 spikeMark_x = spikeMark_Red_DistalCenter_x;
                 spikeMark_y = spikeMark_Red_DistalCenter_y;
-                spikeMark_heading = 180;
+                spikeMark_heading = 0;
                 detectedBackDrop_x = backDrop_red_distalCenter_x;
                 detectedBackDrop_y = backDrop_red_distalCenter_y;
 
                 intake_near_y = intake_red_right_near_y;
                 ec_backDrop_x = backDrop_red_distalLeft_x;
                 ec_backDrop_y = backDrop_red_distalLeft_y;
-                closeToIntake = true;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == RED) {
                 DesiredTagId = 6;
                 spikeMark_x = spikeMark_Red_DistalRight_x;
