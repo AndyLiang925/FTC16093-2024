@@ -13,13 +13,17 @@ public class AutoTestRedFar extends AutoMaster {
         startSide = DISTAL;
         side_color = RED;
         initHardware();
+        if(kickProp) {
+            moveToCenter();
+            upper.wristDown();
+        }
         spikeMarkDump();
         putOnSpikeMark();
 
         DistalBackDropDump();
         sleep(300);
-        upper.setArmPosition(2100);
-        sleep(500);
+        upper.setArmPosition(2148);
+        sleep(800);
         upper.grab2_open(); //yellow
         upper.setArmPosition(1900);
         sleep(300);
@@ -32,6 +36,7 @@ public class AutoTestRedFar extends AutoMaster {
         //sleep(1500);
         //parking(2);
         ec_far_putOnGround();
+
     }
 }
 
