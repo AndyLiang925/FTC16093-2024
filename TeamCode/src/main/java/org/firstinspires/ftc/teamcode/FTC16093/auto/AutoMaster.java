@@ -96,9 +96,9 @@ public class AutoMaster extends LinearOpMode {
     public static double BackDrop_blueCenter_x = 48.5, BackDrop_blueCenter_y = 29; // y: left 29.5 right 28.3
     public static double BackDrop_blueLeft_x =48.5,BackDrop_blueLeft_y = 33.9; // y: left 36.2 right 33.9
 
-    public static double backDrop_blue_distalRight_x = 48.5,backDrop_blue_distalRight_y = 23;
-    public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28;
-    public static double backDrop_blue_distalLeft_x = 48,backDrop_blue_distalLeft_y = 34;
+    public static double backDrop_blue_distalRight_x = 48.5,backDrop_blue_distalRight_y = 23; // y: left 23 right 24.5
+    public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28; // y: left: 28 right 27
+    public static double backDrop_blue_distalLeft_x = 48,backDrop_blue_distalLeft_y = 34; // y: left 34 right 32.7
 
     public static double backDrop_red_distalLeft_x = 48,backDrop_red_distalLeft_y = -27;
     public static double backDrop_red_distalCenter_x = 48,backDrop_red_distalCenter_y = -34;
