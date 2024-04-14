@@ -3,16 +3,15 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous
+@Autonomous(group = "AutoBlueNear")
 @Config
-public class AutoTestBlueNear_BySide extends AutoMaster {
+public class AutoBlueNear_LeftDrop_side extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
-
         startSide = PROXIMAL;
         side_color = BLUE;
+        drop_side = LEFT;
         initHardware();
-
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
@@ -23,7 +22,6 @@ public class AutoTestBlueNear_BySide extends AutoMaster {
         sleep(300);
         setUpAuto();
 
-        //extraCredit();
         ecBySide();
         //ec_lowFar_edgeSpline_blue();
         raiseArm_slow(armPosUpward);
@@ -35,6 +33,4 @@ public class AutoTestBlueNear_BySide extends AutoMaster {
         sleep(1000);
         parking(1);
     }
-
 }
-

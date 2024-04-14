@@ -3,19 +3,19 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous
+@Autonomous(group = "AutoRedNear")
 @Config
-public class AutoTestRedNear extends AutoMaster {
+public class AutoRedNear_RightDrop_2plus0 extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
-
         startSide = PROXIMAL;
         side_color = RED;
+        drop_side = RIGHT;
         initHardware();
-        if(kickProp) {
-            moveToCenter();
-            upper.wristDown();
-        }
+//        if(kickProp) {
+//            moveToCenter();
+//            upper.wristDown();
+//        }
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
@@ -36,9 +36,8 @@ public class AutoTestRedNear extends AutoMaster {
 //        upper.setArmPosition_slow(armPosUpward-120);
 //        setUpAuto();
 //        sleep(1000);
-//        parking(1);
-        backTo_StartPos();
+        parking_2plus0(1);
+        //backTo_StartPos();
     }
-
 }
 

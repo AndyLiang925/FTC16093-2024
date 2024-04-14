@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.FTC16093.auto.extraPath;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.FTC16093.auto.AutoMaster;
 
 @Autonomous
+@Disabled
 public class AutoTestCenterPath extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException {
