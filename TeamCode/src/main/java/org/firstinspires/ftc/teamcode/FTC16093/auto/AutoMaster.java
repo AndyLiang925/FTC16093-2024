@@ -141,7 +141,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 100, armPos_delta = 100;//175 armposnear1=140
+    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 100, armPos_delta = 30;//175 armposnear1=140
     public static int wait_time = 800,sleep_2=1000,sleep_3=1000;
 
     @Override
@@ -893,7 +893,7 @@ public class AutoMaster extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(30,intermediate_y*side_color))
                 .build();
         Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
-                .lineTo(new Vector2d(ec_backDrop_x,ec_backDrop_y))
+                .lineTo(new Vector2d(ec_backDrop_x+2,ec_backDrop_y))
                 .build();
 
         drive.followTrajectory(moveToPixel);
@@ -1025,6 +1025,7 @@ public class AutoMaster extends LinearOpMode {
         raiseArm_slow(armPosUpward);
         putOnBackDrop_grab1();
         raiseArm_slow(armPosUpward-armPos_delta);
+        sleep(500);
         upper.setArmPosition_slow(armPosUpward-120);
     }
 }
