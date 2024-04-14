@@ -110,8 +110,8 @@ public class AutoMaster extends LinearOpMode {
     public static double detectedBackDrop_x,detectedBackDrop_y, detectedBackDrop_heading=180;
 
     public static double ec_backDrop_blue_distalLeft_y = 24;
-    public static double intake_far_x = -46,intake_farCenter_y = -5;
-    public static double intake_far_redCenter_y = -5, intake_far_blueCenter_y = 7;
+    public static double intake_far_x = -46,intake_farCenter_y = -6.5;
+    public static double intake_far_redCenter_y = -7.2, intake_far_blueCenter_y = 7;
 
     public static double intake_blue_near_x = -57, intake_blue_left_near_y = 9;
     public static double intake_blue_center_near_y = 18;
@@ -142,7 +142,7 @@ public class AutoMaster extends LinearOpMode {
     public static double forwardDistance=3;
     public superstructure upper;
     public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 100, armPos_delta = 30;//175 armposnear1=140
-    public static int wait_time = 800,sleep_2=1000,sleep_3=1000;
+    public static int wait_time = 8000,sleep_2=1000,sleep_3=1000;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -461,7 +461,7 @@ public class AutoMaster extends LinearOpMode {
         upper.autoGrabPrepare(armPos_near1);
         drive.followTrajectory(moveToIntake);
         upper.autoGrabFinish();
-
+        sleep(wait_time);
         drive.followTrajectory(fromIntermediateToProximal);
         upper.setArmPosition(1780);
         drive.followTrajectory(fromProximalToBackdrop);
@@ -893,7 +893,7 @@ public class AutoMaster extends LinearOpMode {
                 .lineToConstantHeading(new Vector2d(30,intermediate_y*side_color))
                 .build();
         Trajectory drop = drive.trajectoryBuilder(new Pose2d(30, intermediate_y*side_color,Math.toRadians(180)))
-                .lineTo(new Vector2d(ec_backDrop_x+2,ec_backDrop_y))
+                .lineTo(new Vector2d(ec_backDrop_x+0.5,ec_backDrop_y))
                 .build();
 
         drive.followTrajectory(moveToPixel);

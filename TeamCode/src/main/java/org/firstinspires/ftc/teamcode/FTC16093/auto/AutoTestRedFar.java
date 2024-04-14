@@ -30,9 +30,9 @@ public class AutoTestRedFar extends AutoMaster {
         putOnBackDrop_grab1();
         sleep(200);
         setUpAuto();
-        //sleep(1500);
+        sleep(1500);
         //parking(2);
-        ec_far_putOnGround();
+        //ec_far_putOnGround();
 
     }
 }
