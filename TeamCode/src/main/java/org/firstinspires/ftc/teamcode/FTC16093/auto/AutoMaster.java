@@ -30,6 +30,16 @@ public class AutoMaster extends LinearOpMode {
 
 
     private ElapsedTime runtime;
+
+    protected int selected_line=1;
+    protected int auto_mode=1;//1:2+0 1:2+1 2:2+2 2:2+3
+    protected int auto_route=1;//1:center 2:edge
+    protected int park=1;//1:outer 2:inner 3:no parking
+
+    boolean y_pressed=false;
+    boolean a_pressed=false;
+    boolean xb_pressed=false;
+
     public static final int PROXIMAL = 1;
     public static final int DISTAL = -1;
     public static final int LEFT = 1;
@@ -44,6 +54,7 @@ public class AutoMaster extends LinearOpMode {
     protected int startSide;
     protected int side_color;
     protected int drop_side;
+    protected boolean back_start=false;
     private boolean targetFound;
 
     private CenterStageVisionProcessor processor;
@@ -91,13 +102,13 @@ public class AutoMaster extends LinearOpMode {
     public static double spikeMark_Red_DistalCenter_x = -40, spikeMark_Red_DistalCenter_y = -12;
     public static double spikeMark_Red_DistalRight_x = -38, spikeMark_Red_DistalRight_y = -26;//
 
-    public static double BackDrop_RedLeft_x = 49, BackDrop_RedLeft_y = -28;  // y: left -26.5 right -28
-    public static double BackDrop_RedCenter_x = 49, BackDrop_RedCenter_y = -35; // y: left -32.5 right -35
-    public static double BackDrop_RedRight_x = 49, BackDrop_RedRight_y = -38; // y: left -38.5 right -41
+    public static double BackDrop_RedLeft_x = 49, BackDrop_RedLeft_y = -26.5;  // y: left -26.5 right -28
+    public static double BackDrop_RedCenter_x = 49, BackDrop_RedCenter_y = -32.5; // y: left -32.5 right -35
+    public static double BackDrop_RedRight_x = 49, BackDrop_RedRight_y = -38.5; // y: left -38.5 right -41
 
     public static double BackDrop_blueRight_x = 48.5,BackDrop_blueRight_y = 24.3; // y: left 24.3 right 22.2
-    public static double BackDrop_blueCenter_x = 48.5, BackDrop_blueCenter_y = 29; // y: left 29.5 right 28.3
-    public static double BackDrop_blueLeft_x =48.5,BackDrop_blueLeft_y = 33.9; // y: left 36.2 right 33.9
+    public static double BackDrop_blueCenter_x = 48.5, BackDrop_blueCenter_y = 29.5; // y: left 29.5 right 28.3
+    public static double BackDrop_blueLeft_x =48.5,BackDrop_blueLeft_y = 36.2; // y: left 36.2 right 33.9
 
     public static double backDrop_blue_distalRight_x = 48.5,backDrop_blue_distalRight_y = 23; // y: left 23 right 24.5
     public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28; // y: left: 28 right 27
@@ -141,7 +152,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 100, armPos_delta = 30;//175 armposnear1=140
+    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 100, armPos_delta = 50;//175 armposnear1=140
     public static int wait_time = 8000,sleep_2=1000,sleep_3=1000;
 
     @Override
@@ -177,16 +188,45 @@ public class AutoMaster extends LinearOpMode {
 
         telemetry.addLine("init: trajectory");
 
-
         while (!opModeIsActive()) {
             startingPos = processor.getStartingPosition();
             telemetry.addData("Vision", startingPos);
-            telemetry.update();
+            //telemetry.update();
             long time = System.currentTimeMillis();
-            telemetry.update();
+            //telemetry.update();
             sleep(15);
-            while (System.currentTimeMillis() - time < 100 && opModeInInit()) idle();
+            //while (System.currentTimeMillis() - time < 100 && opModeInInit()) idle();
             if (isStopRequested()) throw new InterruptedException();
+            telemetry.addLine("------------------------------------------------");
+            telemetry.addLine("|"+(selected_line==1?">":"  ")+"自动跑几趟:"+(startSide==PROXIMAL?(auto_mode==1?"2+0":"2+2"):(auto_mode==1?"2+1":"2+3"))+"|");
+            telemetry.addLine("|"+(selected_line==2?">":"  ")+"自动路径:"+(auto_route==1?"中间跑":"边上跑")+"|");
+            telemetry.addLine("|"+(selected_line==3?">":"  ")+"放那边:"+(drop_side==LEFT?"左":"右")+"|");
+            telemetry.addLine("|"+(selected_line==4?">":"  ")+"停靠:"+(park==3?"停板前":(park==1?"板外侧":"板内侧"))+"|");
+            telemetry.addLine("|"+(selected_line==5?">":"  ")+"[比赛不要开启]自动回到初始位置:"+(back_start?"开启":"关闭")+"|");
+            telemetry.addLine("------------------------------------------------");
+            telemetry.update();
+            if(gamepad1.y&&!y_pressed){
+                selected_line=Math.max(1,selected_line-1);
+                y_pressed=true;
+            }
+            if(gamepad1.a&&!a_pressed){
+                selected_line=Math.min(5,selected_line+1);
+                a_pressed=true;
+            }
+            if((gamepad1.b||gamepad1.x)&&!xb_pressed){
+                auto_mode=selected_line==1?(auto_mode==1?2:1):auto_mode;
+                auto_route=selected_line==2?(auto_route==1?2:1):auto_route;
+                drop_side=selected_line==3?(drop_side==LEFT?RIGHT:LEFT):drop_side;
+                park=selected_line==4?(gamepad1.b?Math.max(1,park-1):Math.min(3,park+1)):park;
+                back_start=selected_line==5?!back_start:back_start;
+                xb_pressed=true;
+            }
+            if(auto_mode==2){
+                park=3;
+            }
+            y_pressed=(y_pressed?gamepad1.y:y_pressed);
+            a_pressed=(a_pressed?gamepad1.a:a_pressed);
+            xb_pressed=(xb_pressed?gamepad1.x||gamepad1.b:xb_pressed);
         }
         waitForStart();
 
@@ -614,6 +654,9 @@ public class AutoMaster extends LinearOpMode {
     }
 
     public void parking(int side){//side==1: inside         side==2: outside
+        if(side==3){
+            return;
+        }
         if(isStopRequested()) return;
         Trajectory moveToPark = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,ec_backDrop_y,Math.toRadians(180)))
                 .lineToLinearHeading(new Pose2d(park_x,park_inside*side_color,Math.toRadians(-90*side_color)))
@@ -1024,6 +1067,9 @@ public class AutoMaster extends LinearOpMode {
     public void drop_upward_grab1(){
         raiseArm_slow(armPosUpward);
         putOnBackDrop_grab1();
+        sleep(300);
+        upper.wrist_to_upward_drop();
+        sleep(200);
         raiseArm_slow(armPosUpward-armPos_delta);
         sleep(500);
         upper.setArmPosition_slow(armPosUpward-120);

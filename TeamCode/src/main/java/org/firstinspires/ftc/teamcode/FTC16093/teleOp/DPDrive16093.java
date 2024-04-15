@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.drive.PYZLocalizer;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.NanoClock;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -28,6 +29,7 @@ import android.view.View;
 
 import java.util.List;
 import org.firstinspires.ftc.teamcode.FTC16093.auto.AutoMaster;
+import java.util.Timer;
 
 @TeleOp
 public class  DPDrive16093 extends LinearOpMode {//
@@ -61,6 +63,7 @@ public class  DPDrive16093 extends LinearOpMode {//
     private double grab1_close=0.86;
     private double grab2_open=0.23;
     private double grab2_close=0.5;
+    private ElapsedTime runtime = new ElapsedTime();
 
     private BarkMecanumDrive bdrive;
 
@@ -114,7 +117,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {20,107,157,280,353,432,432};
         int armPosLevels[] = {2000,1924,1797,1790,1790,1780,1900};
-        double wrtLevels[] = {0.95,0.95,0.95,0.95,0.95,0.95,0.31};
+        double wrtLevels[] = {1,1,1,1,1,1,0.31};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=true;
@@ -214,7 +217,7 @@ public class  DPDrive16093 extends LinearOpMode {//
             NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             logic_period();
-            if(brake_start.toTrue()){
+            if(brake_start.toTrue()&&runtime.seconds()>90){
                 if(brkp==0.5){
                     brkp=0.93;
                 }else{
@@ -236,7 +239,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            if(plane_shoot.get()){
+            if(plane_shoot.get()&&runtime.seconds()>90){
                 plnp=0.9;
             }
             if(armExpandBack.toTrue()) {
@@ -473,9 +476,9 @@ public class  DPDrive16093 extends LinearOpMode {//
                 hangLeft.setPower(0);
                 hangRight.setPower(0);
             }
-
             wrt.setPosition(wrtp);
             plane.setPosition(plnp);
+            telemetry.addData("run_time :", runtime.seconds());
             telemetry.addData("imu_radian :",imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
             telemetry.addData("target_radian :",heading_target);
             telemetry.addData("操作模式:", sequence==DPDrive16093.Sequence.AIM?"aim1":(sequence==DPDrive16093.Sequence.RUN?"run":(sequence==DPDrive16093.Sequence.RELEASE?"drop":"null")));//drive mode
