@@ -127,7 +127,7 @@ public class AutoMaster extends LinearOpMode {
     public static double intake_blue_near_x = -57, intake_blue_left_near_y = 9;
     public static double intake_blue_center_near_y = 18;
 
-    public static double intake_blue_right_oblique_x = - 48, intake_blue_right_oblique_y = 45,intake_oblique_heading_grab1= -135;
+    public static double intake_blue_right_oblique_x = - 43, intake_blue_right_oblique_y = 45,intake_oblique_heading_grab1= -145;
     public static double intake_distal_red_y = -4.5;
     public static double park_x = 43, park_inside=56 , park_outside = 6;
     public static double intake_x = -43, intake_y = 30.5 ;
@@ -562,20 +562,20 @@ public class AutoMaster extends LinearOpMode {
 
     public void ec_lowFar_edgeSpline_blue(){
         Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
-                .splineTo(new Vector2d(30, 55*side_color), Math.toRadians(180.00))
-                .lineToLinearHeading(new Pose2d(-35.5,55*side_color,Math.toRadians(180)))
+                .splineTo(new Vector2d(30, 54*side_color), Math.toRadians(180.00))
+                .lineToLinearHeading(new Pose2d(-35.5,54*side_color,Math.toRadians(180)))
                 .splineTo(new Vector2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y), Math.toRadians(intake_oblique_heading_grab1*side_color))
                 .build();
 
         Trajectory moveToBack= drive.trajectoryBuilder(new Pose2d(intake_blue_right_oblique_x,intake_blue_right_oblique_y,Math.toRadians(intake_oblique_heading_grab1*side_color)))
-                .lineToLinearHeading(new Pose2d(-24,55*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-24,54*side_color,Math.toRadians(180)))
                 .build();
 
-        Trajectory back= drive.trajectoryBuilder(new Pose2d(-24,55*side_color,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(40,55*side_color))
+        Trajectory back= drive.trajectoryBuilder(new Pose2d(-24,54*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(40,54*side_color))
                 .build();
 
-        Trajectory drop= drive.trajectoryBuilder(new Pose2d(40,55*side_color,Math.toRadians(180)))
+        Trajectory drop= drive.trajectoryBuilder(new Pose2d(40,54*side_color,Math.toRadians(180)))
                 .lineToConstantHeading(new Vector2d(ec_backDrop_x-1.5,ec_backDrop_y))
                 .build();
 
@@ -585,6 +585,8 @@ public class AutoMaster extends LinearOpMode {
 
         drive.followTrajectory(moveToBack);
         drive.followTrajectory(back);
+        upper.setArmPosition(1500);
+        upper.wrist_to_upward();
         drive.followTrajectory(drop);
     }
     public void extraIntakeLinearPath(){

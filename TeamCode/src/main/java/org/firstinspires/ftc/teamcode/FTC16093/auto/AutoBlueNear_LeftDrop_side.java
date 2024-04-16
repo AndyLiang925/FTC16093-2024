@@ -26,6 +26,6 @@ public class AutoBlueNear_LeftDrop_side extends AutoMaster {
         drop_upward_grab1();
         setUpAuto();
         sleep(1000);
-        parking(1);
+        parking(3);
     }
 }
