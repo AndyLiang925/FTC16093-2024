@@ -18,7 +18,7 @@ public class AutoBlueNear_RightDrop_2plus0 extends AutoMaster {
         backDropDump();
 
         upper.setArmPosition(2077);
-        sleep(800);
+        sleep(1000);
         upper.grab2_open();
         sleep(300);
         setUpAuto();

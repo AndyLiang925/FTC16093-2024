@@ -129,7 +129,7 @@ public class superstructure {
         newSleep(600);
         grab2_open();
         newSleep(300);
-        setArmLength(400);
+        setArmLength(560);
     }
     public void wrist_grab1_distalAuto(int armPos){
         setArmPosition(armPos);
@@ -137,7 +137,7 @@ public class superstructure {
         newSleep(600);
         grab1_open();
         newSleep(300);
-        setArmLength(432);
+        setArmLength(560);
     }
     public void wrist_grab_proximal(){
         setArmLength(0);
@@ -166,7 +166,7 @@ public class superstructure {
         armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     public void wrist_to_middle(){
-        wrt.setPosition(0.9); // initial 0.55
+        wrt.setPosition(0.86); // initial 0.55
     }
     public void wrist_to_down(){
         wrt.setPosition(0.34); // initial 0.55

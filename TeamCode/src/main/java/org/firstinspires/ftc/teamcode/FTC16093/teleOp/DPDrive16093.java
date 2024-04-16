@@ -115,8 +115,8 @@ public class  DPDrive16093 extends LinearOpMode {//
         int minIndex=0;
         int pd=0;//判断手腕是否手动微调 whether wrist is in driver controlled mode
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
-        int armLengthLevels[] = {0,169,257,337,431,521,234,323,452,570};
-        int armPosLevels[] = {2150,2060,1993,1940,1895,1917,1989,1976,1946,1929};
+        int armLengthLevels[] = {0,179,257,337,431,520,234,323,452,570}; //337 431
+        int armPosLevels[] = {2150,2045,1975,1925,1915,1917,1989,1976,1946,1929};
         double wrtLevels[] = {0.95,0.96,1,1,1,1,0.31,0.31,0.31,0.354};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
@@ -266,6 +266,8 @@ public class  DPDrive16093 extends LinearOpMode {//
                 setArmLength(0);
                 if(sequence==Sequence.RELEASE){
                     speed=1;
+                    setArmPosition(1200);
+                    sleep_with_drive(300);
                 }
                 if(sequence==Sequence.AIM&&wrtp==0.45){
                     speed=1;
@@ -320,7 +322,7 @@ public class  DPDrive16093 extends LinearOpMode {//
             if(sequence==DPDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(265);
+                    setArmPosition(275);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.45;
@@ -546,7 +548,7 @@ public class  DPDrive16093 extends LinearOpMode {//
     public void setArmLength(int length){
         amlDrive.setTargetPosition(length);
         amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        amlDrive.setPower(1);
+        amlDrive.setPower(0.85);
     }
     public void setArmPosition(int pos){
         if(armDrive.getCurrentPosition()<=300&&pos<=armDrive.getCurrentPosition()){

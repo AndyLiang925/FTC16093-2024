@@ -17,7 +17,7 @@ import android.graphics.Paint;
 public class CenterStageVisionProcessor implements VisionProcessor{
 
     public static int rectLeft_x = 160,rectLeft_y = 295, rectLeft_width = 60, rectLeft_height = 80; //change
-    public static int rectMiddle_x = 265,rectMiddle_y = 275, rectMiddle_width = 145, rectMiddle_height = 55;
+    public static int rectMiddle_x = 245,rectMiddle_y = 275, rectMiddle_width = 145, rectMiddle_height = 55;
     public static int rectRight_x = 440,rectRight_y = 295, rectRight_width = 80, rectRight_height = 60;
     private Rect rectLeft = new Rect(rectLeft_x, rectLeft_y, rectLeft_width, rectLeft_height);
     private Rect rectMiddle = new Rect(rectMiddle_x, rectMiddle_y, rectMiddle_width, rectMiddle_height);

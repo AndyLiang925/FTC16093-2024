@@ -5,12 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(group = "AutoBlueNear")
 @Config
-public class AutoBlueNear_RightDrop_center extends AutoMaster {
+public class AutoBlueNear_LeftDrop_center extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
         side_color = BLUE;
-        drop_side = RIGHT;
+        drop_side = LEFT;
         initHardware();
         spikeMarkDump();
         putOnSpikeMark();

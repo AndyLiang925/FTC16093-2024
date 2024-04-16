@@ -10,6 +10,7 @@ public class AutoBlueNear_LeftDrop_2plus0 extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
         side_color = BLUE;
+        drop_side = LEFT;
         initHardware();
 
         spikeMarkDump();
@@ -18,7 +19,7 @@ public class AutoBlueNear_LeftDrop_2plus0 extends AutoMaster {
         backDropDump();
 
         upper.setArmPosition(2077);
-        sleep(800);
+        sleep(1000);
         upper.grab2_open();
         sleep(300);
         setUpAuto();

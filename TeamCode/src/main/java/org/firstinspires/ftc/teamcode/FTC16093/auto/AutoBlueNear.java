@@ -48,9 +48,6 @@ public class AutoBlueNear extends AutoMaster {
         if(auto_mode==1){
             if(auto_route==1){
                 if(drop_side==LEFT){//2+0 走中间 放左边
-                    BackDrop_blueRight_y = 22.2;
-                    BackDrop_blueCenter_y = 28.3;
-                    BackDrop_blueLeft_y = 33.9;
                     startSide = PROXIMAL;
                     side_color = BLUE;
                     initHardware();
