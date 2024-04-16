@@ -250,7 +250,7 @@ public class AutoMaster extends LinearOpMode {
                 BackDrop_RedRight_y = -41;
             }
             if(side_color == BLUE){
-                intake_farCenter_y = intake_far_blueCenter_y;
+                intake_farCenter_y = intake_far_blueCenter_y;//
             } else if (side_color == RED) {
                 intake_farCenter_y = intake_far_redCenter_y;
             }
