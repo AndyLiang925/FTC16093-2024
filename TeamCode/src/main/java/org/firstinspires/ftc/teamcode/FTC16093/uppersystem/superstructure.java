@@ -178,7 +178,7 @@ public class superstructure {
         wrt.setPosition(0.25); //0.28
     }
     public void wrist_to_upward_drop(){
-        wrt.setPosition(0.3); //0.28
+        wrt.setPosition(0.32); //0.28
     }
     public void putOnBackDrop(){
         setArmPosition(1890);

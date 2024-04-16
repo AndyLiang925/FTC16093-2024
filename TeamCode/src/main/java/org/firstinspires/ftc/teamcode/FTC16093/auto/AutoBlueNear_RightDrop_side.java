@@ -23,13 +23,9 @@ public class AutoBlueNear_RightDrop_side extends AutoMaster {
         setUpAuto();
 
         ec_lowFar_edgeSpline_blue();
-        raiseArm_slow(armPosUpward);
-        putOnBackDrop_grab2();
-        raiseArm_slow(armPosUpward-30);
-        sleep(500);
-        upper.setArmPosition_slow(armPosUpward-120);
+        drop_upward_grab1();
         setUpAuto();
         sleep(1000);
-        parking(1);
+        parking(3);
     }
 }

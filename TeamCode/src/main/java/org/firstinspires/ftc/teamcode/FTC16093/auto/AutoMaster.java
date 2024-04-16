@@ -122,7 +122,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double ec_backDrop_blue_distalLeft_y = 24;
     public static double intake_far_x = -43,intake_farCenter_y = -6.5;
-    public static double intake_far_redCenter_y = -7.2, intake_far_blueCenter_y = 7;
+    public static double intake_far_redCenter_y = -7.2, intake_far_blueCenter_y = 5;
 
     public static double intake_blue_near_x = -57, intake_blue_left_near_y = 9;
     public static double intake_blue_center_near_y = 18;
@@ -151,7 +151,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double forwardDistance=3;
     public superstructure upper;
-    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 250, armPos_delta = 50;//175 armposnear1=140
+    public static int armPos = 280,armPos_near1 = 135, armPos_near_low = 50, armPos_far_low = 230, armPos_delta = 70;//175 armposnear1=140
     public static int wait_time = 0,sleep_2=1000,sleep_3=1000;
 
     @Override
