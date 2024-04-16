@@ -111,19 +111,20 @@ public class  DPDrive16093 extends LinearOpMode {//
         int amlp=0;
         int armp=0;
         int index=0;
-        int maxIndex=7;
+        int maxIndex=10;
         int minIndex=0;
         int pd=0;//判断手腕是否手动微调 whether wrist is in driver controlled mode
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
-        int armLengthLevels[] = {20,107,157,280,353,432,432};
-        int armPosLevels[] = {2000,1924,1797,1790,1790,1780,1900};
-        double wrtLevels[] = {1,1,1,1,1,1,0.31};
+        int armLengthLevels[] = {0,169,257,337,431,521,234,323,452,570};
+        int armPosLevels[] = {2150,2060,1993,1940,1895,1917,1989,1976,1946,1929};
+        double wrtLevels[] = {0.95,0.96,1,1,1,1,0.31,0.31,0.31,0.354};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=true;
         boolean leftColorRe=true;
         boolean rightColorRe=true;
         boolean PDSleep;
+        boolean remove_limit=false;
         XCYBoolean aim =new XCYBoolean(()->gamepad2.a);
         XCYBoolean distal = new XCYBoolean(()->gamepad2.dpad_up);
         XCYBoolean proximal = new XCYBoolean(()->gamepad2.dpad_down);
@@ -145,7 +146,8 @@ public class  DPDrive16093 extends LinearOpMode {//
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.y);
         XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
         XCYBoolean dpad = new XCYBoolean(()->gamepad1.dpad_left||gamepad1.dpad_up||gamepad1.dpad_down);
-        XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
+        //XCYBoolean slowMode = new XCYBoolean(()->gamepad1.right_trigger>0||gamepad1.left_trigger>0);
+        XCYBoolean remove_endgame_limit = new XCYBoolean(()->gamepad1.right_trigger>0&&gamepad1.left_trigger>0);
         leftFrontDrive  = hardwareMap.get(DcMotorEx.class, "frontLeft");
         rightFrontDrive = hardwareMap.get(DcMotorEx.class, "frontRight");
         leftBackDrive  = hardwareMap.get(DcMotorEx.class, "rearLeft");
@@ -217,7 +219,10 @@ public class  DPDrive16093 extends LinearOpMode {//
             NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             logic_period();
-            if(brake_start.toTrue()&&runtime.seconds()>90){
+            if(remove_endgame_limit.get()){
+                remove_limit=true;
+            }
+            if(brake_start.toTrue()&&(runtime.seconds()>90||remove_limit)){
                 if(brkp==0.5){
                     brkp=0.93;
                 }else{
@@ -226,11 +231,11 @@ public class  DPDrive16093 extends LinearOpMode {//
                 //brkp=grab2_close1;
                 brake.setPosition(brkp);
             }
-            if(slowMode.get()){
-                driver_speed=0.5;
-            }else{
-                driver_speed=1;
-            }
+//            if(slowMode.get()){
+//                driver_speed=0.5;
+//            }else{
+//                driver_speed=1;
+//            }
             if(armBack.toTrue()) {
                 armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 armDrive.setPower(backPower);
@@ -239,7 +244,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            if(plane_shoot.get()&&runtime.seconds()>90){
+            if(plane_shoot.get()&&(runtime.seconds()>90||remove_limit)){
                 plnp=0.9;
             }
             if(armExpandBack.toTrue()) {
@@ -315,9 +320,9 @@ public class  DPDrive16093 extends LinearOpMode {//
             if(sequence==DPDrive16093.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(220);
+                    setArmPosition(265);
                     sleep_with_drive(200);
-                    setArmLength(432);
+                    setArmLength(570);
                     wrtp=0.45;
                     wrt.setPosition(wrtp);
                 }

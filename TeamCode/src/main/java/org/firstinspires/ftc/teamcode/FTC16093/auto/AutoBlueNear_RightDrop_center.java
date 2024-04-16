@@ -16,8 +16,8 @@ public class AutoBlueNear_RightDrop_center extends AutoMaster {
         putOnSpikeMark();
         backDropDump();
 
-        upper.setArmPosition_slow(2100);
-        sleep(1500);
+        upper.setArmPosition_slow(2077);
+        sleep(800);
         upper.grab2_open();
         sleep(300);
         setUpAuto();
