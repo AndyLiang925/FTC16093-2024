@@ -11,6 +11,7 @@ public class AutoRedNear extends AutoMaster {
         startSide = PROXIMAL;
         side_color = RED;
         drop_side = RIGHT;
+
         initHardware();
         if(auto_mode==1){
             if(true){//2+0 不用分中间还是边上
@@ -56,9 +57,6 @@ public class AutoRedNear extends AutoMaster {
                     sleep(1000);
                     parking(park);
                 }else if(drop_side==RIGHT){//2+2 走中间 放右边
-                    BackDrop_RedLeft_y = -28;  // y: left -26.5 right -28
-                    BackDrop_RedCenter_y = -35; // y: left -32.5 right -35
-                    BackDrop_RedRight_y = -41; // y: left -38.5 right -41
                     spikeMarkDump();
                     putOnSpikeMark();
                     backDropDump();
@@ -68,6 +66,7 @@ public class AutoRedNear extends AutoMaster {
                     upper.grab2_open();
                     sleep(300);
                     setUpAuto();
+
                     ecByCenter_farCenter();
                     drop_upward_grab1();
 
@@ -89,9 +88,6 @@ public class AutoRedNear extends AutoMaster {
                     ec_lowFar_edgeSpline_blue();
                     parking(park);
                 }else if(drop_side==RIGHT){//2+2 走边上 放右边
-                    BackDrop_RedLeft_y = -28;  // y: left -26.5 right -28
-                    BackDrop_RedCenter_y = -35; // y: left -32.5 right -35
-                    BackDrop_RedRight_y = -41; // y: left -38.5 right -41
                     spikeMarkDump();
                     putOnSpikeMark();
                     backDropDump();

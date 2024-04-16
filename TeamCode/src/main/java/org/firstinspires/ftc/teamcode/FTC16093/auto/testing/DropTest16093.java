@@ -12,8 +12,20 @@ public class DropTest16093 extends AutoMaster {
         initHardware();
         //prepare_drop_upward();
         //raiseArm(1800);
-        putOnBackDrop_grab2();
+        upper.wrist_to_upward();
+        upper.setArmPosition(1500);
+        sleep(1000);
+
+        raiseArm_slow(armPosUpward);
+        sleep(1000);
+        putOnBackDrop_grab1();
         sleep(300);
+        upper.wrist_to_upward_drop();
+        sleep(200);
+        raiseArm_slow(armPosUpward-armPos_delta);
+        sleep(500);
+        upper.setArmPosition_slow(armPosUpward-120);
+
         setUpAuto();
         sleep(3000);
     }
