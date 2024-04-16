@@ -127,7 +127,7 @@ public class AutoMaster extends LinearOpMode {
     public static double intake_blue_near_x = -57, intake_blue_left_near_y = 9;
     public static double intake_blue_center_near_y = 18;
 
-    public static double intake_blue_right_oblique_x = - 43, intake_blue_right_oblique_y = 45,intake_oblique_heading_grab1= -145;
+    public static double intake_blue_right_oblique_x = - 43, intake_blue_right_oblique_y = 33,intake_oblique_heading_grab1= 180;
     public static double intake_distal_red_y = -4.5;
     public static double park_x = 43, park_inside=56 , park_outside = 6;
     public static double intake_x = -43, intake_y = 30.5 ;
@@ -534,7 +534,7 @@ public class AutoMaster extends LinearOpMode {
                 .build();
 
         Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(intake_medi_x,intake_distal_y,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(intake_near_x,intake_distal_y))
+                .lineToLinearHeading(new Pose2d(intake_near_x,intake_distal_y,Math.toRadians(180)))
                 .build();
 
         Trajectory fromIntermediateToProximal = drive.trajectoryBuilder(new Pose2d(intake_near_x,intake_distal_y,Math.toRadians(180))) //!metion
@@ -561,31 +561,33 @@ public class AutoMaster extends LinearOpMode {
     }
 
     public void ec_lowFar_edgeSpline_blue(){
-        Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(spikeMark_heading)))
+        Trajectory moveToMiddle = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(180)))
                 .splineTo(new Vector2d(30, 54*side_color), Math.toRadians(180.00))
-                .lineToLinearHeading(new Pose2d(-35.5,54*side_color,Math.toRadians(180)))
-                .splineTo(new Vector2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y), Math.toRadians(intake_oblique_heading_grab1*side_color))
+                .lineToLinearHeading(new Pose2d(-37,54*side_color,Math.toRadians(180)))
                 .build();
 
-        Trajectory moveToBack= drive.trajectoryBuilder(new Pose2d(intake_blue_right_oblique_x,intake_blue_right_oblique_y,Math.toRadians(intake_oblique_heading_grab1*side_color)))
-                .lineToLinearHeading(new Pose2d(-24,54*side_color,Math.toRadians(180)))
+        Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(-37, 54*side_color), Math.toRadians(180))
+                .lineTo(new Vector2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y))
                 .build();
 
-        Trajectory back= drive.trajectoryBuilder(new Pose2d(-24,54*side_color,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(40,54*side_color))
+        Trajectory moveToBack= drive.trajectoryBuilder(new Pose2d(intake_blue_right_oblique_x,intake_blue_right_oblique_y,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-35,53*side_color,Math.toRadians(180)))
                 .build();
 
-        Trajectory drop= drive.trajectoryBuilder(new Pose2d(40,54*side_color,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(ec_backDrop_x-1.5,ec_backDrop_y))
+        Trajectory back= drive.trajectoryBuilder(new Pose2d(-35,53*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(40,53*side_color))
                 .build();
 
+        Trajectory drop= drive.trajectoryBuilder(new Pose2d(40,53*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(ec_backDrop_x-1,ec_backDrop_y))
+                .build();
+
+        drive.followTrajectory(moveToMiddle);
         drive.followTrajectory(moveToIntake);
-        sleep(400);
         intake2_lowfar_grab1();
-
         drive.followTrajectory(moveToBack);
         drive.followTrajectory(back);
-        upper.setArmPosition(1500);
+        upper.setArmPosition(1600);
         upper.wrist_to_upward();
         drive.followTrajectory(drop);
     }
@@ -804,7 +806,7 @@ public class AutoMaster extends LinearOpMode {
     }
     public void intake2_lowfar_grab1(){
         upper.wrist_grab1_distalAuto(armPos_far_low);
-        sleep(900);
+        sleep(700);
         upper.grab1_close();
         sleep(200);
         intake_throw();
@@ -815,7 +817,7 @@ public class AutoMaster extends LinearOpMode {
     }
     public void intake2_lowFar_grab2(){
         upper.wrist_grab2_distalAuto(armPos_far_low);
-        sleep(1200);
+        sleep(700);
         upper.grab2_close();
         sleep(200);
         intake_throw();
@@ -1075,14 +1077,26 @@ public class AutoMaster extends LinearOpMode {
     }
     public void drop_upward_grab1(){
         raiseArm_slow(armPosUpward);
-        sleep(800);
-        putOnBackDrop_grab1();
         sleep(300);
+        putOnBackDrop_grab1();
+        sleep(200);
         upper.wrist_to_upward_drop();
         sleep(200);
         raiseArm_slow(armPosUpward-armPos_delta);
-        sleep(500);
+        //
+        upper.set_wrist_pos(0.28);
+        sleep(150);
+        upper.set_wrist_pos(0.3);
+        sleep(150);
+        upper.set_wrist_pos(0.28);
+        sleep(150);
+        upper.set_wrist_pos(0.3);
+        sleep(150);
+        upper.set_wrist_pos(0.28);
+        sleep(150);
+        upper.set_wrist_pos(0.3);
         upper.setArmPosition_slow(armPosUpward-120);
+
     }
     public void drop_upward_grab2(){
         raiseArm_slow(armPosUpward);
