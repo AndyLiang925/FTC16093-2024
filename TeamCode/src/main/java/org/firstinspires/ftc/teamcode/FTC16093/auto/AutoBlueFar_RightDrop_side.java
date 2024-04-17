@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous (group = "AutoBlueFar")
-public class AutoBlueFar_LeftDrop_side extends AutoMaster {
+public class AutoBlueFar_RightDrop_side extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
 
         startSide = DISTAL;
         side_color = BLUE;
-        drop_side = LEFT;
+        drop_side = RIGHT;
         initHardware();
         spikeMarkDump();
         putOnSpikeMark();

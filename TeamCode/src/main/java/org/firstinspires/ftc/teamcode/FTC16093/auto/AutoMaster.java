@@ -233,7 +233,7 @@ public class AutoMaster extends LinearOpMode {
             spikeMarkCenter_x=spikeMarkCenterProximal_x;
             spikeMarkCenter_y=spikeMarkCenterProximal_y;
             if (drop_side == LEFT){
-                BackDrop_blueRight_y = 26;
+                BackDrop_blueRight_y = 25;
                 BackDrop_blueCenter_y = 32;
                 BackDrop_blueLeft_y = 38;
 
@@ -343,7 +343,7 @@ public class AutoMaster extends LinearOpMode {
             }
             if(side_color == BLUE){
                 intake_distal_y = intake_blue_left_near_y;
-                intake_farCenter_y = intake_far_blueCenter_y;  
+                intake_farCenter_y = intake_far_blueCenter_y;
             } else if (side_color == RED) {
                 intake_distal_y = intake_distal_red_y;
                 intake_farCenter_y = intake_far_redCenter_y;
@@ -763,7 +763,7 @@ public class AutoMaster extends LinearOpMode {
     }
     public void backDrop_move(){
         Trajectory moveToAnotherDrop = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(180)))
-                .lineToConstantHeading(new Vector2d(detectedBackDrop_x,ec_backDrop_y))
+                .lineToConstantHeading(new Vector2d(detectedBackDrop_x+1,ec_backDrop_y))
                 .build();
         drive.followTrajectory(moveToAnotherDrop);
     }
@@ -1123,6 +1123,20 @@ public class AutoMaster extends LinearOpMode {
         upper.setArmPosition_slow(armPosUpward-120);
     }
     public void distal_edgeBack(){
+        Trajectory strafe = drive.trajectoryBuilder(new Pose2d(intake_near_x,intake_distal_y,Math.toRadians(180))) //!metion
+                .lineToConstantHeading(new Vector2d(intake_near_x+2,53*side_color))
+                .build();
 
+        Trajectory back= drive.trajectoryBuilder(new Pose2d(intake_near_x+2,53*side_color,Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(40,53*side_color))
+                .build();
+
+        Trajectory fromProximalToBackdrop = drive.trajectoryBuilder(new Pose2d(40,53*side_color,Math.toRadians(180)))
+                .lineTo(new Vector2d(detectedBackDrop_x,detectedBackDrop_y))
+                .build();
+        drive.followTrajectory(strafe);
+        drive.followTrajectory(back);
+        upper.setArmPosition(1780);
+        drive.followTrajectory(fromProximalToBackdrop);
     }
 }
