@@ -108,7 +108,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static double BackDrop_blueRight_x = 48.5,BackDrop_blueRight_y = 26; // y: left 24.3 right 22.2
     public static double BackDrop_blueCenter_x = 48.5, BackDrop_blueCenter_y = 32; // y: left 29.5 right 28.3
-    public static double BackDrop_blueLeft_x =48.5,BackDrop_blueLeft_y = 38; // y: left 36.2 right 33.9
+    public static double BackDrop_blueLeft_x =48.5,BackDrop_blueLeft_y = 36; // y: left 36.2 right 33.9
 
     public static double backDrop_blue_distalRight_x = 48.5,backDrop_blue_distalRight_y = 23; // y: left 24.5 right 23
     public static double backDrop_blue_distalCenter_x = 48.5,backDrop_blue_distalCenter_y = 28; // y: left: 28 right 27
@@ -563,11 +563,11 @@ public class AutoMaster extends LinearOpMode {
     public void ec_lowFar_edgeSpline_blue(){
         Trajectory moveToMiddle = drive.trajectoryBuilder(new Pose2d(detectedBackDrop_x,detectedBackDrop_y,Math.toRadians(180)))
                 .splineTo(new Vector2d(30, 54*side_color), Math.toRadians(180.00))
-                .lineToLinearHeading(new Pose2d(-37,54*side_color,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-37,54*side_color, Math.toRadians(180.00)))
                 .build();
 
         Trajectory moveToIntake = drive.trajectoryBuilder(new Pose2d(-37, 54*side_color), Math.toRadians(180))
-                .lineTo(new Vector2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y))
+                .lineToLinearHeading(new Pose2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y,Math.toRadians(180)))
                 .build();
 
         Trajectory moveToBack= drive.trajectoryBuilder(new Pose2d(intake_blue_right_oblique_x,intake_blue_right_oblique_y,Math.toRadians(180)))
@@ -583,6 +583,7 @@ public class AutoMaster extends LinearOpMode {
                 .build();
 
         drive.followTrajectory(moveToMiddle);
+        sleep(300);
         drive.followTrajectory(moveToIntake);
         intake2_lowfar_grab1();
         drive.followTrajectory(moveToBack);
@@ -1106,6 +1107,18 @@ public class AutoMaster extends LinearOpMode {
         upper.wrist_to_upward_drop();
         sleep(200);
         raiseArm_slow(armPosUpward-armPos_delta);
+
+        upper.set_wrist_pos(0.28);
+        sleep(150);
+        upper.set_wrist_pos(0.3);
+        sleep(150);
+        upper.set_wrist_pos(0.28);
+        sleep(150);
+        upper.set_wrist_pos(0.3);
+        sleep(150);
+        upper.set_wrist_pos(0.28);
+        sleep(150);
+        upper.set_wrist_pos(0.3);
         sleep(500);
         upper.setArmPosition_slow(armPosUpward-120);
     }
