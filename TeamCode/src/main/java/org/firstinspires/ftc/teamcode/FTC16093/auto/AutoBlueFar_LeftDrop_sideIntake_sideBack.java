@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous (group = "AutoBlueFar")
-public class AutoBlueFar_LeftDrop_center extends AutoMaster {
+public class AutoBlueFar_LeftDrop_sideIntake_sideBack extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
 
@@ -12,26 +12,18 @@ public class AutoBlueFar_LeftDrop_center extends AutoMaster {
         drop_side = LEFT;
         initHardware();
         spikeMarkDump();
-        distal_putOnSpikeMark();
+        putOnSpikeMark();
 
         //DistalBackDropDump();
-        distal_intake_center();
-        sleep(wait_time);
-        distal_backDropDump_center();
-        //DistalBackDropDump_farGrab();
-        sleep(300);
-        upper.setArmPosition(2077);
+        distal_intakeEdge_edgeBack();
+        upper.setArmPosition(2100);
         sleep(1000);
         upper.grab2_open(); //yellow
         upper.setArmPosition(2000);
         backDrop_move();
-        
         putOnBackDrop_grab1();
         sleep(200);
         setUpAuto();
-        parking(3);
-        //ecByCenter_far();
-        //ec_far_putOnGround();
+        sleep(1500);
     }
 }
-

@@ -12,6 +12,7 @@ public class AutoBlueNear_LeftDrop_center extends AutoMaster {
         side_color = BLUE;
         drop_side = LEFT;
         initHardware();
+
         spikeMarkDump();
         putOnSpikeMark();
         backDropDump();
@@ -26,6 +27,6 @@ public class AutoBlueNear_LeftDrop_center extends AutoMaster {
         drop_upward_grab2();
         setUpAuto();
         sleep(1000);
-        parking(3);
+        parking(1);
     }
 }

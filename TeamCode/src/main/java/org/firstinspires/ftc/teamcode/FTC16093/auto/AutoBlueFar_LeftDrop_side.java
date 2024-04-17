@@ -12,13 +12,12 @@ public class AutoBlueFar_LeftDrop_side extends AutoMaster {
         drop_side = LEFT;
         initHardware();
         spikeMarkDump();
-        putOnSpikeMark();
+        distal_putOnSpikeMark();
 
-        //DistalBackDropDump();
         distal_intake_center();
         sleep(wait_time);
         distal_edgeBack();
-        upper.setArmPosition(2100);
+        upper.setArmPosition(2077);
         sleep(1000);
         upper.grab2_open(); //yellow
         upper.setArmPosition(2000);

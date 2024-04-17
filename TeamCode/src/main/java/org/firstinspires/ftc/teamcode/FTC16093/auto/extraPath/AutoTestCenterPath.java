@@ -1,30 +1,30 @@
-package org.firstinspires.ftc.teamcode.FTC16093.auto.extraPath;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-
-import org.firstinspires.ftc.teamcode.FTC16093.auto.AutoMaster;
-
-@Autonomous
-@Disabled
-public class AutoTestCenterPath extends AutoMaster {
-    @Override
-    public void runOpMode() throws InterruptedException {
-
-        startSide = PROXIMAL;
-        side_color = BLUE;
-        initHardware();
-
-        spikeMarkDump();
-        putOnSpikeMark();
-
-        backDropDump();
-        putOnBackDrop_grab2();
-        sleep(1500);
-        setUpAuto();
-
-        ecByCenter();
-        putOnBackDrop_grab2();
-        sleep(1000);
-    }
-}
+//package org.firstinspires.ftc.teamcode.FTC16093.auto.extraPath;
+//
+//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+//
+//import org.firstinspires.ftc.teamcode.FTC16093.auto.AutoMaster;
+//
+//@Autonomous
+//@Disabled
+//public class AutoTestCenterPath extends AutoMaster {
+//    @Override
+//    public void runOpMode() throws InterruptedException {
+//
+//        startSide = PROXIMAL;
+//        side_color = BLUE;
+//        initHardware();
+//
+//        spikeMarkDump();
+//        putOnSpikeMark();
+//
+//        backDropDump();
+//        putOnBackDrop_grab2();
+//        sleep(1500);
+//        setUpAuto();
+//
+//        ecByCenter();
+//        putOnBackDrop_grab2();
+//        sleep(1000);
+//    }
+//}

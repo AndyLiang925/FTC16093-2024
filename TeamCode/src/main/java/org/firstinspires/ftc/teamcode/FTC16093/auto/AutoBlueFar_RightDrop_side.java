@@ -12,7 +12,7 @@ public class AutoBlueFar_RightDrop_side extends AutoMaster {
         drop_side = RIGHT;
         initHardware();
         spikeMarkDump();
-        putOnSpikeMark();
+        distal_putOnSpikeMark();
 
         //DistalBackDropDump();
         distal_intake_center();

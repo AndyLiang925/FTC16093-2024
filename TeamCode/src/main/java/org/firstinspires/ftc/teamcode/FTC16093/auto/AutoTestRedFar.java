@@ -15,9 +15,11 @@ public class AutoTestRedFar extends AutoMaster {
         initHardware();
 
         spikeMarkDump();
-        putOnSpikeMark();
+        distal_putOnSpikeMark();
 
-        DistalBackDropDump();
+        distal_intake_center();
+        sleep(wait_time);
+        distal_backDropDump_center();
         sleep(300);
         upper.setArmPosition(2077);
         sleep(1000);
