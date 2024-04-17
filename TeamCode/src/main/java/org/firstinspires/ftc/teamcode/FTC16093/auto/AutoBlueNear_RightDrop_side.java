@@ -21,7 +21,6 @@ public class AutoBlueNear_RightDrop_side extends AutoMaster {
         upper.grab2_open();
         sleep(300);
         setUpAuto();
-
         ec_lowFar_edgeSpline_blue();
         drop_upward_grab1();
         setUpAuto();

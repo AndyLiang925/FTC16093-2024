@@ -18,7 +18,7 @@ public class AutoBlueFar_RightDrop_side extends AutoMaster {
         distal_intake_center();
         sleep(wait_time);
         distal_edgeBack();
-        upper.setArmPosition(2077);
+        upper.setArmPosition(2100);
         sleep(1000);
         upper.grab2_open(); //yellow
         upper.setArmPosition(2000);

@@ -20,7 +20,7 @@ public class AutoBlueFar_RightDrop_center extends AutoMaster {
         distal_backDropDump_center();
         //DistalBackDropDump_farGrab();
         sleep(300);
-        upper.setArmPosition(2077);
+        upper.setArmPosition(2100);
         sleep(1000);
         upper.grab2_open(); //yellow
         upper.setArmPosition(2000);
