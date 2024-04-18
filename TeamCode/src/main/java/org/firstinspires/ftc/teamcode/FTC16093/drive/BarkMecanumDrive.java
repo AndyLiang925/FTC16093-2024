@@ -6,11 +6,13 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
+import com.acmerobotics.roadrunner.control.PIDFController;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -56,7 +58,9 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksTo
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+
 import org.firstinspires.ftc.teamcode.drive.PYZLocalizer;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -65,6 +69,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -224,7 +229,11 @@ public class BarkMecanumDrive extends MecanumDrive {
     public void update() {
         updatePoseEstimate();
         DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
-        if (signal != null) setDriveSignal(signal);
+        if (simpleMoveIsActivate) {
+            simpleMovePeriod();
+        } else if (signal != null) {
+            setDriveSignal(signal);
+        }
     }
 
     public void waitForIdle() {
@@ -233,6 +242,10 @@ public class BarkMecanumDrive extends MecanumDrive {
     }
 
     public boolean isBusy() {
+        if (simpleMoveIsActivate) {
+            Pose2d err = getSimpleMovePosition().minus(getPoseEstimate());
+            return err.vec().norm() > simpleMoveTranslationTolerance || Math.abs(AngleUnit.normalizeRadians(err.getHeading())) > simpleMoveRotationTolerance;
+        }
         return trajectorySequenceRunner.isBusy();
     }
 
@@ -258,7 +271,8 @@ public class BarkMecanumDrive extends MecanumDrive {
             motor.setPIDFCoefficients(runMode, compensatedCoefficients);
         }
     }
-    public double getYaw(){
+
+    public double getYaw() {
         return imu.getAngularOrientation().firstAngle;
     }
 
@@ -283,7 +297,7 @@ public class BarkMecanumDrive extends MecanumDrive {
         setDrivePower(vel);
     }
 
-    public void setHeadingPower(double x,double y,double rx){
+    public void setHeadingPower(double x, double y, double rx) {
         double botHeading = 0;
 
 
@@ -304,7 +318,7 @@ public class BarkMecanumDrive extends MecanumDrive {
         rightRear.setPower(backRightPower);
     }
 
-    public void setGlobalPower(double x, double y, double rx){
+    public void setGlobalPower(double x, double y, double rx) {
         double botHeading = imu.getAngularOrientation().firstAngle;
 
 
@@ -380,24 +394,126 @@ public class BarkMecanumDrive extends MecanumDrive {
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
-    public double getMotorVelo(int vel){
-        if(vel==1){
+
+    public double getMotorVelo(int vel) {
+        if (vel == 1) {
             return leftFront.getVelocity();
-        }else if(vel==2){
+        } else if (vel == 2) {
             return leftRear.getVelocity();
-        }else if(vel==3){
+        } else if (vel == 3) {
             return rightFront.getVelocity();
-        }else if(vel==4){
+        } else if (vel == 4) {
             return rightRear.getVelocity();
         }
         return 0;
     }
 
-    public Task updatePositionTask = new Task(){
+    public static PIDCoefficients translationPid = new PIDCoefficients(0.1778, 0.000, 0.02286);
+    public static PIDCoefficients headingPid = new PIDCoefficients(38.1, 0, 3.302);
+
+    private PIDFController transPID_x;
+    private PIDFController transPID_y;
+    private PIDFController turnPID;
+    private double moveHeading = 0;
+
+    private double simpleMoveTranslationTolerance = 25, simpleMoveRotationTolerance = Math.toRadians(10);
+    private double simpleMovePower = 0.95;
+    private boolean simpleMoveIsActivate = false;
+
+    public void setSimpleMoveTolerance(double translation, double rotation) {
+        simpleMoveTranslationTolerance = translation;
+        simpleMoveRotationTolerance = rotation;
+    }
+
+    public void setSimpleMovePower(double power) {
+        simpleMovePower = power;
+    }
+
+    public void stopTrajectory() {
+        trajectorySequenceRunner.followTrajectorySequenceAsync(null);
+    }
+
+    public void initSimpleMove(Pose2d pos) {
+        stopTrajectory();
+        simpleMoveIsActivate = true;
+        transPID_x = new PIDFController(translationPid);
+        transPID_x.setTargetPosition(pos.getX());
+
+        transPID_y = new PIDFController(translationPid);
+        transPID_y.setTargetPosition(pos.getY());
+
+        turnPID = new PIDFController(headingPid);
+        moveHeading = pos.getHeading();
+        turnPID.setTargetPosition(0);
+    }
+
+    public void setSimpleMovePosition(Pose2d pos) {
+        transPID_x.setTargetPosition(pos.getX());
+        transPID_y.setTargetPosition(pos.getY());
+        moveHeading = pos.getHeading();
+    }
+
+    public Pose2d getSimpleMovePosition() {
+        return new Pose2d(transPID_x.getTargetPosition(), transPID_y.getTargetPosition(), moveHeading);
+    }
+
+    public Task simpleMoveTime(Pose2d pose, int time) {
+        return new Task() {
+            private long endTime;
+            @Override
+            public void setUp(){
+                initSimpleMove(pose);
+                endTime=System.currentTimeMillis()+time;
+            }
+            @Override
+            public void run() {
+                if (endTime<System.currentTimeMillis()){
+                    status=Status.ENDED;
+                }
+            }
+        };
+    }
+
+    public static final double DEAD_BAND = 0.0001;
+
+    /**
+     * 无头功率
+     *
+     * @param drivePower
+     * @param x_static
+     * @param y_static
+     */
+    public void setGlobalPower(Pose2d drivePower, double x_static, double y_static) {
+        Vector2d vec = drivePower.vec().rotated(-getLocalizer().getPoseEstimate().getHeading());
+//        Vector2d vec = drivePower.vec().rotated(-getRawExternalHeading());
+        if (vec.norm() > DEAD_BAND) {
+            vec = new Vector2d(
+                    vec.getX() + Math.copySign(x_static, vec.getX()),
+                    vec.getY() + Math.copySign(y_static, vec.getY())
+            );
+        }
+        setWeightedDrivePower(new Pose2d(vec, drivePower.getHeading()));
+    }
+
+    public void simpleMovePeriod() {
+        Pose2d current_pos = getPoseEstimate();
+        this.setGlobalPower(new Pose2d(
+                clamp(transPID_x.update(current_pos.getX()), simpleMovePower),
+                clamp(transPID_y.update(current_pos.getY()), simpleMovePower),
+                clamp(turnPID.update(AngleUnit.normalizeRadians(current_pos.getHeading() - moveHeading)), simpleMovePower)
+        ), 0, 0);
+    }
+
+
+    public Task updatePositionTask = new Task() {
 
         @Override
-        public void run(){
+        public void run() {
             update();
         }
     };
+
+    private double clamp(double val, double range) {
+        return Range.clip(val, -range, range);
+    }
 }

@@ -93,7 +93,7 @@ public class AutoMaster extends LinearOpMode {
 
     public static Pose2d spikeMark_blue_distalLeft = new Pose2d(-46, 45, Math.toRadians(-45));
     public static Pose2d spikeMark_blue_distalCenter = new Pose2d(-46, 46, Math.toRadians(-85));
-    public static Pose2d spikeMark_blue_distalRight = new Pose2d(-47.5, 51, Math.toRadians(-90));
+    public static Pose2d spikeMark_blue_distalRight = new Pose2d(-48, 54, Math.toRadians(-90));
     Pose2d backDrop = new Pose2d();
     public static int backDrop_heading = 180;
     public static double backDrop_centerAxis_y = 32;
@@ -152,7 +152,7 @@ public class AutoMaster extends LinearOpMode {
         drive.getLocalizer().setPoseEstimate(startPos);
         drive.update();
         telemetry.addLine("init: superstructure");
-        upper = new SuperStructure(this, drive::update);
+        upper = new SuperStructure(this);
         upper.setGrabSide(side_color);
         setUpAuto();
 
@@ -349,7 +349,7 @@ public class AutoMaster extends LinearOpMode {
     public void distal_intake_center() {
         if (isStopRequested()) return;
         TrajectorySequence toMediByLine = drive.trajectorySequenceBuilder(spikeMark)
-                .lineToLinearHeading(new Pose2d(intake_medi_side_x - 3, intake_medi_side_y * side_color, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(intake_medi_side_x - 3.5, intake_medi_side_y * side_color, Math.toRadians(180)))
                 .build();
 
         Trajectory moveToCenter = drive.trajectoryBuilder(new Pose2d(intake_medi_side_x - 3, intake_medi_side_y * side_color, Math.toRadians(180)))
@@ -449,7 +449,7 @@ public class AutoMaster extends LinearOpMode {
     }
     public void setUpAuto() {
         upper.setArmPosition(0);
-        upper.setArmLength(-5);
+        upper.setArmLength(-5,1);
         sleep(200);
         upper.grab1_close();//gb1.setPosition(0.22);
         sleep(100);

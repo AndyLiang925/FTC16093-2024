@@ -27,7 +27,7 @@ public class SuperStructure {
     }
 
     private final LinearOpMode opMode;
-    public SuperStructure(LinearOpMode opMode, Runnable drivePeriod){
+    public SuperStructure(LinearOpMode opMode){
         this.opMode = opMode;
         HardwareMap hardwareMap = opMode.hardwareMap;
 
@@ -109,12 +109,12 @@ public class SuperStructure {
         wristDown();
         setArmPosition(245);
         sleep(500);
-        setArmLength(570);
+        setArmLength(570,0.5);
         sleep(800);
         releasePurple(grab_side);
         sleep(200);
         wrist_to_middle();
-        setArmLength(0);
+        setArmLength(0,1);
         sleep(200);
         setArmPosition(0);
         sleep(800);
@@ -146,7 +146,7 @@ public class SuperStructure {
     public void autoGrabPrepare(int armPos_near){
         setArmPosition(armPos_near);
         sleep(300);
-        setArmLength(0);
+        setArmLength(0,1);
         releasePurple(grab_side);
         sleep(300);
         wrt.setPosition(0.51);
@@ -166,27 +166,27 @@ public class SuperStructure {
 
         releasePurple(grab_side);
         sleep(500);
-        setArmLength(560);
+        setArmLength(560,1);
         sleep(800);
 
-        setArmLength(250);
+        setArmLength(250,1);
         setArmPosition(350);
         sleep(400);
 
         wrist_to_down();
-        setArmLength(0);
+        setArmLength(0,1);
         sleep(300);
         wrist_to_middle();
         sleep(300);
         setArmPosition(10);
 
         sleep(200);
-        setArmLength(0);
+        setArmLength(0,1);
         sleep(200);
         setArmPosition(0);
     }
 
-    public void setArmLength(int length){
+    public void setArmLength(int length,double power){
         amlDrive.setTargetPosition(length);
         amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         amlDrive.setPower(1);

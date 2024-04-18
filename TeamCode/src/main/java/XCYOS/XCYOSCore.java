@@ -1,20 +1,31 @@
 package XCYOS;
 
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class XCYOSCore {
     private static final ArrayList<Task> registeredTask = new ArrayList<>();
-    private static Telemetry telemetry;
+    private static OpMode opmode;
+    private static List<LynxModule> allHubs;
 
     public static void addTask(Task task) {
         registeredTask.add(task);
     }
 
-    public static void setTelemetry(Telemetry telemetry) {
-        XCYOSCore.telemetry = telemetry;
+    public static void setUp(OpMode opmode) {
+        XCYOSCore.opmode = opmode;
+        LynxModuleUtil.ensureMinimumFirmwareVersion(opmode.hardwareMap);
+        allHubs = opmode.hardwareMap.getAll(LynxModule.class);
+        for (LynxModule module : allHubs) {
+            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
     }
 
     public static void update() {
@@ -38,6 +49,9 @@ public class XCYOSCore {
                 task.setStatus(Task.Status.RUNNING);
             }
         }
-        telemetry.update();
+        opmode.telemetry.update();
+        for (LynxModule module : allHubs) {
+            module.clearBulkCache();
+        }
     }
 }
