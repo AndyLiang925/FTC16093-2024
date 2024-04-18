@@ -370,7 +370,7 @@ public class AutoMaster extends LinearOpMode {
 
         drive.followTrajectory(moveToIntake);
         sleep(200);
-        upper.autoGrabFinish();
+        upper.autoGrabFinish();//
     }
 
     public void distal_backDropDump_center() {
