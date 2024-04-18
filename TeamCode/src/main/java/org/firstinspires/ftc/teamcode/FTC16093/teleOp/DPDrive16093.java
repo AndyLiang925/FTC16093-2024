@@ -72,8 +72,8 @@ public class  DPDrive16093 extends LinearOpMode {//
     }
     int mode=0;
     private DPDrive16093.Sequence sequence;
-    NormalizedColorSensor colorSensor;
-    NormalizedColorSensor colorSensor2;
+    //    NormalizedColorSensor colorSensor;
+//    NormalizedColorSensor colorSensor2;
     View relativeLayout;
     @Override//
     public void runOpMode() throws InterruptedException {
@@ -82,23 +82,23 @@ public class  DPDrive16093 extends LinearOpMode {//
         time = NanoClock.system();
         //get all Lynx Module device objects
         allHubs = hardwareMap.getAll(LynxModule.class);
-
-        relativeLayout.post(new Runnable() {
-            public void run() {
-                relativeLayout.setBackgroundColor(Color.WHITE);
-            }
-        });
-        float gain = 2;
-        final float[] hsvValues = new float[3];
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
-        colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "sensor_color2");
-
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor).enableLight(true);
-        }
-        if (colorSensor2 instanceof SwitchableLight) {
-            ((SwitchableLight)colorSensor2).enableLight(true);
-        }
+//
+//        relativeLayout.post(new Runnable() {
+//            public void run() {
+//                relativeLayout.setBackgroundColor(Color.WHITE);
+//            }
+//        });
+//        float gain = 2;
+//        final float[] hsvValues = new float[3];
+//        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+//        colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "sensor_color2");
+//
+//        if (colorSensor instanceof SwitchableLight) {
+//            ((SwitchableLight)colorSensor).enableLight(true);
+//        }
+//        if (colorSensor2 instanceof SwitchableLight) {
+//            ((SwitchableLight)colorSensor2).enableLight(true);
+//        }
 
         //init position
         double  drive           = 0;        // Desired forward power/speed (-1 to +1)
@@ -213,11 +213,11 @@ public class  DPDrive16093 extends LinearOpMode {//
         waitForStart();
 
         while (opModeIsActive()){
-            colorSensor.setGain(gain);
-            colorSensor2.setGain(gain);
-            NormalizedRGBA colors = colorSensor.getNormalizedColors();
-            NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
+//            colorSensor.setGain(gain);
+//            colorSensor2.setGain(gain);
+//            NormalizedRGBA colors = colorSensor.getNormalizedColors();
+//            NormalizedRGBA colors2 = colorSensor2.getNormalizedColors();
+//            Color.colorToHSV(colors.toColor(), hsvValues);
             logic_period();
             if(remove_endgame_limit.get()){
                 remove_limit=true;
@@ -342,52 +342,52 @@ public class  DPDrive16093 extends LinearOpMode {//
 //                        gb2.setPosition(rightGrabOpen?grab2_close:0.3);
 //                        rightGrabOpen=!rightGrabOpen;
 //                    }
-                if(colorSensorUsed){
-                    if (leftGrab.toTrue()) {
-                        leftGrabOpen = !leftGrabOpen;
-                    }
-                    if(!grabbed(colors2)){
-                        leftColorRe=true;
-                    }
-                    if(grabbed(colors2)&&leftColorRe){
-                        leftGrabOpen=false;
-                        leftColorRe=false;
-                    }
-                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
-                    if (rightGrab.toTrue()) {
-                        rightGrabOpen = !rightGrabOpen;
-                    }
-                    if(!grabbed(colors)){
-                        rightColorRe=true;
-                    }
-                    if(grabbed(colors)&&rightColorRe){
-                        rightGrabOpen=false;
-                        rightColorRe=false;
-                    }
-                    if(colorSensorUsed&&grabbed(colors)&&grabbed(colors2)){
-                        rightGrabOpen=false;
-                        leftGrabOpen=false;
-                        gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
-                        gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
-                        sleep_with_drive(300);
-                        setArmLength(0);
-                        setArmPosition(0);
-                        wrtp=0.9;
-                        wrt.setPosition(wrtp);
-                        sequence=DPDrive16093.Sequence.RUN;
-                        telemetry.addData("run",0);
-                    }
-                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
-                }else{
-                    if (leftGrab.toTrue()) {
-                        gb1.setPosition(leftGrabOpen?grab1_open:grab1_close); //grab1_open
-                        leftGrabOpen = !leftGrabOpen;
-                    }
-                    if (rightGrab.toTrue()) {
-                        gb2.setPosition(rightGrabOpen?grab2_open:grab2_close); //grab2_open
-                        rightGrabOpen = !rightGrabOpen;
-                    }
+//                if(colorSensorUsed){
+//                    if (leftGrab.toTrue()) {
+//                        leftGrabOpen = !leftGrabOpen;
+//                    }
+//                    if(!grabbed(colors2)){
+//                        leftColorRe=true;
+//                    }
+//                    if(grabbed(colors2)&&leftColorRe){
+//                        leftGrabOpen=false;
+//                        leftColorRe=false;
+//                    }
+//                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
+//                    if (rightGrab.toTrue()) {
+//                        rightGrabOpen = !rightGrabOpen;
+//                    }
+//                    if(!grabbed(colors)){
+//                        rightColorRe=true;
+//                    }
+//                    if(grabbed(colors)&&rightColorRe){
+//                        rightGrabOpen=false;
+//                        rightColorRe=false;
+//                    }
+//                    if(colorSensorUsed&&grabbed(colors)&&grabbed(colors2)){
+//                        rightGrabOpen=false;
+//                        leftGrabOpen=false;
+//                        gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
+//                        gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
+//                        sleep_with_drive(300);
+//                        setArmLength(0);
+//                        setArmPosition(0);
+//                        wrtp=0.9;
+//                        wrt.setPosition(wrtp);
+//                        sequence=DPDrive16093.Sequence.RUN;
+//                        telemetry.addData("run",0);
+//                    }
+//                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
+//                }else{
+                if (leftGrab.toTrue()) {
+                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close); //grab1_open
+                    leftGrabOpen = !leftGrabOpen;
                 }
+                if (rightGrab.toTrue()) {
+                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close); //grab2_open
+                    rightGrabOpen = !rightGrabOpen;
+                }
+                //}
             }
             if(sequence==DPDrive16093.Sequence.RUN){
                 setArmLength(0);
@@ -397,6 +397,35 @@ public class  DPDrive16093 extends LinearOpMode {//
                 speed=1;
                 gb1.setPosition(grab1_close);
                 gb2.setPosition(grab2_close);
+                if(distal.toTrue()){
+                    setArmLength(0);
+                    setArmPosition(0);
+                    wrtp=0.51;
+                    wrt.setPosition(wrtp);
+                    sequence=DPDrive16093.Sequence.AIM;
+                    telemetry.addData("aim",0);
+                    leftGrabOpen=false;
+                    rightGrabOpen=false;
+                    setArmPosition(275);
+                    sleep_with_drive(200);
+                    setArmLength(570);
+                    wrtp=0.45;
+                    wrt.setPosition(wrtp);
+                }
+                if(proximal.toTrue()){
+                    setArmLength(0);
+                    setArmPosition(0);
+                    wrtp=0.51;
+                    wrt.setPosition(wrtp);
+                    sequence=DPDrive16093.Sequence.AIM;
+                    telemetry.addData("aim",0);
+                    leftGrabOpen=false;
+                    rightGrabOpen=false;
+                    setArmLength(0);
+                    wrtp=0.51;
+                    wrt.setPosition(wrtp);
+                    setArmPosition(0);
+                }
             }
             if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
                 setArmLength(armLengthLevels[index]);
@@ -494,16 +523,16 @@ public class  DPDrive16093 extends LinearOpMode {//
             telemetry.addData("底盘速度:",speed);// robot speed
             telemetry.addData("手腕位置:",wrtp);//wrist position
             telemetry.addData("index:",index);//level of upper system
-            telemetry.addData("color_sensor抓没抓到:",grabbed(colors2)?"抓到了":"没抓到");//grabbed or not
-            telemetry.addLine()
-                    .addData("Red", "%.3f", colors2.red)
-                    .addData("Green", "%.3f", colors2.green)
-                    .addData("Blue", "%.3f", colors2.blue);
-            telemetry.addLine()
-                    .addData("Hue", "%.3f", hsvValues[0])
-                    .addData("Saturation", "%.3f", hsvValues[1])
-                    .addData("Value", "%.3f", hsvValues[2]);
-            telemetry.addData("Alpha", "%.3f", colors.alpha);
+            //telemetry.addData("color_sensor抓没抓到:",grabbed(colors2)?"抓到了":"没抓到");//grabbed or not
+//            telemetry.addLine()
+//                    .addData("Red", "%.3f", colors2.red)
+//                    .addData("Green", "%.3f", colors2.green)
+//                    .addData("Blue", "%.3f", colors2.blue);
+//            telemetry.addLine()
+//                    .addData("Hue", "%.3f", hsvValues[0])
+//                    .addData("Saturation", "%.3f", hsvValues[1])
+//                    .addData("Value", "%.3f", hsvValues[2]);
+//            telemetry.addData("Alpha", "%.3f", colors.alpha);
 
 //            telemetry.addData("leftFront_velo",bdrive.getMotorVelo(1));
 //            telemetry.addData("leftBack_velo",bdrive.getMotorVelo(2));
@@ -511,11 +540,11 @@ public class  DPDrive16093 extends LinearOpMode {//
 //            telemetry.addData("rightBack_velo",bdrive.getMotorVelo(4));
 
             telemetry.update();
-            relativeLayout.post(new Runnable() {
-                public void run() {
-                    relativeLayout.setBackgroundColor(Color.HSVToColor(hsvValues));
-                }
-            });
+//            relativeLayout.post(new Runnable() {
+//                public void run() {
+//                    relativeLayout.setBackgroundColor(Color.HSVToColor(hsvValues));
+//                }
+//            });
             if(dpad.toTrue()){
                 heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             }
