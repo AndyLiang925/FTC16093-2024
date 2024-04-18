@@ -18,7 +18,7 @@ public class AutoTestIntake extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SuperStructure superstructure = new SuperStructure(this);
-        BarkMecanumDrive drive=new BarkMecanumDrive(hardwareMap);
+        BarkMecanumDrive drive = new BarkMecanumDrive(hardwareMap);
         BarkMecanumDrive mecanumDrive = new BarkMecanumDrive(hardwareMap);
         TaskChainBuilder tb = new TaskChainBuilder();
         tb.add(drive.simpleMoveTime(new Pose2d(0,1.5,0),2000))

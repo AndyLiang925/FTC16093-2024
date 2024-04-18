@@ -267,7 +267,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                 if(sequence==Sequence.RELEASE){
                     speed=1;
                     setArmPosition(1200);
-                    sleep_with_drive(300);
+                    sleep_with_drive(500);
                 }
                 if(sequence==Sequence.AIM&&wrtp==0.45){
                     speed=1;
@@ -295,6 +295,8 @@ public class  DPDrive16093 extends LinearOpMode {//
                 telemetry.addData("release",0);
                 leftGrabOpen=false;
                 rightGrabOpen=false;
+                gb1.setPosition(leftGrabOpen?0.7:grab1_close);
+                gb2.setPosition(rightGrabOpen?0.32:grab2_close);
 
             }
             if(aim.toTrue()){
@@ -313,6 +315,8 @@ public class  DPDrive16093 extends LinearOpMode {//
                 //need to change
                 leftGrabOpen=false;
                 rightGrabOpen=false;
+                gb1.setPosition(leftGrabOpen?0.7:grab1_close);
+                gb2.setPosition(rightGrabOpen?0.32:grab2_close);
             }
 
             if(humanGrab.toTrue()){
@@ -380,12 +384,12 @@ public class  DPDrive16093 extends LinearOpMode {//
 //                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
 //                }else{
                 if (leftGrab.toTrue()) {
-                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close); //grab1_open
                     leftGrabOpen = !leftGrabOpen;
+                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close); //grab1_open
                 }
                 if (rightGrab.toTrue()) {
-                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close); //grab2_open
                     rightGrabOpen = !rightGrabOpen;
+                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close); //grab2_open
                 }
                 //}
             }
@@ -411,6 +415,8 @@ public class  DPDrive16093 extends LinearOpMode {//
                     setArmLength(570);
                     wrtp=0.45;
                     wrt.setPosition(wrtp);
+                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
+                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 }
                 if(proximal.toTrue()){
                     setArmLength(0);
@@ -425,6 +431,8 @@ public class  DPDrive16093 extends LinearOpMode {//
                     wrtp=0.51;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
+                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
+                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 }
             }
             if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
@@ -475,17 +483,22 @@ public class  DPDrive16093 extends LinearOpMode {//
                 if(movePixel.toTrue()){
                     wrtp=0.5;
                     pd=1;
+                    gb1.setPosition(0.98);
+                    gb2.setPosition(0.64);
                 }
                 wrt.setPosition(wrtp);
                 if (leftGrab.toTrue()) {
                     leftGrabOpen = !leftGrabOpen;
+                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
+                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 }
                 if (rightGrab.toTrue()) {
 
                     rightGrabOpen = !rightGrabOpen;
+                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
+                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 }
-                gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+
                 ////
 //                    if (leftGrab.toTrue()) {
 //                        gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);

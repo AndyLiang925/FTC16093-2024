@@ -18,10 +18,8 @@ public class AutoRedNear_LeftDrop_center extends AutoMaster {
 
         upper.setArmPosition(2077);
         sleep(500);
-        upper.grab2_open();
-        sleep(300);
+        upper.putOnBackDrop();
         setUpAuto();
-
         //extraCredit();
         ecByCenter_farCenter();
         //ec_lowFar_edgeSpline_blue();

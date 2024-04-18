@@ -2,38 +2,30 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous (group = "AutoRedFar")
-public class AutoRedFar_LeftDrop_centerIntake_gate extends AutoMaster {
+@Autonomous
+public class AutoTest_backDropAxis extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
-
         startSide = DISTAL;
-        side_color = RED;
+        side_color = BLUE;
         drop_side = LEFT;
-        initHardware();
 
+        initHardware();
         spikeMarkDump();
         upper.putOnSpikeMark();
-
         distal_intake_center();
         sleep(wait_time);
-        distal_backDropDump_center();
+        distal_backDropAxis();
         sleep(300);
-        upper.setArmPosition(2077);
+        upper.setArmPosition(2040);
         sleep(1000);
         upper.putOnBackDrop();
-        upper.setArmPosition(2000);
-        sleep(300);
-
-        backDrop_move();
-
+        upper.setArmPosition(1930);
+        backDrop_move1Pixel();
         upper.release_extra();
         sleep(200);
         setUpAuto();
         sleep(1500);
-        //parking(2);
-        //ec_far_putOnGround();
-
+        parking(3);
     }
 }
-

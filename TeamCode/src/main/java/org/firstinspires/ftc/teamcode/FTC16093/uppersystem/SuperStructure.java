@@ -66,7 +66,15 @@ public class SuperStructure {
     public void grab1_open(){
         gb1.setPosition(grab1_close-grab_delta);
     }
-
+    public void reset_arm_encoders(){
+        armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armDrive.setPower(-0.2);
+        sleep(500);
+        armDrive.setPower(0);
+        sleep(300);
+        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
     public void grab1_openDrop(){
         gb1.setPosition(0.7);
     }
@@ -120,6 +128,7 @@ public class SuperStructure {
         sleep(800);
     }
     public void putOnBackDrop(){
+        wrt.setPosition(0.95);
         releaseYellow(grab_side);
         sleep(200);
     }
@@ -145,10 +154,8 @@ public class SuperStructure {
 
     public void autoGrabPrepare(int armPos_near){
         setArmPosition(armPos_near);
-        sleep(300);
         setArmLength(0,1);
         releasePurple(grab_side);
-        sleep(300);
         wrt.setPosition(0.51);
     }
     public void autoGrabFinish(){

@@ -81,9 +81,9 @@ import XCYOS.Task;
 @Config
 public class BarkMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5, 0, 1); //8
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1); //8
 
-    public static double LATERAL_MULTIPLIER = 1.2;
+    public static double LATERAL_MULTIPLIER = 1;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -409,14 +409,14 @@ public class BarkMecanumDrive extends MecanumDrive {
     }
 
     public static PIDCoefficients translationPid = new PIDCoefficients(0.1778, 0.000, 0.02286);
-    public static PIDCoefficients headingPid = new PIDCoefficients(38.1, 0, 3.302);
+    public static PIDCoefficients headingPid = new PIDCoefficients(1.5, 0, 0.13);
 
     private PIDFController transPID_x;
     private PIDFController transPID_y;
     private PIDFController turnPID;
     private double moveHeading = 0;
 
-    private double simpleMoveTranslationTolerance = 25, simpleMoveRotationTolerance = Math.toRadians(10);
+    private double simpleMoveTranslationTolerance = 1.25, simpleMoveRotationTolerance = Math.toRadians(10);
     private double simpleMovePower = 0.95;
     private boolean simpleMoveIsActivate = false;
 
@@ -447,6 +447,17 @@ public class BarkMecanumDrive extends MecanumDrive {
         turnPID.setTargetPosition(0);
     }
 
+    //TODO ....
+    public void  moveTo(Pose2d endPose, int correctTime_ms){
+        initSimpleMove(endPose);
+        while (isBusy())
+            update();
+        long endTime = System.currentTimeMillis()+ correctTime_ms ;
+        while (endTime>System.currentTimeMillis())
+            update();
+        simpleMoveIsActivate=false;
+        setMotorPowers(0,0,0,0);
+    }
     public void setSimpleMovePosition(Pose2d pos) {
         transPID_x.setTargetPosition(pos.getX());
         transPID_y.setTargetPosition(pos.getY());

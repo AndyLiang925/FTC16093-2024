@@ -20,13 +20,12 @@ public class AutoRedFar_RightDrop_centerIntake_gate extends AutoMaster {
         sleep(300);
         upper.setArmPosition(2077);
         sleep(1000);
-        upper.grab2_open(); //yellow
-        upper.setArmPosition(2000);
-        sleep(300);
-
-        backDrop_move();
-
         upper.putOnBackDrop();
+
+        upper.setArmPosition(1990);
+        sleep(300);
+        backDrop_move();
+        upper.release_extra();
         sleep(200);
         setUpAuto();
         sleep(1500);

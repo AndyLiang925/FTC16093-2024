@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
+
 @Autonomous (group = "AutoBlueFar")
 public class AutoBlueFar_LeftDrop_center extends AutoMaster {
     @Override
@@ -12,6 +14,7 @@ public class AutoBlueFar_LeftDrop_center extends AutoMaster {
         drop_side = LEFT;
         initHardware();
         spikeMarkDump();
+
         upper.putOnSpikeMark();
 
         //DistalBackDropDump();
@@ -21,16 +24,16 @@ public class AutoBlueFar_LeftDrop_center extends AutoMaster {
 
         //DistalBackDropDump_farGrab();
         sleep(300);
-        upper.setArmPosition(2050); //2077
+        upper.setArmPosition(2060); //2077
         sleep(1000);
         upper.putOnBackDrop();
-        upper.setArmPosition(2000);
+        upper.setArmPosition(2030);
         backDrop_move();
         upper.release_extra();
         sleep(200);
         setUpAuto();
         sleep(1500);
-        parking(3);
+        parking(2);
         //ecByCenter_far();
         //ec_far_putOnGround();
     }

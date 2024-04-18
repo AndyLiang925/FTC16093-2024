@@ -19,7 +19,7 @@ public class AutoRedNear_LeftDrop_side extends AutoMaster {
 
         upper.setArmPosition(2077);
         sleep(500);
-        upper.grab2_open();
+        upper.putOnBackDrop();
         sleep(300);
         setUpAuto();
         ec_lowFar_edgeSpline_blue();
