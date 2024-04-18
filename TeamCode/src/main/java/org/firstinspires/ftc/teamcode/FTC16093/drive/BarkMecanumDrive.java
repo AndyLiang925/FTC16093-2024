@@ -68,15 +68,17 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import XCYOS.Task;
+
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
 public class BarkMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(5, 0, 1); //8
 
-    public static double LATERAL_MULTIPLIER = 1;
+    public static double LATERAL_MULTIPLIER = 1.2;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -90,12 +92,6 @@ public class BarkMecanumDrive extends MecanumDrive {
     private TrajectoryFollower follower;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
-    private DcMotorEx armDrive   = null;
-    private DcMotorEx amlDrive   = null;
-    public Servo gb1 = null;
-    private Servo brake = null;
-    public Servo gb2 = null;
-    public Servo wrt = null;
 
     private List<DcMotorEx> motors;
 
@@ -107,6 +103,7 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     public BarkMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
+        updatePositionTask.setType(Task.Type.BASE);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
@@ -129,13 +126,6 @@ public class BarkMecanumDrive extends MecanumDrive {
         leftRear = hardwareMap.get(DcMotorEx.class, "rearLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "rearRight");
         rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
-
-        armDrive  = hardwareMap.get(DcMotorEx.class, "arm");
-        amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
-        wrt = hardwareMap.get(Servo.class, "wrist");
-        gb1 = hardwareMap.get(Servo.class, "grab2");
-        gb2 = hardwareMap.get(Servo.class, "grab1");
-
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -160,16 +150,6 @@ public class BarkMecanumDrive extends MecanumDrive {
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
-        amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
-        armDrive.setDirection(DcMotorEx.Direction.FORWARD);
-        wrt.setDirection(Servo.Direction.FORWARD);
-        amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
 
@@ -181,106 +161,7 @@ public class BarkMecanumDrive extends MecanumDrive {
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
     }
-    /////////////////////////////////////
-    //grabbers, wrist and arm functions//
-    ////////////////////////////////////
-    public void grab1_close(){
-        gb1.setPosition(0.53);
-    }
-    public void grab2_close(){
-        gb2.setPosition(0.76);
-    }
-    public void grab1_open(){
-        gb1.setPosition(0.22);
-    }
-    public void grab2_open(){
-        gb2.setPosition(0.45);
-    }
-    public void wrist_grab_distal(){
-        setArmPosition(200);
-        setArmLength(1150);
-        wrt.setPosition(0.23);
-    }
-    //    public void correct_heading(double target_heading_correction){
-//        while(Math.abs(Math.toRadians(imu.getAngularOrientation().firstAngle)-target_heading_correction)<2.5){
-//            if(Math.toRadians(imu.getAngularOrientation().firstAngle)<target_heading_correction){
-//                leftFront.setPower(1);
-//                leftRear.setPower(1);
-//                rightFront.setPower(-1);
-//                rightRear.setPower(-1);
-//            }else if(Math.toRadians(imu.getAngularOrientation().firstAngle)>target_heading_correction){
-//                leftFront.setPower(-1);
-//                leftRear.setPower(-1);
-//                rightFront.setPower(1);
-//                rightRear.setPower(1);
-//            }
-//        }
-//
-//    }
-    public void wrist_grab_distalAuto(int armPos){
-        setArmPosition(armPos);
-        wrt.setPosition(0.23);
-        setArmLength(1150);
-    }
-    public void wrist_grab_proximal(){
-        setArmLength(0);
-        wrt.setPosition(0.34);
-        setArmPosition(0);
-    }
-    public void setArmLength(int length){
-        amlDrive.setTargetPosition(length);
-        amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        amlDrive.setPower(1);
-    }
-    public void setArmPosition(int pos){
-        if(armDrive.getCurrentPosition()>pos){
-            armDrive.setPower(0.6);
-        }else{
-            armDrive.setPower(0.8);
-        }
-        armDrive.setTargetPosition(pos);
-        armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        armDrive.setPower(0.8);
-    }
-    public void setUp(){
-        setArmLength(10);
-        gb1.setPosition(0.53);//gb1.setPosition(0.22);
-        gb2.setPosition(0.76);//gb2.setPosition(0.45);
-        wrt.setPosition(1);
-    }
-    public void resetEncoder(){
-        armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-    public void putOnSpikeMark(){
-        wrt.setPosition(0.4);
-        setArmPosition(20);
-        gb1.setPosition(0.22);
 
-        wrt.setPosition(0.7);
-        gb1.setPosition(0.53);
-        wrt.setPosition(1);
-    }
-    public void putOnBackDrop(){
-        setArmPosition(1890);
-        //gb1.setPosition(0.22);
-        gb2.setPosition(0.45);
-    }
-    public void intake2(int armPos){
-        gb1.setPosition(0.53);
-        wrist_grab_distalAuto(armPos);
-
-        gb1.setPosition(0.22);
-
-        wrt.setPosition(1);
-        setArmLength(0);
-        setArmPosition(0);
-    }
-    ///////////////////////////
-    //road runner's functions//
-    ///////////////////////////
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
     }
@@ -512,5 +393,11 @@ public class BarkMecanumDrive extends MecanumDrive {
         return 0;
     }
 
+    public Task updatePositionTask = new Task(){
 
+        @Override
+        public void run(){
+            update();
+        }
+    };
 }

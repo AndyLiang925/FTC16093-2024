@@ -10,8 +10,8 @@ public class TaskChainBuilder {
          base = task;
       } else {
          head.setNextTask(task);
-         head = task;
       }
+      head = task;
       return this;
    }
 

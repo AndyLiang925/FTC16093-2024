@@ -17,7 +17,7 @@ public class AutoRedNear_RightDrop_2plus0 extends AutoMaster {
 //            upper.wristDown();
 //        }
         spikeMarkDump();
-        putOnSpikeMark();
+        upper.putOnSpikeMark();
         backDropDump();
 
         upper.setArmPosition(2077);
@@ -36,7 +36,7 @@ public class AutoRedNear_RightDrop_2plus0 extends AutoMaster {
 //        upper.setArmPosition_slow(armPosUpward-120);
 //        setUpAuto();
 //        sleep(1000);
-        parking_2plus0(1);
+        parking(1);
         //backTo_StartPos();
     }
 }

@@ -10,9 +10,10 @@ public class AutoBlueFar_RightDrop_sideIntake_sideBack extends AutoMaster {
         startSide = DISTAL;
         side_color = BLUE;
         drop_side = RIGHT;
+
         initHardware();
-        distal_spikeMarkDump_oblique();
-        distal_putOnSpikeMark();
+        spikeMarkDump();
+        upper.putOnSpikeMark();
 
         //DistalBackDropDump();
         distal_intakeEdge_edgeBack();
@@ -21,7 +22,7 @@ public class AutoBlueFar_RightDrop_sideIntake_sideBack extends AutoMaster {
         upper.grab2_open(); //yellow
         upper.setArmPosition(2000);
         backDrop_move();
-        putOnBackDrop_grab1();
+        upper.putOnBackDrop();
         sleep(200);
         setUpAuto();
         sleep(1500);

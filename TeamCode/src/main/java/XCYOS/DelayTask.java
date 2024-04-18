@@ -9,7 +9,7 @@ public class DelayTask extends Task {
 
    @Override
    public void run() {
-      if (timeEnd > System.currentTimeMillis()) {
+      if (timeEnd < System.currentTimeMillis()) {
          status = Status.ENDED;
       }
    }

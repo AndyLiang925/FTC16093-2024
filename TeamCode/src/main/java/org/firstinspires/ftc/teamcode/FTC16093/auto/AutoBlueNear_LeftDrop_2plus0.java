@@ -14,16 +14,14 @@ public class AutoBlueNear_LeftDrop_2plus0 extends AutoMaster {
         initHardware();
 
         spikeMarkDump();
-        putOnSpikeMark();
-
+        upper.putOnSpikeMark();
         backDropDump();
 
         upper.setArmPosition(2077);
         sleep(1000);
-        upper.grab2_open();
-        sleep(300);
+        upper.putOnBackDrop();
         setUpAuto();
-        backTo_StartPos();
+        sleep(1);
     }
 
 }

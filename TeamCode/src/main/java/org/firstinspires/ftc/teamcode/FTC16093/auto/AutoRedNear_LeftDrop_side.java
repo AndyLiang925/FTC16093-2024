@@ -14,7 +14,7 @@ public class AutoRedNear_LeftDrop_side extends AutoMaster {
         initHardware();
 
         spikeMarkDump();
-        putOnSpikeMark();
+        upper.putOnSpikeMark();
         backDropDump();
 
         upper.setArmPosition(2077);

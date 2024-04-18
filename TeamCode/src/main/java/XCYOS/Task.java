@@ -5,13 +5,10 @@ import java.util.ArrayList;
 public abstract class Task implements Runnable {
    protected Type type = Type.INSTANT;
    protected Status status = Status.PENDING;
-   protected Component[] componentsUsed = new Component[0];
    private final ArrayList<Task> nextTask=new ArrayList<>(1);
 
    public void setUp() {
-      for (Component c : componentsUsed) {
-         c.setOccupied(true);
-      }
+
    }
 
    public void setNextTask(Task task){
@@ -23,13 +20,7 @@ public abstract class Task implements Runnable {
    }
 
    public void end() {
-      for (Component c : componentsUsed) {
-         c.setOccupied(false);
-      }
-   }
 
-   public void setComponentsUsed(Component... componentsUsed) {
-      this.componentsUsed = componentsUsed;
    }
 
    public void setStatus(Status status) {

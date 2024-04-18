@@ -12,8 +12,8 @@ public class AutoRedFar_RightDrop_sideIntake_sideBack extends AutoMaster {
         drop_side = RIGHT;
         initHardware();
 
-        distal_spikeMarkDump_oblique();
-        distal_putOnSpikeMark();
+        spikeMarkDump();
+        upper.putOnSpikeMark();
         distal_intakeEdge_edgeBack();
         sleep(300);
         upper.setArmPosition(2077);
@@ -24,13 +24,12 @@ public class AutoRedFar_RightDrop_sideIntake_sideBack extends AutoMaster {
 
         backDrop_move();
 
-        putOnBackDrop_grab1();
+        upper.putOnBackDrop();
         sleep(200);
         setUpAuto();
         sleep(1500);
         //parking(2);
         //ec_far_putOnGround();
-
     }
 }
 

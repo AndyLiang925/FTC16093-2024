@@ -13,7 +13,7 @@ public class AutoRedNear_LeftDrop_center extends AutoMaster {
         drop_side = LEFT;
         initHardware();
         spikeMarkDump();
-        putOnSpikeMark();
+        upper.putOnSpikeMark();
         backDropDump();
 
         upper.setArmPosition(2077);
@@ -25,7 +25,7 @@ public class AutoRedNear_LeftDrop_center extends AutoMaster {
         //extraCredit();
         ecByCenter_farCenter();
         //ec_lowFar_edgeSpline_blue();
-        drop_upward_grab1();
+        upper.drop_upward();
 
         setUpAuto();
         sleep(1000);
