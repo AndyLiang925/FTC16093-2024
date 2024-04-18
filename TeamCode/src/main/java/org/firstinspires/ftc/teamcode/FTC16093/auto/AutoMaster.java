@@ -261,7 +261,7 @@ public class AutoMaster extends LinearOpMode {
                     drop_pos_index = -2.5f;
                 }else{
                     drop_pos_index = -3;
-                }
+                }//
                 drop_pos_ec_index = 0;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
