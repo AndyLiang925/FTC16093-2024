@@ -416,12 +416,12 @@ public class  DPDrive16093 extends LinearOpMode {//
                     pd=0;
                     pdArm=0;
                 }
-                if (gamepad2.right_stick_y>0) {
-                    armp=armp+((int)gamepad2.right_stick_y*15)>2300?2300:armp+((int)gamepad2.right_stick_y*15);
+                if (gamepad2.right_stick_y<0) {
+                    armp=armp-((int)gamepad2.right_stick_y*15)>2300?2300:armp-((int)gamepad2.right_stick_y*15);
                     pdArm=1;
                     rotation_speed=0.5;
-                }else if(gamepad2.right_stick_y<0){
-                    armp=armp+((int)gamepad2.right_stick_y*15)<0?0:armp+((int)gamepad2.right_stick_y*15);
+                }else if(gamepad2.right_stick_y>0){
+                    armp=armp-((int)gamepad2.right_stick_y*15)<0?0:armp-((int)gamepad2.right_stick_y*15);
                     pdArm=1;
                     rotation_speed=0.5;
                 }else if(pdArm==0){
@@ -434,11 +434,11 @@ public class  DPDrive16093 extends LinearOpMode {//
 
 
 
-                if (gamepad2.left_stick_y>0) {
-                    wrtp=wrtp+(gamepad2.left_stick_y/50)>1?1:wrtp+(gamepad2.left_stick_y/50);
+                if (gamepad2.left_stick_y<0) {
+                    wrtp=wrtp-(gamepad2.left_stick_y/50)>1?1:wrtp-(gamepad2.left_stick_y/50);
                     pd=1;
-                }else if(gamepad2.left_stick_y<0){
-                    wrtp=wrtp+(gamepad2.left_stick_y/50)<0?0:wrtp+(gamepad2.left_stick_y/50);
+                }else if(gamepad2.left_stick_y>0){
+                    wrtp=wrtp-(gamepad2.left_stick_y/50)<0?0:wrtp-(gamepad2.left_stick_y/50);
                     pd=1;
                 }else if(pd==0){
                     wrtp=wrtLevels[index];

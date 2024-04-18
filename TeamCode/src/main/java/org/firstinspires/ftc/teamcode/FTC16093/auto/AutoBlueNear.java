@@ -2,9 +2,11 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous
 @Config
+@Disabled
 public class AutoBlueNear extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{

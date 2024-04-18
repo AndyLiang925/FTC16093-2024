@@ -11,7 +11,7 @@ public class AutoBlueFar_RightDrop_side extends AutoMaster {
         side_color = BLUE;
         drop_side = RIGHT;
         initHardware();
-        spikeMarkDump();
+        distal_spikeMarkDump_oblique();
         distal_putOnSpikeMark();
 
         //DistalBackDropDump();
