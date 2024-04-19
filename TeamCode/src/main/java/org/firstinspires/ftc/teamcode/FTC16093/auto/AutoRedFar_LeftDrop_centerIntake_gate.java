@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous (group = "AutoRedFar")
+@Disabled
 public class AutoRedFar_LeftDrop_centerIntake_gate extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
@@ -18,9 +20,8 @@ public class AutoRedFar_LeftDrop_centerIntake_gate extends AutoMaster {
         intakeDistal();
         sleep(wait_time);
         distalMoveToBackDrop();
-        sleep(300);
-        upper.setArmPosition(2077);
-        sleep(1000);
+
+        sleep(500);
         upper.putOnBackDrop();
         upper.setArmPosition(2000);
         sleep(300);

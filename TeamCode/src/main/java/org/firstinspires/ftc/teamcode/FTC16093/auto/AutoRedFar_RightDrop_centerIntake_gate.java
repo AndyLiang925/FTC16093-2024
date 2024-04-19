@@ -17,18 +17,17 @@ public class AutoRedFar_RightDrop_centerIntake_gate extends AutoMaster {
         intakeDistal();
         sleep(wait_time);
         distalMoveToBackDrop();
-        sleep(300);
-        upper.setArmPosition(4200);
-        sleep(1000);
+        delay(500);
         upper.putOnBackDrop();
 
-        upper.setArmPosition(4100);
-        sleep(300);
+        upper.setArmPosition_slow(4100);
+        delay(300);
         backDrop_move();
         upper.release_extra();
-        sleep(200);
-        setUpAuto();
-        sleep(1500);
+        delay(200);
+        upper.setArmPosition(100);
+        delay(1500);
+        upper.setArmPosition(0);
         //parking(2);
         //ec_far_putOnGround();
 

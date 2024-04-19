@@ -18,7 +18,7 @@ public class AutoRedNear_LeftDrop_2plus0 extends AutoMaster {
         moveToBackDrop();
 
 //        upper.setArmPosition_slow(4200);
-        sleep(1000);
+        sleep(500);
         upper.putOnBackDrop();
         setUpAuto();
         parking(1);

@@ -7,8 +7,8 @@ public class AutoTest_backDropAxis extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
         startSide = DISTAL;
-        side_color = BLUE;
-        drop_side = LEFT;
+        side_color = RED;
+        drop_side = RIGHT;
 
         initHardware();
         moveToSpikeMark();
@@ -17,10 +17,8 @@ public class AutoTest_backDropAxis extends AutoMaster {
         sleep(wait_time);
         distal_backDropAxis();
         sleep(300);
-        upper.setArmPosition(2040);
-        sleep(1000);
         upper.putOnBackDrop();
-        upper.setArmPosition(1930);
+        upper.setArmPosition(4100);
         backDrop_move1Pixel();
         upper.release_extra();
         sleep(200);

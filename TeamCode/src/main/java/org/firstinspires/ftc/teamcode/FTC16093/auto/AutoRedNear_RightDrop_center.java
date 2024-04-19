@@ -15,21 +15,19 @@ public class AutoRedNear_RightDrop_center extends AutoMaster {
         moveToSpikeMark();
         upper.putOnSpikeMark();
         moveToBackDrop();
-
-        upper.setArmPosition(2077);
-        sleep(500);
-        upper.grab2_open();
-        sleep(300);
-        setUpAuto();
-
+        delay(500);
+        upper.putOnBackDrop();
+        upper.setArmPosition(0);
+        delay(500);
         //extraCredit();
         intakeGate();
         //ec_lowFar_edgeSpline_blue();
-        upper.putOnBackDrop();
+        upper.drop_upward();
 
-        setUpAuto();
-        sleep(1000);
-        //parking(1);
-        //backTo_StartPos();
+        upper.setArmPosition(500);
+        upper.wrist_to_middle();
+
+
+        delay(1000);
     }
 }

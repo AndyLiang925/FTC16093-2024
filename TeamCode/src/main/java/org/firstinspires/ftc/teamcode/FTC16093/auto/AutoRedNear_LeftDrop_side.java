@@ -17,7 +17,6 @@ public class AutoRedNear_LeftDrop_side extends AutoMaster {
         upper.putOnSpikeMark();
         moveToBackDrop();
 
-        upper.setArmPosition(2077);
         sleep(500);
         upper.putOnBackDrop();
         sleep(300);
