@@ -116,7 +116,7 @@ public class  DPDrive16093 extends LinearOpMode {//
         int pd=0;//判断手腕是否手动微调 whether wrist is in driver controlled mode
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {0,179,257,337,431,520,234,323,452,570}; //337 431
-        int armPosLevels[] = {2150,2045,1975,1925,1915,1917,1989,1976,1946,1929};
+        int armPosLevels[] = {2155,2050,1980,1930,1920,1922,1994,1981,1951,1934};
         double wrtLevels[] = {0.95,0.96,1,1,1,1,0.31,0.31,0.31,0.354};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;

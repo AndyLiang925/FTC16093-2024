@@ -12,30 +12,14 @@ public class AutoRedNear_RightDrop_2plus0 extends AutoMaster {
         side_color = RED;
         drop_side = RIGHT;
         initHardware();
-//        if(kickProp) {
-//            moveToCenter();
-//            upper.wristDown();
-//        }
         moveToSpikeMark();
         upper.putOnSpikeMark();
         moveToBackDrop();
 
         sleep(500);
         upper.putOnBackDrop();
-        setUpAuto();
-
-        //extraCredit();
-//        ecByCenter_farCenter();
-//        //ec_lowFar_edgeSpline_blue();
-//        raiseArm_slow(armPosUpward);
-//        putOnBackDrop_grab2();
-//        raiseArm_slow(armPosUpward-30);
-//        sleep(500);
-//        upper.setArmPosition_slow(armPosUpward-120);
-//        setUpAuto();
-//        sleep(1000);
+        upper.setArmPosition(0);
         parking(1);
-        //backTo_StartPos();
     }
 }
 

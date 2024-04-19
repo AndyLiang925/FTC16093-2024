@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous (group = "AutoRedFar")
+@Disabled
 public class AutoRedFar_RightDrop_sideIntake_sideBack extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{

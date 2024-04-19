@@ -229,19 +229,16 @@ public class SuperStructure {
     public void setArmPosition(int pos) {
         armTargetPosition = EXTERNAL_RATE * pos;
         armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armPidCtrl.setOutputBounds(-1,1);
 
-//        if(armDrive.getCurrentPosition()<=400&&pos<=armDrive.getCurrentPosition()){
-//            armDrive.setPower(0.3);
-//        }else if(armDrive.getCurrentPosition()<1300&&pos>=armDrive.getCurrentPosition()){
-//            armDrive.setPower(1);
-//        }else if(pos>=armDrive.getCurrentPosition()){
-//            armDrive.setPower(0.6);
-//        }else{
-//            armDrive.setPower(1);
-//        }
-//        armDrive.setTargetPosition(pos);
-//        armDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if(armExternalEnc.getCurrentPosition() <= 800 && pos <= armExternalEnc.getCurrentPosition()){
+            armPidCtrl.setOutputBounds(-0.3,0);
+        }else if(armExternalEnc.getCurrentPosition() < 3000 && pos >= armExternalEnc.getCurrentPosition()){
+            armPidCtrl.setOutputBounds(-1,1);
+        }else if(pos >= armExternalEnc.getCurrentPosition()){
+            armPidCtrl.setOutputBounds(-0.5,0.5);
+        }else{
+            armPidCtrl.setOutputBounds(-1,1);
+        }
     }
 
     public void setArmPosition_slow(int pos) {

@@ -101,7 +101,7 @@ public class AutoMaster extends LinearOpMode {
     public static double drop_y;
 
     private Pose2d getDropPose(double pos) {
-        return new Pose2d(47.9, side_color * backDrop_centerAxis_y + pos * pixel_width, Math.toRadians(backDrop_heading));
+        return new Pose2d(48.5, side_color * backDrop_centerAxis_y + pos * pixel_width, Math.toRadians(backDrop_heading));
     } // distal 47.9
 
     protected Pose2d preDropPose;
@@ -125,7 +125,7 @@ public class AutoMaster extends LinearOpMode {
     public static boolean kickProp = false;
     public SuperStructure upper;
     public static int armPos_near1 = 269; //132
-    public static int wait_time = 0;
+    public static int wait_time = 30;
 
     private Runnable update;
 
@@ -281,7 +281,7 @@ public class AutoMaster extends LinearOpMode {
                 if (drop_side == LEFT) {
                     drop_pos_index = 2.8;
                 } else {
-                    drop_pos_index = 2.8;
+                    drop_pos_index = 3.2;
                 }
                 drop_pos_ec_index = 0;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {

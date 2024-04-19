@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AutoRedFar_RightDrop_centerIntake_gate extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
-
         startSide = DISTAL;
         side_color = RED;
         drop_side = RIGHT;
@@ -15,7 +14,7 @@ public class AutoRedFar_RightDrop_centerIntake_gate extends AutoMaster {
         upper.putOnSpikeMark();
 
         intakeDistal();
-        sleep(wait_time);
+        delay(wait_time);
         distalMoveToBackDrop();
         delay(500);
         upper.putOnBackDrop();
@@ -28,7 +27,7 @@ public class AutoRedFar_RightDrop_centerIntake_gate extends AutoMaster {
         upper.setArmPosition(100);
         delay(1500);
         upper.setArmPosition(0);
-        //parking(2);
+        parking(2);
         //ec_far_putOnGround();
 
     }
