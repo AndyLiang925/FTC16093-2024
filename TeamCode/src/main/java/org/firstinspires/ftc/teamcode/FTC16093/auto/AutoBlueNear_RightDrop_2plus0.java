@@ -12,10 +12,10 @@ public class AutoBlueNear_RightDrop_2plus0 extends AutoMaster {
         side_color = BLUE;
         drop_side = RIGHT;
         initHardware();
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
 
-        backDropDump();
+        moveToBackDrop();
 
         upper.setArmPosition(2077);
         sleep(1000);

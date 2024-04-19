@@ -261,10 +261,11 @@ public class  DPDrive16093 extends LinearOpMode {//
             }
             if(toRun.toTrue()){
                 if(sequence==Sequence.AIM){
-                    setArmPosition(0);
+                    setArmLength(0);
                 }
-                setArmLength(0);
                 if(sequence==Sequence.RELEASE){
+                    wrtp=0.9;
+                    wrt.setPosition(wrtp);
                     speed=1;
                     setArmPosition(1200);
                     sleep_with_drive(500);
@@ -274,6 +275,7 @@ public class  DPDrive16093 extends LinearOpMode {//
                     sleep_with_drive(500);
                 }
                 setArmPosition(0);
+                setArmLength(0);
                 if(sequence==Sequence.RELEASE){
                     speed=1;
                     sleep_with_drive(500);
@@ -593,11 +595,11 @@ public class  DPDrive16093 extends LinearOpMode {//
         amlDrive.setPower(0.85);
     }
     public void setArmPosition(int pos){
-        if(armDrive.getCurrentPosition()<=300&&pos<=armDrive.getCurrentPosition()){
-            armDrive.setPower(0.6);
-        }else if(armDrive.getCurrentPosition()<1300){
+        if(armDrive.getCurrentPosition()<=400&&pos<=armDrive.getCurrentPosition()){
+            armDrive.setPower(0.3);
+        }else if(armDrive.getCurrentPosition()<1300&&pos>=armDrive.getCurrentPosition()){
             armDrive.setPower(1);
-        }else if(pos<=armDrive.getCurrentPosition()){
+        }else if(pos>=armDrive.getCurrentPosition()){
             armDrive.setPower(0.6);
         }else{
             armDrive.setPower(1);

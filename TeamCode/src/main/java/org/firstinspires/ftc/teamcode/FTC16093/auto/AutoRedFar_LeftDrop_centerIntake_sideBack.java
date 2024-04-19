@@ -12,9 +12,9 @@ public class AutoRedFar_LeftDrop_centerIntake_sideBack extends AutoMaster {
         drop_side = LEFT;
         initHardware();
 
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
-        distal_intake_center();
+        intakeDistal();
         sleep(wait_time);
         distal_edgeBack();
         sleep(300);

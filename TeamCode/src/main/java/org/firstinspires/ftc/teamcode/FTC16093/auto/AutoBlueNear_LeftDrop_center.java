@@ -13,16 +13,16 @@ public class AutoBlueNear_LeftDrop_center extends AutoMaster {
         drop_side = LEFT;
         initHardware();
 
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
-        backDropDump();
+        moveToBackDrop();
 
         upper.setArmPosition_slow(2077);
         sleep(1000);
         upper.putOnBackDrop();
         setUpAuto();
 
-        ecByCenter_farCenter();
+        intakeGate();
         upper.drop_upward();
         setUpAuto();
         sleep(1000);

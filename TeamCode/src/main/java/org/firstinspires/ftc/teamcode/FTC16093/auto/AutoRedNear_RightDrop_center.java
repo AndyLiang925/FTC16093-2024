@@ -12,9 +12,9 @@ public class AutoRedNear_RightDrop_center extends AutoMaster {
         side_color = RED;
         drop_side = RIGHT;
         initHardware();
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
-        backDropDump();
+        moveToBackDrop();
 
         upper.setArmPosition(2077);
         sleep(500);
@@ -23,7 +23,7 @@ public class AutoRedNear_RightDrop_center extends AutoMaster {
         setUpAuto();
 
         //extraCredit();
-        ecByCenter_farCenter();
+        intakeGate();
         //ec_lowFar_edgeSpline_blue();
         upper.putOnBackDrop();
 

@@ -13,9 +13,9 @@ public class AutoBlueNear_LeftDrop_2plus0 extends AutoMaster {
         drop_side = LEFT;
         initHardware();
 
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
-        backDropDump();
+        moveToBackDrop();
 
         upper.setArmPosition(2077);
         sleep(1000);

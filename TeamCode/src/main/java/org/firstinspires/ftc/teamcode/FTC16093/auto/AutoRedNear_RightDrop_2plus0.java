@@ -16,9 +16,9 @@ public class AutoRedNear_RightDrop_2plus0 extends AutoMaster {
 //            moveToCenter();
 //            upper.wristDown();
 //        }
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
-        backDropDump();
+        moveToBackDrop();
 
         upper.setArmPosition(2077);
         sleep(500);

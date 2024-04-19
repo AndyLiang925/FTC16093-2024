@@ -63,7 +63,7 @@ import XCYOS.Task;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class BarkMecanumDrive extends MecanumDrive {
+public class NewMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1); //8
 
@@ -89,11 +89,8 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     private List<Integer> lastEncPositions = new ArrayList<>();
     private List<Integer> lastEncVels = new ArrayList<>();
-    private Runnable updateRunnable;
-    public void setUpdateRunnable(Runnable updateRunnable) {
-        this.updateRunnable = updateRunnable;
-    }
-    public BarkMecanumDrive(HardwareMap hardwareMap) {
+
+    public NewMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
         updatePositionTask.setType(Task.Type.BASE);
 
@@ -225,7 +222,7 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())
-            updateRunnable.run();
+            update();
     }
 
     public boolean isBusy() {
@@ -440,10 +437,10 @@ public class BarkMecanumDrive extends MecanumDrive {
     public void moveTo(Pose2d endPose, int correctTime_ms) {
         initSimpleMove(endPose);
         while (isBusy())
-            updateRunnable.run();
+            update();
         long endTime = System.currentTimeMillis() + correctTime_ms;
         while (endTime > System.currentTimeMillis())
-            updateRunnable.run();
+            update();
         simpleMoveIsActivate = false;
         setMotorPowers(0, 0, 0, 0);
     }

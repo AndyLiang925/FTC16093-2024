@@ -11,18 +11,18 @@ public class AutoRedFar_RightDrop_centerIntake_gate extends AutoMaster {
         side_color = RED;
         drop_side = RIGHT;
         initHardware();
-        spikeMarkDump();
+        moveToSpikeMark();
         upper.putOnSpikeMark();
 
-        distal_intake_center();
+        intakeDistal();
         sleep(wait_time);
-        distal_backDropDump_center();
+        distalMoveToBackDrop();
         sleep(300);
-        upper.setArmPosition(2077);
+        upper.setArmPosition(4200);
         sleep(1000);
         upper.putOnBackDrop();
 
-        upper.setArmPosition(1990);
+        upper.setArmPosition(4100);
         sleep(300);
         backDrop_move();
         upper.release_extra();
