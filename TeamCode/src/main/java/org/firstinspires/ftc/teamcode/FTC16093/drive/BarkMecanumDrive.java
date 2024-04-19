@@ -436,7 +436,7 @@ public class BarkMecanumDrive extends MecanumDrive {
         turnPID.setTargetPosition(0);
     }
 
-    @Deprecated
+//    @Deprecated
     public void moveTo(Pose2d endPose, int correctTime_ms) {
         initSimpleMove(endPose);
         while (isBusy())

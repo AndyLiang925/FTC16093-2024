@@ -15,7 +15,7 @@ public class AutoBlueFar_LeftDrop_sideIntake_sideBack extends AutoMaster {
         upper.putOnSpikeMark();
 
         //DistalBackDropDump();
-        distal_intakeEdge_edgeBack();
+        distal_intakeSide_sideBack();
         upper.setArmPosition(2050);
         sleep(1000);
         upper.putOnBackDrop();

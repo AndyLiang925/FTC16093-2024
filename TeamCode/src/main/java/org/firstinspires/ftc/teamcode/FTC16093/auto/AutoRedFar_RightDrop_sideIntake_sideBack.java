@@ -14,7 +14,7 @@ public class AutoRedFar_RightDrop_sideIntake_sideBack extends AutoMaster {
 
         moveToSpikeMark();
         upper.putOnSpikeMark();
-        distal_intakeEdge_edgeBack();
+        distal_intakeSide_sideBack();
         sleep(300);
         upper.setArmPosition(2077);
         sleep(1000);
