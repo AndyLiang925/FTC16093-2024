@@ -95,13 +95,13 @@ public class AutoMaster extends LinearOpMode {
     public static Pose2d spikeMark_blue_distalRight = new Pose2d(-48.3, 54, Math.toRadians(-90));
     Pose2d yellowBackDropPosition = new Pose2d(48.3, 33 * side_color, Math.toRadians(180)); //47.8 blue
     public static int backDrop_heading = 180;
-    public static double backDrop_centerAxis_y = 33.4;
+    public static double backDrop_centerAxis_y = 33.2;
     public static double pixel_width = 3.11;
     public static double drop_pos_index = 0;
     public static double drop_y;
 
     private Pose2d getDropPose(double pos) {
-        return new Pose2d(48.5, side_color * backDrop_centerAxis_y + pos * pixel_width, Math.toRadians(backDrop_heading));
+        return new Pose2d(48.8, side_color * backDrop_centerAxis_y + pos * pixel_width, Math.toRadians(backDrop_heading));
     } // distal 47.9
 
     protected Pose2d preDropPose;
@@ -124,8 +124,8 @@ public class AutoMaster extends LinearOpMode {
 
     public static boolean kickProp = false;
     public SuperStructure upper;
-    public static int armPos_near1 = 269; //132
-    public static int wait_time = 30;
+    public static int armPos_near1 = 279; //132
+    public static int wait_time = 0;
 
     private Runnable update;
 
@@ -252,7 +252,7 @@ public class AutoMaster extends LinearOpMode {
                 DesiredTagId = 1;
                 spikeMark = spikeMark_blue_distalLeft;
                 if (drop_side == LEFT) {
-                    drop_pos_index = 1.8;
+                    drop_pos_index = 1.5;
                 } else {
                     drop_pos_index = 1;
                 }
@@ -261,7 +261,7 @@ public class AutoMaster extends LinearOpMode {
                 DesiredTagId = 2;
                 spikeMark = spikeMark_blue_distalCenter;
                 if (drop_side == LEFT) {
-                    drop_pos_index = -0.2;
+                    drop_pos_index = -0.5;
                 } else {
                     drop_pos_index = -1;
                 }
@@ -270,7 +270,7 @@ public class AutoMaster extends LinearOpMode {
                 DesiredTagId = 3;
                 spikeMark = spikeMark_blue_distalRight;
                 if (drop_side == LEFT) {
-                    drop_pos_index = -2.5;
+                    drop_pos_index = -2.8;
                 } else {
                     drop_pos_index = -3;
                 }
@@ -299,7 +299,7 @@ public class AutoMaster extends LinearOpMode {
                 if (drop_side == LEFT) {
                     drop_pos_index = -1.4;
                 } else {
-                    drop_pos_index = -1.5;
+                    drop_pos_index = -1.3;
                 }
                 drop_pos_ec_index = 1;
             }
@@ -362,6 +362,7 @@ public class AutoMaster extends LinearOpMode {
     public void intakeDistal() {
         if (isStopRequested()) return;
         drive.moveTo(new Pose2d(-57.8, intake_medi_side_y * side_color, Math.toRadians(180)), 0);
+        drive.setSimpleMoveTolerance(2,5);
         drive.moveTo(new Pose2d(-57.8, intake_distal_y * side_color, Math.toRadians(180)), 0);
         drive.moveTo(new Pose2d(-54, intake_distal_y * side_color, Math.toRadians(180)), 0);
         upper.autoGrabPrepare(armPos_near1);
@@ -373,15 +374,18 @@ public class AutoMaster extends LinearOpMode {
         upper.autoGrabFinish();
         drive.setSimpleMovePower(0.8);
     }
+    public void moveToDropMiddle(){
+        drive.moveTo(new Pose2d(48,backDrop_centerAxis_y,Math.toRadians(180)),100);
+    }
 
     public void distalMoveToBackDrop() {
         drive.setSimpleMoveTolerance(1,0.1);
         drive.moveTo(new Pose2d(25,7*side_color,Math.toRadians(180)),0);
-        upper.setArmPosition(3500);
+        upper.setArmPosition_slow(3500);
         drive.setSimpleMovePower(0.5);
         drive.moveTo(preDropPose,100);
         drive.setSimpleMovePower(0.2);
-        upper.setArmPosition(4200);
+        upper.setArmPosition(4150);
         drive.moveTo(yellowBackDropPosition, 500);
     }
 
@@ -450,6 +454,7 @@ public class AutoMaster extends LinearOpMode {
 
     public void setUpAuto() {
         upper.setArmPosition(0);
+        upper.resetArmLength();
         upper.setArmLength(-5, 1);
         upper.grab1_close();//gb1.setPosition(0.22);
         upper.grab2_close();//gb2.setPosition(0.45);
@@ -457,6 +462,7 @@ public class AutoMaster extends LinearOpMode {
     }
 
     public void backDrop_move() {
+        drive.setSimpleMoveTolerance(2.5,0.2);
         drive.moveTo(ecDropPosition, 500);
     }
     public void backDrop_move1Pixel() {
@@ -482,7 +488,7 @@ public class AutoMaster extends LinearOpMode {
 
         drive.setSimpleMovePower(0.95);
         drive.moveTo(new Pose2d(30,intake_farCenter_y*side_color,Math.toRadians(180)),0);
-        upper.setArmPosition(3500);
+        upper.setArmPosition(2500);
         upper.wrist_to_upward();
         drive.moveTo(preDropPose,100);
         upper.setArmPosition(4516);

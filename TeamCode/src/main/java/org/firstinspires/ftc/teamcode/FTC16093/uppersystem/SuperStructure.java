@@ -128,6 +128,14 @@ public class SuperStructure {
         }
     }
 
+
+
+
+
+
+
+
+
     public void sleep(int sleepTime) {
         long end = System.currentTimeMillis() + sleepTime;
         while (opMode.opModeIsActive() && end > System.currentTimeMillis() && updateRunnable != null) {
@@ -168,11 +176,15 @@ public class SuperStructure {
         setArmPosition(4516);
         sleep(800);
         releaseYellow(grab_side);
+        releasePurple(grab_side);
         sleep(300);
         wrist_to_upward_drop();
         sleep(200);
-        set_wrist_pos(0.26);
+        set_wrist_pos(0.23);
         setArmPosition_slow(4200);
+        sleep(500);
+        setArmPosition(2000);
+        wrist_to_middle();
     }
 
     public void autoGrabPrepare(int armPos_near) {
@@ -223,7 +235,7 @@ public class SuperStructure {
     public void setArmLength(int length, double power) {
         amlDrive.setTargetPosition(length);
         amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        amlDrive.setPower(1);
+        amlDrive.setPower(0.85);
     }
 
     public void setArmPosition(int pos) {
@@ -231,26 +243,42 @@ public class SuperStructure {
         armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         if(armExternalEnc.getCurrentPosition() <= 800 && pos <= armExternalEnc.getCurrentPosition()){
-            armPidCtrl.setOutputBounds(-0.3,0);
+            armPidCtrl.setOutputBounds(-0.3,0.3);
         }else if(armExternalEnc.getCurrentPosition() < 3000 && pos >= armExternalEnc.getCurrentPosition()){
-            armPidCtrl.setOutputBounds(-1,1);
+            armPidCtrl.setOutputBounds(-0.8,0.8);
         }else if(pos >= armExternalEnc.getCurrentPosition()){
             armPidCtrl.setOutputBounds(-0.5,0.5);
         }else{
-            armPidCtrl.setOutputBounds(-1,1);
+            armPidCtrl.setOutputBounds(-0.8,0.8);
         }
     }
 
     public void setArmPosition_slow(int pos) {
         armTargetPosition = pos * EXTERNAL_RATE;
         armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        armPidCtrl.setOutputBounds(-0.3,0.3);
+        armPidCtrl.setOutputBounds(-0.7,0.7);
+    }
+    // ToDo: arm length reset
+    public void resetArmLength(){
+        amlDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        amlDrive.setPower(-0.2);
+        long end = System.currentTimeMillis() + 300;
+        while (end > System.currentTimeMillis()) {
+            opMode.idle();
+        }
+        amlDrive.setPower(0);
+        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        amlDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+    public void resetArmPosition(){
+        armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public int getArmPosition() {
         return armExternalEnc.getCurrentPosition();
     }
 
+    private static final double WRIST_MIDDLE_POSITION = 0.86;
     public void wrist_to_middle() {
         wrt.setPosition(0.86); // initial 0.55
     }

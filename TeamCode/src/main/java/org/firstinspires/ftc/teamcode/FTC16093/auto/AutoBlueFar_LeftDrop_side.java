@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Autonomous (group = "AutoBlueFar")
+@Disabled
 public class AutoBlueFar_LeftDrop_side extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
@@ -18,7 +20,7 @@ public class AutoBlueFar_LeftDrop_side extends AutoMaster {
         sleep(wait_time);
         distal_edgeBack();
 
-        sleep(1000);
+
         upper.grab2_open(); //yellow
         upper.setArmPosition(2000);
         backDrop_move();
