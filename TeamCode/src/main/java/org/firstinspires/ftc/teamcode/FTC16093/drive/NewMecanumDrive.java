@@ -57,13 +57,15 @@ import org.firstinspires.ftc.teamcode.drive.PYZLocalizer;
 
 import com.qualcomm.robotcore.util.Range;
 
+import XCYOS.Component;
 import XCYOS.Task;
+import XCYOS.TaskChainBuilder;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class NewMecanumDrive extends MecanumDrive {
+public class NewMecanumDrive extends MecanumDrive implements Component {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(10, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 1); //8
 
@@ -87,69 +89,61 @@ public class NewMecanumDrive extends MecanumDrive {
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
 
-    private List<Integer> lastEncPositions = new ArrayList<>();
-    private List<Integer> lastEncVels = new ArrayList<>();
-
-    public NewMecanumDrive(HardwareMap hardwareMap) {
+    private final List<Integer> lastEncPositions = new ArrayList<>();
+    private final List<Integer> lastEncVels = new ArrayList<>();
+    private Runnable updateRunnable;
+    public void setUpdateRunnable(Runnable updateRunnable) {
+        this.updateRunnable = updateRunnable;
+    }
+    public NewMecanumDrive() {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
-        updatePositionTask.setType(Task.Type.BASE);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
+    }
 
-        LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap);
-
-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
-
-        for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
-            module.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
-        }
-
-        // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);
-        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
+    @Override
+    public void setUp(HardwareMap hardwareMap) {
         leftFront = hardwareMap.get(DcMotorEx.class, "frontLeft");
         leftRear = hardwareMap.get(DcMotorEx.class, "rearLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "rearRight");
         rightFront = hardwareMap.get(DcMotorEx.class, "frontRight");
-
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
-
         for (DcMotorEx motor : motors) {
             MotorConfigurationType motorConfigurationType = motor.getMotorType().clone();
             motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
             motor.setMotorType(motorConfigurationType);
         }
-
-        if (RUN_USING_ENCODER) {
-            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-
-        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
-            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
-        }
-
-        // TODO: reverse any motors using DcMotor.setDirection()
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         rightFront.setDirection(DcMotorSimple.Direction.FORWARD);
         rightRear.setDirection(DcMotorSimple.Direction.FORWARD);
-        List<Integer> lastTrackingEncPositions = new ArrayList<>();
-        List<Integer> lastTrackingEncVels = new ArrayList<>();
+        if (RUN_USING_ENCODER) {
+            setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
 
-        // TODO: if desired, use setLocalizer() to change the localization method
+        if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
+            setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
+        }
+        setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu.initialize(parameters);
+        BNO055IMUUtil.remapZAxis(imu, AxisDirection.POS_Y);
+
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         setLocalizer(new PYZLocalizer(hardwareMap, imu));
 
+        List<Integer> lastTrackingEncPositions = new ArrayList<>();
+        List<Integer> lastTrackingEncVels = new ArrayList<>();
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
     }
+
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
         return new TrajectoryBuilder(startPose, VEL_CONSTRAINT, ACCEL_CONSTRAINT);
@@ -222,7 +216,7 @@ public class NewMecanumDrive extends MecanumDrive {
 
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())
-            update();
+            updateRunnable.run();
     }
 
     public boolean isBusy() {
@@ -393,7 +387,7 @@ public class NewMecanumDrive extends MecanumDrive {
     }
 
     public static PIDCoefficients translationPid = new PIDCoefficients(0.1778, 0.000, 0.02286);
-    public static PIDCoefficients headingPid = new PIDCoefficients(1.5, 0, 0.13);
+    public static PIDCoefficients headingPid = new PIDCoefficients(1.5, 0, 0.2);
 
     private PIDFController transPID_x;
     private PIDFController transPID_y;
@@ -417,6 +411,7 @@ public class NewMecanumDrive extends MecanumDrive {
 
     public void stopTrajectory() {
         trajectorySequenceRunner.followTrajectorySequenceAsync(null);
+        simpleMoveIsActivate=false;
     }
 
     public void initSimpleMove(Pose2d pos) {
@@ -433,14 +428,14 @@ public class NewMecanumDrive extends MecanumDrive {
         turnPID.setTargetPosition(0);
     }
 
-    @Deprecated
+    //    @Deprecated
     public void moveTo(Pose2d endPose, int correctTime_ms) {
         initSimpleMove(endPose);
         while (isBusy())
-            update();
+            updateRunnable.run();
         long endTime = System.currentTimeMillis() + correctTime_ms;
         while (endTime > System.currentTimeMillis())
-            update();
+            updateRunnable.run();
         simpleMoveIsActivate = false;
         setMotorPowers(0, 0, 0, 0);
     }
@@ -495,7 +490,7 @@ public class NewMecanumDrive extends MecanumDrive {
      * @param y_static
      */
     public void setGlobalPower(Pose2d drivePower, double x_static, double y_static) {
-        Vector2d vec = drivePower.vec().rotated(-getLocalizer().getPoseEstimate().getHeading());
+        Vector2d vec = drivePower.vec().rotated(-getPoseEstimate().getHeading());
 //        Vector2d vec = drivePower.vec().rotated(-getRawExternalHeading());
         if (vec.norm() > DEAD_BAND) {
             vec = new Vector2d(
@@ -515,15 +510,16 @@ public class NewMecanumDrive extends MecanumDrive {
         ), 0, 0);
     }
 
-
-    public Task updatePositionTask = new Task() {
-
-        @Override
-        public void run() {
-            update();
-        }
-    };
-
+    public Task resetImu(Pose2d pose2d){
+        return new TaskChainBuilder()
+                .add(()-> {
+                    setPoseEstimate(pose2d);
+                    update();
+                    getLocalizer().setPoseEstimate(pose2d);
+                    update();
+                })
+                .end().getBase();
+    }
     private double clamp(double val, double range) {
         return Range.clip(val, -range, range);
     }

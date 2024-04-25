@@ -13,7 +13,7 @@ import XCYOS.XCYOSCore;
 
 @Autonomous
 @Config
-public class XCYOSTest extends LinearOpMode {
+public class XCYOSAutoTest extends LinearOpMode {
     public static double x = 12;
     public static double y = 0, heading = 0;
     public static int time = 2000;

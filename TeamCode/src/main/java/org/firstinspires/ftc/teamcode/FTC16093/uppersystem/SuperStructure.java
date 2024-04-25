@@ -16,7 +16,7 @@ public class SuperStructure {
     private final DcMotorEx amlDrive;
     private final DcMotorEx armExternalEnc;
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
-    private PIDFController armPidCtrl;
+    private final PIDFController armPidCtrl;
     private Servo gb1 = null;
     private Servo gb2 = null;
     private Servo wrt = null;
@@ -127,7 +127,6 @@ public class SuperStructure {
             grab2_close();
         }
     }
-
 
 
 

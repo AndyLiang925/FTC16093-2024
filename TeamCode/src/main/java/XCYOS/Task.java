@@ -2,40 +2,69 @@ package XCYOS;
 
 import java.util.ArrayList;
 
-public abstract class Task implements Runnable {
-   protected Type type = Type.INSTANT;
-   protected Status status = Status.PENDING;
-   private final ArrayList<Task> nextTask=new ArrayList<>(1);
+public abstract class Task {
+    protected Type type = Type.INSTANT;
+    protected Status status = Status.PENDING;
+    private final ArrayList<Task> nextTask = new ArrayList<>(1);
+    private Task threadEnd = this;
+    private Component[] componentsOccupied = new Component[0];
+    private int priority = 1;
 
-   public void setUp() {
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
 
-   }
+    public int getPriority() {
+        return priority;
+    }
 
-   public void setNextTask(Task task){
-      nextTask.add(task);
-   }
+    public void setComponentsOccupied(Component... componentsOccupied) {
+        this.componentsOccupied = componentsOccupied;
+    }
 
-   public ArrayList<Task> getNextTasks(){
-      return nextTask;
-   }
+    public Component[] getComponentsOccupied() {
+        return componentsOccupied;
+    }
 
-   public void end() {
+    public void setUp() {
 
-   }
+    }
 
-   public void setStatus(Status status) {
-      this.status = status;
-   }
+    abstract public void run();
 
-   public void setType(Type type) {
-      this.type = type;
-   }
+    public void end() {
 
-   public enum Type {
-      BASE, INSTANT
-   }
+    }
 
-   public enum Status {
-      PENDING, RUNNING, ENDED
-   }
+    protected void setEndTask(Task endTask) {
+        threadEnd = endTask;
+    }
+
+    protected Task getEndTask() {
+        return threadEnd;
+    }
+
+    protected void addNextTask(Task task) {
+        nextTask.add(task);
+    }
+
+    protected ArrayList<Task> getNextTasks() {
+        return nextTask;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public enum Type {
+        BASE, INSTANT
+    }
+
+    public enum Status {
+        PENDING, RUNNING, ENDED
+    }
 }
