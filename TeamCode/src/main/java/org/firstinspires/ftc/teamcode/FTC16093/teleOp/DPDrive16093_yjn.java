@@ -119,13 +119,13 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         XCYBoolean aim =new XCYBoolean(()->gamepad2.a);
         XCYBoolean distal = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean proximal = new XCYBoolean(()->gamepad1.right_trigger>0);
-        XCYBoolean drop = new XCYBoolean(()->gamepad1.left_trigger>0);
+        XCYBoolean drop = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean brake_start = new XCYBoolean(()->gamepad1.b);
         //XCYBoolean back = new XCYBoolean(()->gamepad2.x);
         XCYBoolean leftGrab = new XCYBoolean(()->gamepad2.right_trigger>0);
         XCYBoolean rightGrab = new XCYBoolean(()->gamepad2.left_trigger>0);
         XCYBoolean humanGrab = new XCYBoolean(()->gamepad1.back);
-        XCYBoolean toRun = new XCYBoolean(()->gamepad1.left_bumper);
+        XCYBoolean toRun = new XCYBoolean(()->gamepad1.left_stick_button);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
         XCYBoolean armExpandBack = new XCYBoolean(()->gamepad2.right_bumper);
         XCYBoolean TankForward = new XCYBoolean(()->gamepad1.dpad_up);
@@ -319,7 +319,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             if(sequence== DPDrive16093_yjn.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(275);
+                    setArmPosition(211);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.45;
