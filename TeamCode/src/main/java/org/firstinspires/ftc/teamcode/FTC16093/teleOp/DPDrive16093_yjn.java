@@ -403,7 +403,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                     telemetry.addData("aim",0);
                     leftGrabOpen=false;
                     rightGrabOpen=false;
-                    setArmPosition(275);
+                    setArmPosition(215);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.45;
