@@ -128,6 +128,8 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         XCYBoolean toRun = new XCYBoolean(()->gamepad1.left_stick_button);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
         XCYBoolean armExpandBack = new XCYBoolean(()->gamepad2.right_bumper);
+        XCYBoolean armDropUp = new XCYBoolean(()->gamepad2.dpad_up);
+        XCYBoolean armDropDown = new XCYBoolean(()->gamepad2.dpad_down);
         XCYBoolean TankForward = new XCYBoolean(()->gamepad1.dpad_up);
         XCYBoolean TankBackward = new XCYBoolean(()->gamepad1.dpad_down);
         XCYBoolean TankLeftward = new XCYBoolean(()->gamepad1.dpad_left);
@@ -319,7 +321,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             if(sequence== DPDrive16093_yjn.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(211);
+                    setArmPosition(220);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.45;
@@ -403,7 +405,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                     telemetry.addData("aim",0);
                     leftGrabOpen=false;
                     rightGrabOpen=false;
-                    setArmPosition(215);
+                    setArmPosition(220);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.45;
@@ -434,13 +436,13 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             }
             if(sequence== DPDrive16093_yjn.Sequence.RELEASE) {
                 speed = 0.4;
-                if (distal.toTrue()) {
+                if (armDropUp.toTrue()) {
                     index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
                     mode=1;
                     pd=0;
                     pdArm=0;
                 }
-                if (proximal.toTrue()) {
+                if (armDropDown.toTrue()) {
                     index = index - 1 < minIndex ? minIndex : index - 1;
                     mode=1;
                     pd=0;
