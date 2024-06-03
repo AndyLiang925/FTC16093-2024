@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 import java.util.List;
 
 @TeleOp
-public class DPDrive16093_yjn extends LinearOpMode {//
+public class DPDrive16093_yjnSingle extends LinearOpMode {//
     private DcMotorEx leftFrontDrive   = null;  //  Used to control the left front drive wheel
     private DcMotorEx rightFrontDrive  = null;  //  Used to control the right front drive wheel
     private DcMotorEx leftBackDrive    = null;  //  Used to control the left back drive wheel
@@ -62,7 +62,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         AIM, RELEASE, RUN
     }
     int mode=0;
-    private DPDrive16093_yjn.Sequence sequence;
+    private DPDrive16093_yjnSingle.Sequence sequence;
     //    NormalizedColorSensor colorSensor;
 //    NormalizedColorSensor colorSensor2;
     View relativeLayout;
@@ -118,12 +118,12 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         boolean remove_limit=false;
         XCYBoolean aim =new XCYBoolean(()->gamepad1.x);
         XCYBoolean distal = new XCYBoolean(()->gamepad1.right_bumper);
-        XCYBoolean proximal = new XCYBoolean(()->gamepad1.right_trigger>0);
+        XCYBoolean proximal = new XCYBoolean(()->gamepad1.a);
         XCYBoolean drop = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean brake_start = new XCYBoolean(()->gamepad1.b);
         //XCYBoolean back = new XCYBoolean(()->gamepad2.x);
-        XCYBoolean leftGrab = new XCYBoolean(()->gamepad2.right_trigger>0);
-        XCYBoolean rightGrab = new XCYBoolean(()->gamepad2.left_trigger>0);
+        XCYBoolean leftGrab = new XCYBoolean(()->gamepad1.right_trigger>0);
+        XCYBoolean rightGrab = new XCYBoolean(()->gamepad1.left_trigger>0);
         XCYBoolean humanGrab = new XCYBoolean(()->gamepad1.back);
         XCYBoolean toRun = new XCYBoolean(()->gamepad1.left_stick_button);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
@@ -249,7 +249,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
-            if(gamepad1.a){
+            if(gamepad1.back){
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
@@ -275,7 +275,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 }
                 wrtp=0.9;
                 wrt.setPosition(wrtp);
-                sequence= DPDrive16093_yjn.Sequence.RUN;
+                sequence= DPDrive16093_yjnSingle.Sequence.RUN;
                 telemetry.addData("run",0);
             }
             if(drop.toTrue()){
@@ -286,7 +286,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 pd=0;
                 pdArm=0;
-                sequence= DPDrive16093_yjn.Sequence.RELEASE;
+                sequence= DPDrive16093_yjnSingle.Sequence.RELEASE;
                 telemetry.addData("re lease",0);
                 leftGrabOpen=false;
                 rightGrabOpen=false;
@@ -299,7 +299,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 setArmPosition(0);
                 wrtp=0.51;
                 wrt.setPosition(wrtp);
-                sequence= DPDrive16093_yjn.Sequence.AIM;
+                sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                 telemetry.addData("aim",0);
 //                if(colorSensorUsed&&!grabbed(colors)){
 //                    rightGrabOpen=true;
@@ -318,7 +318,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 colorSensorUsed=false;
             }
 
-            if(sequence== DPDrive16093_yjn.Sequence.AIM){
+            if(sequence== DPDrive16093_yjnSingle.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
                     setArmPosition(220);
@@ -388,7 +388,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 }
                 //}
             }
-            if(sequence== DPDrive16093_yjn.Sequence.RUN){
+            if(sequence== DPDrive16093_yjnSingle.Sequence.RUN){
                 setArmLength(0);
                 setArmPosition(0);
                 wrtp=0.9;
@@ -401,7 +401,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                     setArmPosition(0);
                     wrtp=0.51;
                     wrt.setPosition(wrtp);
-                    sequence= DPDrive16093_yjn.Sequence.AIM;
+                    sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
                     leftGrabOpen=false;
                     rightGrabOpen=false;
@@ -418,7 +418,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                     setArmPosition(0);
                     wrtp=0.51;
                     wrt.setPosition(wrtp);
-                    sequence= DPDrive16093_yjn.Sequence.AIM;
+                    sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
                     leftGrabOpen=false;
                     rightGrabOpen=false;
@@ -434,7 +434,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 setArmLength(armLengthLevels[index]);
                 mode=0;
             }
-            if(sequence== DPDrive16093_yjn.Sequence.RELEASE) {
+            if(sequence== DPDrive16093_yjnSingle.Sequence.RELEASE) {
                 speed = 0.4;
                 if (armDropUp.toTrue()) {
                     index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
@@ -525,7 +525,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             telemetry.addData("run_time :", runtime.seconds());
             telemetry.addData("imu_radian :",imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
             telemetry.addData("target_radian :",heading_target);
-            telemetry.addData("操作模式:", sequence== DPDrive16093_yjn.Sequence.AIM?"aim1":(sequence== DPDrive16093_yjn.Sequence.RUN?"run":(sequence== DPDrive16093_yjn.Sequence.RELEASE?"drop":"null")));//drive mode
+            telemetry.addData("操作模式:", sequence== DPDrive16093_yjnSingle.Sequence.AIM?"aim1":(sequence== DPDrive16093_yjnSingle.Sequence.RUN?"run":(sequence== DPDrive16093_yjnSingle.Sequence.RELEASE?"drop":"null")));//drive mode
             telemetry.addData("大臂伸长:",amlDrive.getCurrentPosition());//arm expand position
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());//arm position
             telemetry.addData("底盘速度:",speed);// robot speed
