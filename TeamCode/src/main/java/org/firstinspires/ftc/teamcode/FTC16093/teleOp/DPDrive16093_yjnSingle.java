@@ -116,7 +116,7 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
         boolean rightColorRe=true;
         boolean PDSleep;
         boolean remove_limit=false;
-        XCYBoolean aim =new XCYBoolean(()->gamepad1.x);
+        XCYBoolean aim =new XCYBoolean(()->gamepad1.a);
         XCYBoolean distal = new XCYBoolean(()->gamepad1.right_bumper);
         XCYBoolean proximal = new XCYBoolean(()->gamepad1.a);
         XCYBoolean drop = new XCYBoolean(()->gamepad1.left_bumper);
@@ -128,14 +128,14 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
         XCYBoolean toRun = new XCYBoolean(()->gamepad1.left_stick_button);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
         XCYBoolean armExpandBack = new XCYBoolean(()->gamepad2.right_bumper);
-        XCYBoolean armDropUp = new XCYBoolean(()->gamepad2.dpad_up);
-        XCYBoolean armDropDown = new XCYBoolean(()->gamepad2.dpad_down);
-        XCYBoolean TankForward = new XCYBoolean(()->gamepad1.dpad_up);
-        XCYBoolean TankBackward = new XCYBoolean(()->gamepad1.dpad_down);
-        XCYBoolean TankLeftward = new XCYBoolean(()->gamepad1.dpad_left);
-        XCYBoolean TankRightward = new XCYBoolean(()->gamepad1.dpad_right);
-        XCYBoolean hangLower = new XCYBoolean(()->gamepad2.a);
-        XCYBoolean hangUp = new XCYBoolean(()->gamepad2.y);
+        XCYBoolean armDropUp = new XCYBoolean(()->gamepad1.dpad_up);
+        XCYBoolean armDropDown = new XCYBoolean(()->gamepad1.dpad_down);
+        XCYBoolean TankForward = new XCYBoolean(()->gamepad2.dpad_up);
+        XCYBoolean TankBackward = new XCYBoolean(()->gamepad2.dpad_down);
+        XCYBoolean TankLeftward = new XCYBoolean(()->gamepad2.dpad_left);
+        XCYBoolean TankRightward = new XCYBoolean(()->gamepad2.dpad_right);
+        XCYBoolean hangLower = new XCYBoolean(()->gamepad1.start);
+        XCYBoolean hangUp = new XCYBoolean(()->gamepad1.x);
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.y);
         XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
         XCYBoolean dpad = new XCYBoolean(()->gamepad1.dpad_left||gamepad1.dpad_up||gamepad1.dpad_down);
@@ -556,7 +556,7 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
             if(dpad.toTrue()){
                 heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             }
-            if(gamepad1.dpad_up||gamepad1.dpad_down||gamepad1.dpad_right||gamepad1.dpad_left){
+            if(gamepad2.dpad_up||gamepad2.dpad_down||gamepad2.dpad_right||gamepad2.dpad_left){
                 bark_tank_drive_period(true,heading_target);
             }else{
                 bark_drive_period();
