@@ -253,6 +253,9 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
+                gb1.setPosition(grab1_close);
+                gb2.setPosition(grab2_close);
+                sleep_with_drive(100);
                 if(sequence== Sequence.AIM){
                     setArmLength(0);
                 }
@@ -308,8 +311,10 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
 //                    leftGrabOpen=true;
 //                }
                 //need to change
-                leftGrabOpen=false;
-                rightGrabOpen=false;
+                //leftGrabOpen=true;
+                //rightGrabOpen=true;
+                gb1.setPosition(0.7);
+                gb2.setPosition(0.32);
                 gb1.setPosition(leftGrabOpen?0.7:grab1_close);
                 gb2.setPosition(rightGrabOpen?0.32:grab2_close);
             }
@@ -322,7 +327,11 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                 speed = 0.5;
                 if(distal.toTrue()){
                     setArmPosition(220);
+                    //leftGrabOpen=true;
+                    //rightGrabOpen=true;
                     sleep_with_drive(200);
+                    gb1.setPosition(0.7);
+                    gb2.setPosition(0.32);
                     setArmLength(570);
                     wrtp=0.45;
                     wrt.setPosition(wrtp);
@@ -332,6 +341,11 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                     wrtp=0.51;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
+                    sleep_with_drive(200);
+                    //leftGrabOpen=true;
+                    //rightGrabOpen=true;
+                    gb1.setPosition(0.7);
+                    gb2.setPosition(0.32);
                 }
 //                    if(leftGrab.toTrue()){
 //                        gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
@@ -403,13 +417,16 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
-                    leftGrabOpen=false;
-                    rightGrabOpen=false;
                     setArmPosition(220);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.45;
                     wrt.setPosition(wrtp);
+                    sleep_with_drive(300);
+                    //leftGrabOpen=true;
+                    //rightGrabOpen=true;
+                    gb1.setPosition(0.7);
+                    gb2.setPosition(0.32);
                     gb1.setPosition(leftGrabOpen?0.7:grab1_close);
                     gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 }
@@ -420,12 +437,15 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
-                    leftGrabOpen=false;
-                    rightGrabOpen=false;
                     setArmLength(0);
                     wrtp=0.51;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
+                    sleep_with_drive(50);
+                    //leftGrabOpen=true;
+                    //rightGrabOpen=true;
+                    gb1.setPosition(0.7);
+                    gb2.setPosition(0.32);
                     gb1.setPosition(leftGrabOpen?0.7:grab1_close);
                     gb2.setPosition(rightGrabOpen?0.32:grab2_close);
                 }
