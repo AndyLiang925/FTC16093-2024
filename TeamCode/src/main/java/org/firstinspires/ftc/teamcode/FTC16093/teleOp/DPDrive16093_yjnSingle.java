@@ -108,7 +108,7 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {0,179,257,337,431,520,234,323,452,570}; //337 431
         int armPosLevels[] = {2155,2050,1980,1930,1920,1922,1994,1981,1951,1934};
-        double wrtLevels[] = {1,1,1,1,1,1,0.31,0.31,0.31,0.354};
+        double wrtLevels[] = {1,1,1,1,1,1,0.41,0.41,0.41,0.454};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=true;
