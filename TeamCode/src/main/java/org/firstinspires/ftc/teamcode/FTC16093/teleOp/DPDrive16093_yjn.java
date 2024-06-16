@@ -50,9 +50,9 @@ public class DPDrive16093_yjn extends LinearOpMode {//
     public double driver_speed=1.0;//手动慢速档 driver controlled slow mode speed
     public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
     private double heading_target;//heading target
-    private double grab1_open=0.6;
-    private double grab1_close=0.86;
-    private double grab2_open=0.23;
+    private double grab1_open=0.35;
+    private double grab1_close=0.84;
+    private double grab2_open=0.02;
     private double grab2_close=0.5;
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -108,7 +108,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         int pdArm=0;//判断大臂是否微调 whether arm is in driver controlled mode
         int armLengthLevels[] = {0,179,257,337,431,520,234,323,452,570}; //337 431
         int armPosLevels[] = {2155,2050,1980,1930,1920,1922,1994,1981,1951,1934};
-        double wrtLevels[] = {0.95,0.96,1,1,1,1,0.31,0.31,0.31,0.354};
+        double wrtLevels[] = {1,1,1,1,1,1,0.41,0.41,0.41,0.454};
         boolean leftGrabOpen=false;
         boolean rightGrabOpen=false;
         boolean colorSensorUsed=true;
@@ -116,9 +116,9 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         boolean rightColorRe=true;
         boolean PDSleep;
         boolean remove_limit=false;
-        XCYBoolean aim =new XCYBoolean(()->gamepad1.x);
+        XCYBoolean aim =new XCYBoolean(()->gamepad1.a);
         XCYBoolean distal = new XCYBoolean(()->gamepad1.right_bumper);
-        XCYBoolean proximal = new XCYBoolean(()->gamepad1.right_trigger>0);
+        XCYBoolean proximal = new XCYBoolean(()->gamepad1.a);
         XCYBoolean drop = new XCYBoolean(()->gamepad1.left_bumper);
         XCYBoolean brake_start = new XCYBoolean(()->gamepad1.b);
         //XCYBoolean back = new XCYBoolean(()->gamepad2.x);
@@ -128,14 +128,14 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         XCYBoolean toRun = new XCYBoolean(()->gamepad1.left_stick_button);
         XCYBoolean armBack = new XCYBoolean(()->gamepad2.left_bumper);
         XCYBoolean armExpandBack = new XCYBoolean(()->gamepad2.right_bumper);
-        XCYBoolean armDropUp = new XCYBoolean(()->gamepad2.dpad_up);
-        XCYBoolean armDropDown = new XCYBoolean(()->gamepad2.dpad_down);
-        XCYBoolean TankForward = new XCYBoolean(()->gamepad1.dpad_up);
-        XCYBoolean TankBackward = new XCYBoolean(()->gamepad1.dpad_down);
-        XCYBoolean TankLeftward = new XCYBoolean(()->gamepad1.dpad_left);
-        XCYBoolean TankRightward = new XCYBoolean(()->gamepad1.dpad_right);
-        XCYBoolean hangLower = new XCYBoolean(()->gamepad2.a);
-        XCYBoolean hangUp = new XCYBoolean(()->gamepad2.y);
+        XCYBoolean armDropUp = new XCYBoolean(()->gamepad1.dpad_up);
+        XCYBoolean armDropDown = new XCYBoolean(()->gamepad1.dpad_down);
+        XCYBoolean TankForward = new XCYBoolean(()->gamepad2.dpad_up);
+        XCYBoolean TankBackward = new XCYBoolean(()->gamepad2.dpad_down);
+        XCYBoolean TankLeftward = new XCYBoolean(()->gamepad2.dpad_left);
+        XCYBoolean TankRightward = new XCYBoolean(()->gamepad2.dpad_right);
+        XCYBoolean hangLower = new XCYBoolean(()->gamepad1.start);
+        XCYBoolean hangUp = new XCYBoolean(()->gamepad1.x);
         XCYBoolean plane_shoot = new XCYBoolean(()->gamepad1.y);
         XCYBoolean movePixel = new XCYBoolean(()->gamepad2.left_stick_button);
         XCYBoolean dpad = new XCYBoolean(()->gamepad1.dpad_left||gamepad1.dpad_up||gamepad1.dpad_down);
@@ -178,6 +178,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
         amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
+        gb1.setDirection(Servo.Direction.REVERSE);
         brake.setDirection(Servo.Direction.FORWARD);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -195,7 +196,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
 
         gb1.setPosition(grab1_close);
         gb2.setPosition(grab2_close);
-        wrt.setPosition(0.9);
+        wrt.setPosition(1);
         plnp=0.6;
         plane.setPosition(plnp);
         brkp=0.5;
@@ -249,15 +250,20 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
-            if(gamepad1.a){
+            if(gamepad1.back){
                 imu.resetYaw();
             }
             if(toRun.toTrue()){
+                if(sequence == Sequence.AIM) {
+                    gb1.setPosition(grab1_close);
+                    gb2.setPosition(grab2_close);
+                }
+                sleep_with_drive(100);
                 if(sequence== Sequence.AIM){
                     setArmLength(0);
                 }
                 if(sequence== Sequence.RELEASE){
-                    wrtp=0.9;
+                    wrtp=1;
                     wrt.setPosition(wrtp);
                     speed=1;
                     setArmPosition(1200);
@@ -273,7 +279,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                     speed=1;
                     sleep_with_drive(500);
                 }
-                wrtp=0.9;
+                wrtp=1;
                 wrt.setPosition(wrtp);
                 sequence= DPDrive16093_yjn.Sequence.RUN;
                 telemetry.addData("run",0);
@@ -282,7 +288,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 mode=1;
                 setArmLength(0);
                 setArmPosition(1900);
-                wrtp=0;
+                wrtp=0.1;
                 wrt.setPosition(wrtp);
                 pd=0;
                 pdArm=0;
@@ -290,14 +296,14 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 telemetry.addData("re lease",0);
                 leftGrabOpen=false;
                 rightGrabOpen=false;
-                gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+                gb1.setPosition(leftGrabOpen?0.6:grab1_close);
+                gb2.setPosition(rightGrabOpen?0.22:grab2_close);
 
             }
             if(aim.toTrue()){
                 setArmLength(0);
                 setArmPosition(0);
-                wrtp=0.51;
+                wrtp=0.61;
                 wrt.setPosition(wrtp);
                 sequence= DPDrive16093_yjn.Sequence.AIM;
                 telemetry.addData("aim",0);
@@ -308,10 +314,12 @@ public class DPDrive16093_yjn extends LinearOpMode {//
 //                    leftGrabOpen=true;
 //                }
                 //need to change
-                leftGrabOpen=false;
-                rightGrabOpen=false;
-                gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+                leftGrabOpen=true;
+                rightGrabOpen=true;
+                gb1.setPosition(grab1_open);
+                gb2.setPosition(grab2_open);
+                gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
+                gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
             }
 
             if(humanGrab.toTrue()){
@@ -321,17 +329,26 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             if(sequence== DPDrive16093_yjn.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(220);
+                    setArmPosition(240);
+                    leftGrabOpen=true;
+                    rightGrabOpen=true;
                     sleep_with_drive(200);
+                    gb1.setPosition(grab1_open);
+                    gb2.setPosition(grab2_open);
                     setArmLength(570);
-                    wrtp=0.45;
+                    wrtp=0.55;
                     wrt.setPosition(wrtp);
                 }
                 if(proximal.toTrue()){
                     setArmLength(0);
-                    wrtp=0.51;
+                    wrtp=0.61;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
+                    sleep_with_drive(200);
+                    leftGrabOpen=true;
+                    rightGrabOpen=true;
+                    gb1.setPosition(grab1_open);
+                    gb2.setPosition(grab2_open);
                 }
 //                    if(leftGrab.toTrue()){
 //                        gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
@@ -391,7 +408,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             if(sequence== DPDrive16093_yjn.Sequence.RUN){
                 setArmLength(0);
                 setArmPosition(0);
-                wrtp=0.9;
+                wrtp=1;
                 wrt.setPosition(wrtp);
                 speed=1;
                 gb1.setPosition(grab1_close);
@@ -399,35 +416,41 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 if(distal.toTrue()){
                     setArmLength(0);
                     setArmPosition(0);
-                    wrtp=0.51;
+                    wrtp=0.61;
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjn.Sequence.AIM;
                     telemetry.addData("aim",0);
-                    leftGrabOpen=false;
-                    rightGrabOpen=false;
-                    setArmPosition(220);
+                    setArmPosition(240);
                     sleep_with_drive(200);
                     setArmLength(570);
-                    wrtp=0.45;
+                    wrtp=0.55;
                     wrt.setPosition(wrtp);
-                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+                    sleep_with_drive(300);
+                    leftGrabOpen=true;
+                    rightGrabOpen=true;
+                    gb1.setPosition(grab1_open);
+                    gb2.setPosition(grab2_open);
+                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
+                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
                 }
                 if(proximal.toTrue()){
                     setArmLength(0);
                     setArmPosition(0);
-                    wrtp=0.51;
+                    wrtp=0.61;
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjn.Sequence.AIM;
                     telemetry.addData("aim",0);
-                    leftGrabOpen=false;
-                    rightGrabOpen=false;
                     setArmLength(0);
-                    wrtp=0.51;
+                    wrtp=0.61;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
-                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+                    sleep_with_drive(50);
+                    leftGrabOpen=true;
+                    rightGrabOpen=true;
+                    gb1.setPosition(grab1_open);
+                    gb2.setPosition(grab2_open);
+                    gb1.setPosition(leftGrabOpen?grab1_open:grab1_close);
+                    gb2.setPosition(rightGrabOpen?grab2_open:grab2_close);
                 }
             }
             if(mode==1&&armDrive.getCurrentPosition()>armPosLevels[index]-300){
@@ -476,7 +499,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                     wrtp=wrtLevels[index];
                 }
                 if(movePixel.toTrue()){
-                    wrtp=0.5;
+                    wrtp=0.6;
                     pd=1;
                     gb1.setPosition(0.98);
                     gb2.setPosition(0.64);
@@ -484,14 +507,14 @@ public class DPDrive16093_yjn extends LinearOpMode {//
                 wrt.setPosition(wrtp);
                 if (leftGrab.toTrue()) {
                     rightGrabOpen = !rightGrabOpen;
-                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+                    gb1.setPosition(leftGrabOpen?0.6:grab1_close);
+                    gb2.setPosition(rightGrabOpen?0.22:grab2_close);
                 }
                 if (rightGrab.toTrue()) {
 
                     leftGrabOpen = !leftGrabOpen;
-                    gb1.setPosition(leftGrabOpen?0.7:grab1_close);
-                    gb2.setPosition(rightGrabOpen?0.32:grab2_close);
+                    gb1.setPosition(leftGrabOpen?0.6:grab1_close);
+                    gb2.setPosition(rightGrabOpen?0.22:grab2_close);
                 }
 
                 ////
@@ -556,7 +579,7 @@ public class DPDrive16093_yjn extends LinearOpMode {//
             if(dpad.toTrue()){
                 heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
             }
-            if(gamepad1.dpad_up||gamepad1.dpad_down||gamepad1.dpad_right||gamepad1.dpad_left){
+            if(gamepad2.dpad_up||gamepad2.dpad_down||gamepad2.dpad_right||gamepad2.dpad_left){
                 bark_tank_drive_period(true,heading_target);
             }else{
                 bark_drive_period();
