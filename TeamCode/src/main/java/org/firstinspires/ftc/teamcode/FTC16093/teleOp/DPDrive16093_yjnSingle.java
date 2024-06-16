@@ -303,7 +303,7 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
             if(aim.toTrue()){
                 setArmLength(0);
                 setArmPosition(0);
-                wrtp=0.51;
+                wrtp=0.53;
                 wrt.setPosition(wrtp);
                 sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                 telemetry.addData("aim",0);
@@ -336,12 +336,12 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                     gb1.setPosition(grab1_open);
                     gb2.setPosition(grab2_open);
                     setArmLength(570);
-                    wrtp=0.45;
+                    wrtp=0.47;
                     wrt.setPosition(wrtp);
                 }
                 if(proximal.toTrue()){
                     setArmLength(0);
-                    wrtp=0.51;
+                    wrtp=0.53;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
                     sleep_with_drive(200);
@@ -416,14 +416,14 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                 if(distal.toTrue()){
                     setArmLength(0);
                     setArmPosition(0);
-                    wrtp=0.51;
+                    wrtp=0.53;
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
                     setArmPosition(240);
                     sleep_with_drive(200);
                     setArmLength(570);
-                    wrtp=0.45;
+                    wrtp=0.47;
                     wrt.setPosition(wrtp);
                     sleep_with_drive(300);
                     leftGrabOpen=true;
@@ -436,12 +436,12 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                 if(proximal.toTrue()){
                     setArmLength(0);
                     setArmPosition(0);
-                    wrtp=0.51;
+                    wrtp=0.53;
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
                     setArmLength(0);
-                    wrtp=0.51;
+                    wrtp=0.53;
                     wrt.setPosition(wrtp);
                     setArmPosition(0);
                     sleep_with_drive(50);
