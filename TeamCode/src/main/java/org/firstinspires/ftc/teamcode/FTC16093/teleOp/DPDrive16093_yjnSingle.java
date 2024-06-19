@@ -329,7 +329,7 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
             if(sequence== DPDrive16093_yjnSingle.Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
-                    setArmPosition(240);
+                    setArmPosition(230);
                     leftGrabOpen=true;
                     rightGrabOpen=true;
                     sleep_with_drive(200);
@@ -420,7 +420,7 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
                     wrt.setPosition(wrtp);
                     sequence= DPDrive16093_yjnSingle.Sequence.AIM;
                     telemetry.addData("aim",0);
-                    setArmPosition(240);
+                    setArmPosition(230);
                     sleep_with_drive(200);
                     setArmLength(570);
                     wrtp=0.47;
@@ -534,9 +534,11 @@ public class DPDrive16093_yjnSingle extends LinearOpMode {//
 //                    }
             }
             if(hangLower.get()){
+                wrtp=0.9;
                 hangLeft.setPower(1);
                 hangRight.setPower(1);
             }else if(hangUp.get()){
+                //wrtp=0.53;
                 hangLeft.setPower(-1);
                 hangRight.setPower(-1);
             }else{
