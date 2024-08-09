@@ -22,7 +22,7 @@ public class SuperStructure {
     private Servo wrt = null;
 
     public int grab_left = 1, grab_right = -1;
-    public static double grab1_close = 0.85, grab2_close = 0.48, grab_delta = 0.26;
+    public static double grab1_close = 0.86, grab2_close = 0.55, grab_delta = 0.5;
 
     private int grab_side;
 
@@ -57,6 +57,8 @@ public class SuperStructure {
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         wrt.setDirection(Servo.Direction.FORWARD);
+        gb1.setDirection(Servo.Direction.REVERSE);
+
 
         armExternalEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -90,10 +92,10 @@ public class SuperStructure {
     }
 
     public void grab1_drop() {
-        gb1.setPosition(0.7);
+        gb1.setPosition(0.6);
     }
     public void grab2_drop(){
-        gb2.setPosition(0.33);
+        gb2.setPosition(0.22);
     }
 
     public void releasePurple(int grab_side) { //side 1 grab_left //-1 grab_right
@@ -157,7 +159,7 @@ public class SuperStructure {
         sleep(500);
         setArmPosition(0);
         wrist_to_middle();
-        sleep(800);
+        //sleep(800);
     }
 
     public void putOnBackDrop() {

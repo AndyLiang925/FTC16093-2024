@@ -102,7 +102,7 @@ public class XCYOSTeleOpTest extends LinearOpMode {
             }
             if (toOriginal.toTrue()) {
                 state = State.NOT_HOLDING_PIXEL;
-                global_drive_power=1;
+                global_drive_power = 1;
                 XCYOSCore.addTask(upper.toOriginal());
             }
             if (resetSlider.toTrue()) {

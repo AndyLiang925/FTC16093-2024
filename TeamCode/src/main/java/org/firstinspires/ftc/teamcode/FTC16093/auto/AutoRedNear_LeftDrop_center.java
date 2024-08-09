@@ -25,7 +25,7 @@ public class AutoRedNear_LeftDrop_center extends AutoMaster {
         upper.drop_upward();
         upper.setArmPosition_slow(0);
         sleep(1000);
-        //parking(1);
+        parking(1);
         //backTo_StartPos();
     }
 }
