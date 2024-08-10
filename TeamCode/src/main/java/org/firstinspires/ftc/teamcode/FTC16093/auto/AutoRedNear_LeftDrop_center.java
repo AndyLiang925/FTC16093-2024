@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AutoRedNear_LeftDrop_center extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
+
         startSide = PROXIMAL;
         side_color = RED;
         drop_side = LEFT;

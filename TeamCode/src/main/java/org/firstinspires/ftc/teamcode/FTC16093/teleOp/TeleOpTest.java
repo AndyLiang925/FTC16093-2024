@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.FTC16093.auto.testing;
+package org.firstinspires.ftc.teamcode.FTC16093.teleOp;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -17,7 +17,7 @@ import XCYOS.TaskChainBuilder;
 import XCYOS.XCYOSCore;
 
 @TeleOp
-public class XCYOSTeleOpTest extends LinearOpMode {
+public class TeleOpTest extends LinearOpMode {
     State state;
 
     enum State {
@@ -38,6 +38,14 @@ public class XCYOSTeleOpTest extends LinearOpMode {
         PYZLocalizer myLocalizer = new PYZLocalizer(hardwareMap,imu);
         myLocalizer.setPoseEstimate(new Pose2d(48,56,Math.toRadians(90))); //TODO: set Auto
         XCYOSCore.setUp(this, drive, upper);
+
+        int index=0;
+        int maxIndex=10;
+        int minIndex=0;
+        int slideLevels[] = {0,179,257,337,431,520,234,323,452,570};
+        int armPosLevels[] = {4000,3800,3600,3500,3460,3460,3660,3630,3570,3510};
+        double wrtLevels[] = {0.95,0.96,1,1,1,1,0.31,0.31,0.31,0.354};
+
         Task driveControl = new Task() {
             @Override
             public void run() {
@@ -80,32 +88,45 @@ public class XCYOSTeleOpTest extends LinearOpMode {
         XCYBoolean resetImu = new XCYBoolean(() -> gamepad1.x && gamepad1.back);
         XCYBoolean toFarIntake = new XCYBoolean(() -> state == State.NOT_HOLDING_PIXEL && gamepad1.dpad_up);
         XCYBoolean toCloseIntake = new XCYBoolean(() -> state == State.NOT_HOLDING_PIXEL && gamepad1.dpad_down);
+        XCYBoolean aim =new XCYBoolean(()->gamepad1.a);
         XCYBoolean higherBackDrop = new XCYBoolean(() -> state == State.HOLDING_PIXEL && gamepad1.dpad_up);
         XCYBoolean lowerBackDrop = new XCYBoolean(() -> state == State.HOLDING_PIXEL && gamepad1.dpad_down);
         XCYBoolean leftGrabber = new XCYBoolean(() -> gamepad1.left_bumper);
         XCYBoolean rightGrabber = new XCYBoolean(() -> gamepad1.right_bumper);
         XCYBoolean intakeBack = new XCYBoolean(() -> gamepad1.b);
+
         boolean leftGrabbed = false;
         boolean rightGrabbed = false;
         int backDropLength = 0;
         Vector2d lastGrabPos = new Vector2d();
         state = State.NOT_HOLDING_PIXEL;
         XCYOSCore.addTask(drive.resetImu(new Pose2d(0, 0, Math.toRadians(180))));
+
         waitForStart();
 
         XCYOSCore.addTask(upper.toOriginal());
         while (opModeIsActive()) {
+
             if (resetImu.toTrue()){
                 XCYOSCore.addTask(drive.resetImu(new Pose2d(0, 0, Math.toRadians(180))));
             }
+
             if (higherBackDrop.toTrue()) {
-                backDropLength = Range.clip(backDropLength + 70, 0, NewSuperStructure.MAX_SLIDE_LENGTH);
-                upper.setSlide(backDropLength, 0.8);
+                index = index + 1 >= maxIndex - 1 ? maxIndex - 1 : index + 1;
+                backDropLength = slideLevels[index];
+                upper.setSlide(backDropLength, 0.85);
+                upper.setArmPosition(armPosLevels[index]);
+                upper.setWristPosition(wrtLevels[index]);
             }
+
             if (lowerBackDrop.toTrue()) {
-                backDropLength = Range.clip(backDropLength - 70, 0, NewSuperStructure.MAX_SLIDE_LENGTH);
-                upper.setSlide(backDropLength, 0.8);
+                index = index - 1 < minIndex ? minIndex : index - 1;
+                backDropLength = slideLevels[index];
+                upper.setSlide(backDropLength, 0.85);
+                upper.setArmPosition(armPosLevels[index]);
+                upper.setWristPosition(wrtLevels[index]);
             }
+
             if (toOriginal.toTrue()) {
                 state = State.NOT_HOLDING_PIXEL;
                 global_drive_power=1;
@@ -114,12 +135,14 @@ public class XCYOSTeleOpTest extends LinearOpMode {
             if (resetSlider.toTrue()) {
                 XCYOSCore.addTask(upper.resetSliderEnc());
             }
+
             if (toFarIntake.toTrue()) {
                 state = State.NOT_HOLDING_PIXEL;
-                global_drive_power=0.3;
-                leftGrabbed=rightGrabbed=false;
+                global_drive_power = 0.3;
+                leftGrabbed = rightGrabbed = false;
                 XCYOSCore.addTask(upper.toIntakeGround());
             }
+
             if (toCloseIntake.toTrue()){
                 state = State.NOT_HOLDING_PIXEL;
                 leftGrabbed=rightGrabbed=false;
@@ -131,6 +154,7 @@ public class XCYOSTeleOpTest extends LinearOpMode {
                             upper.openGrabber(NewSuperStructure.Grabber.ALL);
                         }).end().getBase());
             }
+
             if (leftGrabber.toTrue()) {
                 if (state == State.NOT_HOLDING_PIXEL) {
                     if (leftGrabbed) upper.openGrabber(NewSuperStructure.Grabber.LEFT);
@@ -139,6 +163,7 @@ public class XCYOSTeleOpTest extends LinearOpMode {
                 } else
                     upper.releaseGrabber(NewSuperStructure.Grabber.LEFT);
             }
+
             if (rightGrabber.toTrue()) {
                 if (state == State.NOT_HOLDING_PIXEL) {
                     if (rightGrabbed) upper.openGrabber(NewSuperStructure.Grabber.RIGHT);
@@ -147,6 +172,7 @@ public class XCYOSTeleOpTest extends LinearOpMode {
                 } else
                     upper.releaseGrabber(NewSuperStructure.Grabber.RIGHT);
             }
+
             if (intakeBack.toTrue()) {
                 global_drive_power=1;
                 state = State.HOLDING_PIXEL;
@@ -159,6 +185,7 @@ public class XCYOSTeleOpTest extends LinearOpMode {
                             .add(upper.intakeBack())
                             .end().getBase());
             }
+
             if (toBackDrop.toTrue()) {
                 global_drive_power=0.3;
                 state = State.HOLDING_PIXEL;
@@ -168,7 +195,7 @@ public class XCYOSTeleOpTest extends LinearOpMode {
             XCYOSCore.update();
             XCYBoolean.bulkRead();
 
-            myLocalizer.update(); // added
+            myLocalizer.update(); // added,
             Pose2d myPose = myLocalizer.getPoseEstimate();
             telemetry.addData("x", myPose.getX());
             telemetry.addData("y", myPose.getY());

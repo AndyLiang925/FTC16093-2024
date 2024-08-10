@@ -17,8 +17,8 @@ public class SuperStructure {
     private final DcMotorEx armExternalEnc;
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController armPidCtrl;
-    private Servo gb1 = null;
-    private Servo gb2 = null;
+    private Servo grabRight = null;
+    private Servo grabLeft = null;
     private Servo wrt = null;
 
     public int grab_left = 1, grab_right = -1;
@@ -45,8 +45,8 @@ public class SuperStructure {
         armDrive = hardwareMap.get(DcMotorEx.class, "arm");
         amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
         wrt = hardwareMap.get(Servo.class, "wrist");
-        gb1 = hardwareMap.get(Servo.class, "grab1");
-        gb2 = hardwareMap.get(Servo.class, "grab2");
+        grabRight = hardwareMap.get(Servo.class, "grabRight");
+        grabLeft = hardwareMap.get(Servo.class, "grabLeft");
 
         armExternalEnc = hardwareMap.get(DcMotorEx.class, "hangRight");
 
@@ -66,19 +66,19 @@ public class SuperStructure {
     }
 
     public void grab2_close() {
-        gb2.setPosition(grab2_close);
+        grabLeft.setPosition(grab2_close);
     }
 
     public void grab1_close() {
-        gb1.setPosition(grab1_close);
+        grabRight.setPosition(grab1_close);
     }
 
     public void grab2_open() {
-        gb2.setPosition(grab2_close - grab_delta);
+        grabLeft.setPosition(grab2_close - grab_delta);
     }
 
     public void grab1_open() {
-        gb1.setPosition(grab1_close - grab_delta);
+        grabRight.setPosition(grab1_close - grab_delta);
     }
 
     public void reset_arm_encoders() {
@@ -90,10 +90,10 @@ public class SuperStructure {
     }
 
     public void grab1_drop() {
-        gb1.setPosition(0.7);
+        grabRight.setPosition(0.7);
     }
     public void grab2_drop(){
-        gb2.setPosition(0.33);
+        grabLeft.setPosition(0.33);
     }
 
     public void releasePurple(int grab_side) { //side 1 grab_left //-1 grab_right
