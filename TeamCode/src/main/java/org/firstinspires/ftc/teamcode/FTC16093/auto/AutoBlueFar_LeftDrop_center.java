@@ -11,24 +11,26 @@ public class AutoBlueFar_LeftDrop_center extends AutoMaster {
         side_color = BLUE;
         drop_side = LEFT;
         initHardware();
-        moveToSpikeMark();
 
+        // 放紫片
+        moveToSpikeMark();
         upper.putOnSpikeMark();
 
-        //DistalBackDropDump();
+        // 夹1个白片
         intakeDistal();
         sleep(wait_time);
-        distalMoveToBackDrop();
 
-        //DistalBackDropDump_farGrab();
+        // 到背板放片
+        distalMoveToBackDrop();
         upper.putOnBackDrop();
+
         upper.setArmPosition(4050);
         //backDrop_move();
         moveToDropMiddle();
         upper.release_extra();
         delay(200);
         upper.setArmPosition(0);
-        upper.setArmLength(0,0.85);
+        upper.setSlide(0,0.85);
 //        intakeGate();
 //        upper.drop_upward();
 //        upper.setArmPosition(0);

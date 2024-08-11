@@ -25,7 +25,7 @@ public class AutoRedNear_RightDrop_center extends AutoMaster {
         upper.drop_upward();
 
         upper.setArmPosition(500);
-        upper.wrist_to_middle();
+        upper.wrist_origin();
 
 
         delay(1000);

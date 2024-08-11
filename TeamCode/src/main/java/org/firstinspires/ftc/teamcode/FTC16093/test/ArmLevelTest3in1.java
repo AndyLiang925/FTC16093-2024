@@ -18,87 +18,86 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class ArmLevelTest3in1 extends LinearOpMode {
 
     private final Telemetry telemetry_M = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-    public static int encoder_position = 1850;
-    public static int encoder_position1 = 0;
+    public static int armPos = 1850;
+    public static int slidePos = 0;
     public static double max_power = 1;
     public static boolean read_only = false;
-    public static boolean reverse_0 = false;
-    public static boolean reverse_1 = true;
+    public static boolean reverse_arm = false;
+    public static boolean reverse_slide = true;
     public static boolean reset = true;
     public static boolean set_power_mode_or_set_position_mode = false;
-    public static String motor_name_0 = "arm";
-    public static String motor_name_1 = "armExpand";
-    public static String servo_name1 = "wrist";
-    private Servo servo0 = null;
+    private Servo wrist = null;
 
-    public static double servo_pos1 = 1;
+    public static double wristPos = 1;
 
     @Override
     public void runOpMode() {
-        servo0 = hardwareMap.get(Servo.class, servo_name1);
-        DcMotorEx motor0 = hardwareMap.get(DcMotorEx.class, motor_name_0);
-        DcMotorEx motor1 = hardwareMap.get(DcMotorEx.class, motor_name_1);
-        motor0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wrist = hardwareMap.get(Servo.class, "wrist");
+        DcMotorEx armMotor = hardwareMap.get(DcMotorEx.class, "arm");
+        DcMotorEx slideMotor = hardwareMap.get(DcMotorEx.class, "armExpand");
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
+        
         if (reset) {
-            motor0.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor0.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
-        if (reverse_0) {
-            motor0.setDirection(DcMotorSimple.Direction.REVERSE);
+        
+        if (reverse_arm) {
+            armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
-        if(reverse_1){
-            motor1.setDirection(DcMotorSimple.Direction.REVERSE);
+        if(reverse_slide){
+            slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
         while (opModeIsActive()) {
+            
             if (set_power_mode_or_set_position_mode) {
                 if (read_only) {
-                    motor0.setPower(0);
-                    motor1.setPower(0);
+                    armMotor.setPower(0);
+                    slideMotor.setPower(0);
                 }
                 else {
-                    motor0.setPower(max_power);
-                    motor1.setPower(max_power);
+                    armMotor.setPower(max_power);
+                    slideMotor.setPower(max_power);
                 }
-                motor0.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
             } else {
                 if (!read_only) {
-                    motor0.setTargetPosition(encoder_position);
-                    motor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armMotor.setTargetPosition(armPos);
+                    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                     sleep(2000);
-                    motor0.setPower(max_power);
-                    motor1.setTargetPosition(encoder_position1);
-                    motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    motor1.setPower(max_power);
-                    servo0.setPosition(servo_pos1);
+                    armMotor.setPower(max_power);
+                    slideMotor.setTargetPosition(slidePos);
+                    slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slideMotor.setPower(max_power);
+                    wrist.setPosition(wristPos);
+
                     sleep(10000);
-                    motor0.setTargetPosition(0);
-                    motor0.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    motor0.setPower(max_power);
-                    motor1.setTargetPosition(0);
-                    motor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    motor1.setPower(max_power);
+                    armMotor.setTargetPosition(0);
+                    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    armMotor.setPower(max_power);
+                    slideMotor.setTargetPosition(0);
+                    slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    slideMotor.setPower(max_power);
                 }
-                telemetry_M.addData("is busy_1", motor0.isBusy());
-                telemetry_M.addData("encoder_1", motor0.getCurrentPosition());
-                telemetry_M.addData("is busy_3", motor1.isBusy());
-                telemetry_M.addData("encoder_2", motor1.getCurrentPosition());
+                else{
+                    wrist.setPosition(wristPos);
+                }
+                telemetry_M.addData("is busy_arm", armMotor.isBusy());
+                telemetry_M.addData("is busy_slide", slideMotor.isBusy());
             }
-//            telemetry_M.addData("current_0",motor0.getCurrent(CurrentUnit.MILLIAMPS));
-//            telemetry_M.addData("current_1",motor1.getCurrent(CurrentUnit.MILLIAMPS));
-            telemetry_M.addData("encoder_0", motor0.getCurrentPosition());
-            telemetry_M.addData("encoder_1", motor1.getCurrentPosition());
-            telemetry_M.addData("velocity_1", motor0.getVelocity());
-            telemetry_M.addData("velocity_2", motor1.getVelocity());
+
+            telemetry_M.addData("encoder_arm", armMotor.getCurrentPosition());
+            telemetry_M.addData("encoder_slide", slideMotor.getCurrentPosition());
+            telemetry_M.addData("velocity_arm", armMotor.getVelocity());
+            telemetry_M.addData("velocity_slide", slideMotor.getVelocity());
             telemetry_M.update();
         }
     }
