@@ -48,10 +48,12 @@ public class DPDrive16093 extends LinearOpMode {//
     public double driver_speed = 1.0;//手动慢速档 driver controlled slow mode speed
     public double rotation_speed=1.0;//旋转降速 extra slow speed during rotation
     private double heading_target;//heading target
-    double wrtp = 1;
+    double wrist_pos = 0.77;
+    // 手腕位置
     double wrist_origin=0.77, wrist_intakeNear=0.57, wrist_intakeFar= 0.54;
-    private double grabRight_open=0.49, grabRight_drop = 0.69, grabRight_grab = 0.79, grabRight_close = 0.97;
-    private double grabLeft_open=0.23, grabLeft_drop = 0.43, grabLeft_grab=0.53, grabLeft_close = 0.71;
+    // 爪子位置
+    private double grabRight_open=0.5, grabRight_drop =0.7, grabRight_grab = 0.78, grabRight_close = 1;
+    private double grabLeft_open=0.19, grabLeft_drop = 0.39, grabLeft_grab=0.47, grabLeft_close = 0.69;
     private ElapsedTime runtime = new ElapsedTime();
     enum Sequence {
         AIM, RELEASE, RUN, MOVEPIXEL
@@ -68,7 +70,7 @@ public class DPDrive16093 extends LinearOpMode {//
         //get all Lynx Module device objects
         allHubs = hardwareMap.getAll(LynxModule.class);
 
-        double plnp= 0.6;//plane pos
+        double plane_close = 0.6, plane_open = 0.9;//plane pos
         double backPower=-0.3;//the power going back
         double brkp;//brake's pos
 
@@ -77,14 +79,16 @@ public class DPDrive16093 extends LinearOpMode {//
         int indexPixel = 0;
         int maxIndex=10;
         int minIndex=0;
-        
+
+        // 放片档位
         int slideLevel[] = {0,179,257,337,431,520,234,323,452,570}; //337 431
         int armLevel[] = {2155,2050,1980,1930,1920,1922,1994,1981,1951,1934};
         double wrtLevels[] = {0.8,0.8,0.85,0.85,0.85,0.85,0.49,0.49,0.49,0.5};
 
+        // 调片档位
         int slidePixelLevel[] = {0,47,120,187,268,351,456,578,507,512};
         int armPixelLevel[] = {2200,2130,2100,2050,2020,2000,1950,1920,1830,1760};
-        double wrtPixelLevels[] = {0.6,0.6,0.6,0.6,0.6,0.61,0.62,0.63,0.65,0.65};
+        double wristPixelLevel[] = {0.6,0.6,0.6,0.6,0.6,0.61,0.62,0.63,0.65,0.65};
 
         boolean rightGrabOpen=false;
         boolean leftGrabOpen=false;
@@ -148,7 +152,7 @@ public class DPDrive16093 extends LinearOpMode {//
         slideDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
         wrt.setDirection(Servo.Direction.FORWARD);
-        grabRight.setDirection(Servo.Direction.REVERSE);
+        grabRight.setDirection(Servo.Direction.FORWARD);
         brake.setDirection(Servo.Direction.FORWARD);
         leftFrontDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         leftBackDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -164,8 +168,8 @@ public class DPDrive16093 extends LinearOpMode {//
         grabRight.setPosition(grabRight_grab);
         grabLeft.setPosition(grabLeft_grab);
         wrt.setPosition(wrist_origin);
-        plnp=0.6;
-        plane.setPosition(plnp);
+        plane.setPosition(plane_close);
+
         brkp=0.5;
         brake.setPosition(brkp);
         heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
@@ -174,13 +178,30 @@ public class DPDrive16093 extends LinearOpMode {//
 
         while (opModeIsActive()){
             logic_period();
-
+            // 重置无头
             if(gamepad1.a){
                 imu.resetYaw();
             }
+            // 取消纸飞机和悬挂的锁： 一操的左右trigger
             if(remove_endgame_limit.get()){
                 remove_limit=true;
             }
+            // 发射纸飞机: gamepad1.y
+            if(plane_shoot.get()&&(runtime.seconds()>90||remove_limit)){
+                plane.setPosition(plane_open);
+            }
+            // 悬挂上升或下放
+            if(hangLower.get()){
+                hangLeft.setPower(1);
+                hangRight.setPower(1);
+            }else if(hangUp.get()){
+                hangLeft.setPower(-1);
+                hangRight.setPower(-1);
+            }else{
+                hangLeft.setPower(0);
+                hangRight.setPower(0);
+            }
+            // 悬挂卡住
             if(brake_start.toTrue()&&(runtime.seconds()>90||remove_limit)){
                 if(brkp==0.5){
                     brkp=0.93;
@@ -189,10 +210,7 @@ public class DPDrive16093 extends LinearOpMode {//
                 }
                 brake.setPosition(brkp);
             }
-            if(plane_shoot.get()&&(runtime.seconds()>90||remove_limit)){
-                plnp=0.9;
-            }
-
+            // 大臂下转：二操 left_bumper
             if(armBack.toTrue()) {
                 armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 armDrive.setPower(backPower);
@@ -201,6 +219,7 @@ public class DPDrive16093 extends LinearOpMode {//
                 armDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 armDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
+            // 收回滑轨： 二操 right_bumper
             if(slideBack.toTrue()) {
                 slideDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 slideDrive.setPower(backPower);
@@ -210,25 +229,21 @@ public class DPDrive16093 extends LinearOpMode {//
                 slideDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
+            // 回到初始位置： 一操 left_stick_button
             if(toRun.toTrue()){
                 if(sequence == Sequence.AIM) {
                     grabRight.setPosition(grabRight_grab);
                     grabLeft.setPosition(grabLeft_grab);
-                }
-                sleep_with_drive(300);
-                if(sequence== Sequence.AIM){
+                    sleep_with_drive(300);
                     setSlide(0);
+                    speed = 1;
                 }
                 sleep_with_drive(300);
                 if(sequence== Sequence.RELEASE){
-                    wrtp = wrist_origin;
-                    wrt.setPosition(wrtp);
+                    wrist_pos = wrist_origin;
+                    wrt.setPosition(wrist_pos);
                     speed = 1;
                     setArmPosition(1200);
-                    sleep_with_drive(500);
-                }
-                if(sequence== Sequence.AIM&&wrtp==0.45){
-                    speed=1;
                     sleep_with_drive(500);
                 }
                 setSlide(0);
@@ -239,11 +254,13 @@ public class DPDrive16093 extends LinearOpMode {//
                     sleep_with_drive(500);
                 }
 
-                wrtp = wrist_origin;
-                wrt.setPosition(wrtp);
+                wrist_pos = wrist_origin;
+                wrt.setPosition(wrist_pos);
                 sequence= Sequence.RUN;
                 telemetry.addData("run",0);
             }
+
+            //
             if(drop.toTrue()){
                 mode=1;
                 setSlide(slideLevel[index]);
@@ -256,8 +273,8 @@ public class DPDrive16093 extends LinearOpMode {//
             if(aim.toTrue()){
                 setSlide(0);
                 setArmPosition(0);
-                wrtp= wrist_intakeNear;
-                wrt.setPosition(wrtp);
+                wrist_pos= wrist_intakeNear;
+                wrt.setPosition(wrist_pos);
                 sequence= Sequence.AIM;
                 telemetry.addData("aim",0);
 
@@ -269,12 +286,13 @@ public class DPDrive16093 extends LinearOpMode {//
                 grabLeft.setPosition(leftGrabOpen?grabLeft_open:grabLeft_grab);
             }
 
+            // 底盘移动
             if(sequence== Sequence.RUN){
                 setSlide(0);
                 sleep_with_drive(100);
                 setArmPosition(0);
-                wrtp=wrist_origin;
-                wrt.setPosition(wrtp);
+                wrist_pos=wrist_origin;
+                wrt.setPosition(wrist_pos);
                 speed=1;
                 grabRight.setPosition(grabRight_grab);
                 grabLeft.setPosition(grabLeft_grab);
@@ -288,12 +306,14 @@ public class DPDrive16093 extends LinearOpMode {//
                     telemetry.addData("aim",0);
                 }
             }
+
+            // 抓片
             if(sequence== Sequence.AIM){
                 speed = 0.5;
                 if(distal.toTrue()){
                     setArmPosition(124);
-                    wrtp = wrist_intakeFar;
-                    wrt.setPosition(wrtp);
+                    wrist_pos = wrist_intakeFar;
+                    wrt.setPosition(wrist_pos);
                     sleep_with_drive(200);
                     setSlide(185);
                     rightGrabOpen=true;
@@ -308,8 +328,8 @@ public class DPDrive16093 extends LinearOpMode {//
 
                 if(proximal.toTrue()){
                     setSlide(0);
-                    wrtp=wrist_intakeNear;
-                    wrt.setPosition(wrtp);
+                    wrist_pos=wrist_intakeNear;
+                    wrt.setPosition(wrist_pos);
                     setArmPosition(0);
                     sleep_with_drive(200);
                     rightGrabOpen=true;
@@ -327,6 +347,7 @@ public class DPDrive16093 extends LinearOpMode {//
                 }
             }
 
+            // 放片
             if(sequence== Sequence.RELEASE) {
                 speed = 0.4;
                 if (dropUp.toTrue()) {
@@ -347,8 +368,8 @@ public class DPDrive16093 extends LinearOpMode {//
                     grabLeft.setPosition(grabLeft_close);
                     sequence = Sequence.MOVEPIXEL;
                 }
-                wrtp = wrtLevels [index];
-                wrt.setPosition(wrtp);
+                wrist_pos = wrtLevels [index];
+                wrt.setPosition(wrist_pos);
 
                 if (leftGrab.toTrue()) {
                     rightGrabOpen = !rightGrabOpen;
@@ -360,6 +381,7 @@ public class DPDrive16093 extends LinearOpMode {//
                 }
             }
 
+            // 挪动Pixel
             if (sequence == Sequence.MOVEPIXEL){
                 speed = 0.4;
                 if (pixelUp.toTrue()) {
@@ -373,27 +395,15 @@ public class DPDrive16093 extends LinearOpMode {//
 
                 setArmPosition(armPixelLevel[indexPixel]);
                 setSlide(slidePixelLevel[indexPixel]);
-                wrtp = wrtPixelLevels [indexPixel];
-                wrt.setPosition(wrtPixelLevels[indexPixel]);
+                wrist_pos = wristPixelLevel [indexPixel];
+                wrt.setPosition(wristPixelLevel[indexPixel]);
             }
 
+            // 滑轨到指定位置
             if(mode==1 && armDrive.getCurrentPosition()>armLevel[index]-300){
                 setSlide(slideLevel[index]);
                 mode=0;
             }
-
-            if(hangLower.get()){
-                hangLeft.setPower(1);
-                hangRight.setPower(1);
-            }else if(hangUp.get()){
-                hangLeft.setPower(-1);
-                hangRight.setPower(-1);
-            }else{
-                hangLeft.setPower(0);
-                hangRight.setPower(0);
-            }
-            wrt.setPosition(wrtp);
-            plane.setPosition(plnp);
 
             telemetry.addData("run_time :", runtime.seconds());
             telemetry.addData("imu_degrees :",imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
@@ -402,14 +412,15 @@ public class DPDrive16093 extends LinearOpMode {//
             telemetry.addData("大臂伸长:",slideDrive.getCurrentPosition());//arm expand position
             telemetry.addData("大臂位置:",armDrive.getCurrentPosition());//arm position
             telemetry.addData("底盘速度:",speed);// robot speed
-            telemetry.addData("手腕位置:",wrtp);//wrist position
+            telemetry.addData("手腕位置:",wrist_pos);//wrist position
             telemetry.addData("index:",index);//level of upper system
 
             telemetry.update();
-
             if(dpad.toTrue()){
                 heading_target=imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             }
+            wrt.setPosition(wrist_pos);
+            // 底盘移动
             bark_drive_period();
         }
     }

@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class SuperStructure {
     public static final double EXTERNAL_RATE = 1;
     private final DcMotorEx armDrive;
-    private final DcMotorEx amlDrive;
+    private final DcMotorEx slideDrive;
     private final DcMotorEx armExternalEnc;
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController armPidCtrl;
@@ -22,8 +22,8 @@ public class SuperStructure {
     private Servo wrt = null;
 
     public int grab_left = 1, grab_right = -1;
-    public static double grabRight_close = 0.79, grabLeft_close = 0.53, grab_openDelta = 0.3, grab_dropDelta = 0.1;
-    public static double wrist_origin = 0.77, wrist_intakeNear = 0.57, wrist_intakeFar = 0.53, wrist_upwardDrop = 0.57;
+    public static double grabRight_close = 0.78, grabLeft_close = 0.47, grab_openDelta = 0.28, grab_dropDelta = 0.1;
+    public static double wrist_origin = 0.77, wrist_intakeNear = 0.57, wrist_intakeFar = 0.53, wrist_upwardDrop = 0.48, wrist_drop = 0.8;
 
     private int grab_side;
 
@@ -44,26 +44,28 @@ public class SuperStructure {
         HardwareMap hardwareMap = opMode.hardwareMap;
         armPidCtrl = new PIDFController(armPidConf);
         armDrive = hardwareMap.get(DcMotorEx.class, "arm");
-        amlDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
+        slideDrive = hardwareMap.get(DcMotorEx.class, "armExpand");
+        wrt = hardwareMap.get(Servo.class, "wrist");
         wrt = hardwareMap.get(Servo.class, "wrist");
         grabRight = hardwareMap.get(Servo.class, "grabRight");
         grabLeft = hardwareMap.get(Servo.class, "grabLeft");
 
         armExternalEnc = hardwareMap.get(DcMotorEx.class, "hangRight");
 
-        amlDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        slideDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        amlDrive.setDirection(DcMotorEx.Direction.REVERSE);
+        slideDrive.setDirection(DcMotorEx.Direction.REVERSE);
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         wrt.setDirection(Servo.Direction.FORWARD);
+        grabRight.setDirection(Servo.Direction.FORWARD);
 
         armExternalEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
     public void grabLeft_close() {
         grabLeft.setPosition(grabLeft_close);
@@ -79,14 +81,6 @@ public class SuperStructure {
 
     public void grabRight_open() {
         grabRight.setPosition(grabRight_close - grab_openDelta);
-    }
-
-    public void reset_arm_encoders() {
-        armDrive.setPower(-0.2);
-        sleep(500);
-        armDrive.setPower(0);
-        armExternalEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void grabRight_drop() {
@@ -148,23 +142,20 @@ public class SuperStructure {
      */
     public void putOnSpikeMark() {
         wristGround();
-        setArmPosition(470); //245
-        sleep(300);
-        setSlide(570, 0.5);
-        sleep(600);
+//        setArmPosition(470);
+//        sleep(300);
+        setSlide(570, 0.8);
+        sleep(400);
         openPurple(grab_side);
         sleep(200);
         setSlide(0, 1);
-        sleep(500);
-        setArmPosition(0);
+//        sleep(500);
+//        setArmPosition(0);
         wrist_origin();
-        //sleep(800); 尝试一下
     }
 
     public void putOnBackDrop() {
-        wrist_origin();
         releaseYellow(grab_side);
-        sleep(200);
     }
 
     public void release_extra() {
@@ -173,14 +164,26 @@ public class SuperStructure {
     }
 
     public void drop_upward() {
-        setArmPosition(4516);
-        sleep(800);
+        sleep(200);
         releaseYellow(grab_side);
         releasePurple(grab_side);
-        sleep(300);
-        wrist_upwardDrop();
-
-        setArmPosition(2000);
+        setSlide(100,0.8);
+        sleep(100);
+        setArmPosition(4300);
+        sleep(500);
+    }
+    public void toOrigin(){
+        setArmPosition(0);
+        setSlide(0,1);
+        sleep(200);
+        wrt.setPosition(wrist_origin);
+        sleep(1000);
+        grabLeft_close();
+        grabRight_close();
+    }
+    public void dropToOrigin(){
+        setArmPosition(0);
+        setSlide(0,0.89);
         wrist_origin();
     }
 
@@ -188,7 +191,7 @@ public class SuperStructure {
         setArmPosition(armPos_near);
         setSlide(0, 1);
         openPurple(grab_side);
-        wrt.setPosition(0.57);
+        wrt.setPosition(0.55);
     }
 
     public void autoGrabFinish() {
@@ -202,37 +205,46 @@ public class SuperStructure {
         setArmPosition(470);
         grabRight_open();
         grabLeft_open();
-        wrt.setPosition(0.45);
-        sleep(600);
+        wrist_intakeFar();
+        sleep(300);
 
-        sleep(500);
         setSlide(560, 1);
         sleep(800);
         grabYellow(grab_side);
         grabPurple(grab_side);
         sleep(200);
 
-        setSlide(250, 1);
-        setArmPosition(500);
-        sleep(400);
-
-        wrist_intakeFar();
         setSlide(0, 1);
-        sleep(300);
-        wrist_origin();
-        sleep(300);
-        setArmPosition(100);
-
-        sleep(200);
-        setSlide(0, 1);
+        wrist_upwardDrop();
         sleep(200);
         setArmPosition(0);
+        wrist_origin();
+    }
+
+    public void intakeFar_prep(){
+        setArmPosition(470);
+        grabRight_open();
+        grabLeft_open();
+        wrist_intakeFar();
+        sleep(300);
+        setSlide(573, 0.9);
+    }
+    public void intakeFar_grab(){
+        grabYellow(grab_side);
+        grabPurple(grab_side);
+        sleep(100);
+        setArmPosition(600);
+        wrist_upwardDrop();
+        setSlide(0, 1);
+        sleep(200);
+        //setArmPosition(0);
+        wrist_origin();
     }
 
     public void setSlide(int length, double power) {
-        amlDrive.setTargetPosition(length);
-        amlDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        amlDrive.setPower(0.85);
+        slideDrive.setTargetPosition(length);
+        slideDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slideDrive.setPower(0.85);
     }
 
     public void setArmPosition(int pos) {
@@ -255,20 +267,29 @@ public class SuperStructure {
         armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         armPidCtrl.setOutputBounds(-0.7,0.7);
     }
+
     // ToDo: arm length reset
     public void resetSlide(){
-        amlDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        amlDrive.setPower(-0.2);
+        slideDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slideDrive.setPower(-0.3);
         long end = System.currentTimeMillis() + 300;
         while (end > System.currentTimeMillis()) {
             opMode.idle();
         }
-        amlDrive.setPower(0);
-        amlDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        amlDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        slideDrive.setPower(0);
+        slideDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    public void resetArmPosition(){
-        armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    public void resetArm(){
+        armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armDrive.setPower(-0.3);
+        long end = System.currentTimeMillis() + 300;
+        while (end > System.currentTimeMillis()) {
+            opMode.idle();
+        }
+        armDrive.setPower(0);
+        armExternalEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public int getArmPosition() {
@@ -278,6 +299,9 @@ public class SuperStructure {
     private static final double WRIST_MIDDLE_POSITION = 0.86;
     public void wrist_origin() {
         wrt.setPosition(wrist_origin);
+    }
+    public void wrist_drop (){
+        wrt.setPosition(wrist_drop);
     }
 
     public void wrist_intakeFar() {

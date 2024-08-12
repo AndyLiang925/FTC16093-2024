@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.FTC16093.uppersystem.SuperStructure;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -25,18 +26,25 @@ public class ArmLevelTest3in1 extends LinearOpMode {
     public static boolean reverse_arm = false;
     public static boolean reverse_slide = true;
     public static boolean reset = true;
+    public static boolean using_armExternalEnc = false;
     public static boolean set_power_mode_or_set_position_mode = false;
+    public static String arm_encoder = "arm";
     private Servo wrist = null;
 
     public static double wristPos = 1;
+    public SuperStructure upper;
 
     @Override
     public void runOpMode() {
+        upper = new SuperStructure(this);
         wrist = hardwareMap.get(Servo.class, "wrist");
-        DcMotorEx armMotor = hardwareMap.get(DcMotorEx.class, "arm");
+        DcMotorEx armMotor = hardwareMap.get(DcMotorEx.class, arm_encoder);
         DcMotorEx slideMotor = hardwareMap.get(DcMotorEx.class, "armExpand");
+        DcMotorEx armExternalEnc = hardwareMap.get(DcMotorEx.class,"hangRight");
+
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armExternalEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
         
         if (reset) {
@@ -44,6 +52,8 @@ public class ArmLevelTest3in1 extends LinearOpMode {
             armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         
         if (reverse_arm) {
@@ -54,47 +64,31 @@ public class ArmLevelTest3in1 extends LinearOpMode {
         }
 
         while (opModeIsActive()) {
-            
-            if (set_power_mode_or_set_position_mode) {
-                if (read_only) {
-                    armMotor.setPower(0);
-                    slideMotor.setPower(0);
-                }
-                else {
-                    armMotor.setPower(max_power);
-                    slideMotor.setPower(max_power);
-                }
-                armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                slideMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-            } else {
-                if (!read_only) {
+            if (!read_only) {
+                if (using_armExternalEnc){
+                    upper.setArmPosition(armPos);
+                }else{
                     armMotor.setTargetPosition(armPos);
                     armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    sleep(2000);
                     armMotor.setPower(max_power);
-                    slideMotor.setTargetPosition(slidePos);
-                    slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slideMotor.setPower(max_power);
-                    wrist.setPosition(wristPos);
-
-                    sleep(10000);
-                    armMotor.setTargetPosition(0);
-                    armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    armMotor.setPower(max_power);
-                    slideMotor.setTargetPosition(0);
-                    slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slideMotor.setPower(max_power);
                 }
-                else{
-                    wrist.setPosition(wristPos);
-                }
-                telemetry_M.addData("is busy_arm", armMotor.isBusy());
-                telemetry_M.addData("is busy_slide", slideMotor.isBusy());
+                sleep(2000);
+                slideMotor.setTargetPosition(slidePos);
+                slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                slideMotor.setPower(max_power);
+                wrist.setPosition(wristPos);
             }
+            else{
+                wrist.setPosition(wristPos);
+            }
+            telemetry_M.addData("is busy_arm", armMotor.isBusy());
+            telemetry_M.addData("is busy_slide", slideMotor.isBusy());
 
-            telemetry_M.addData("encoder_arm", armMotor.getCurrentPosition());
+            if (using_armExternalEnc){
+                telemetry_M.addData("armExternalEncoder",armExternalEnc.getCurrentPosition());
+            }else{
+                telemetry_M.addData("encoder_arm", armMotor.getCurrentPosition());
+            }
             telemetry_M.addData("encoder_slide", slideMotor.getCurrentPosition());
             telemetry_M.addData("velocity_arm", armMotor.getVelocity());
             telemetry_M.addData("velocity_slide", slideMotor.getVelocity());

@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous (group = "AutoBlueFar")
-public class AutoBlueFar_LeftDrop_center extends AutoMaster {
+public class AutoBlueFar_gate extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
 
         startSide = DISTAL;
         side_color = BLUE;
-        drop_side = LEFT;
+
+        // 初始化
         initHardware();
 
         // 放紫片
@@ -18,25 +19,23 @@ public class AutoBlueFar_LeftDrop_center extends AutoMaster {
 
         // 夹1个白片
         intakeDistal();
-        sleep(wait_time);
+        delay(wait_time);
 
-        // 到背板放片
+        // 到背板放黄片
         distalMoveToBackDrop();
         upper.putOnBackDrop();
 
+        // 放1个白片
         upper.setArmPosition(4050);
-        //backDrop_move();
-        moveToDropMiddle();
+        moveToDropWhite();
         upper.release_extra();
+
         delay(200);
         upper.setArmPosition(0);
         upper.setSlide(0,0.85);
-//        intakeGate();
-//        upper.drop_upward();
-//        upper.setArmPosition(0);
+
+        // 停靠到中间
         parking(2);
-        //ecByCenter_far();
-        //ec_far_putOnGround();
     }
 }
 

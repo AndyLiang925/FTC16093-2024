@@ -79,7 +79,6 @@ public class BarkMecanumDrive extends MecanumDrive {
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
 
     private TrajectoryFollower follower;
-
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
 
     private List<DcMotorEx> motors;
@@ -95,7 +94,6 @@ public class BarkMecanumDrive extends MecanumDrive {
     }
     public BarkMecanumDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
-        updatePositionTask.setType(Task.Type.BASE);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
@@ -282,8 +280,6 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     public void setHeadingPower(double x, double y, double rx) {
         double botHeading = 0;
-
-
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
@@ -517,7 +513,6 @@ public class BarkMecanumDrive extends MecanumDrive {
 
 
     public Task updatePositionTask = new Task() {
-
         @Override
         public void run() {
             update();

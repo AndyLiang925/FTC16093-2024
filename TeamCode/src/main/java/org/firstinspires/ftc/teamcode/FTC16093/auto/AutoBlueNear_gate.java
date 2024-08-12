@@ -5,25 +5,31 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(group = "AutoBlueNear")
 @Config
-public class AutoBlueNear_RightDrop_side extends AutoMaster {
+public class AutoBlueNear_gate extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
         side_color = BLUE;
-        drop_side = RIGHT;
+
+        // 初始化
         initHardware();
+        // 放紫片
         moveToSpikeMark();
         upper.putOnSpikeMark();
+        // 放黄片
         moveToBackDrop();
-
-        upper.setArmPosition_slow(2077);
-        sleep(1000);
-        upper.putOnBackDrop();
-        setUpAuto();
-        ec_lowFar_edgeSpline_blue();
+        delay(200);
+        //upper.putOnBackDrop();
+        upper.releaseYellow(side_color);
+        delay(200);
+        upper.setArmPosition(0);
+        // 夹2个白片
+        //intakeGate();
+        intakeGate_simpleMove();
+        // 放2个白片
+        moveToDropUpward();
         upper.drop_upward();
-        setUpAuto();
-        sleep(1000);
-        parking(3);
+        // 回到初始状态
+        upper.toOrigin();
     }
 }

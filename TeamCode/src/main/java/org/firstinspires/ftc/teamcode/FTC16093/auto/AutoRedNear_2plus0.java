@@ -3,28 +3,23 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(group = "AutoBlueNear")
+@Autonomous (group = "AutoRedNear")
 @Config
-public class AutoBlueNear_LeftDrop_side extends AutoMaster {
+public class AutoRedNear_2plus0 extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
-        side_color = BLUE;
+        side_color = RED;
         drop_side = LEFT;
         initHardware();
+
         moveToSpikeMark();
         upper.putOnSpikeMark();
         moveToBackDrop();
 
-        upper.setArmPosition_slow(2077);
-        sleep(500);
         upper.putOnBackDrop();
-        setUpAuto();
-
-        ec_lowFar_edgeSpline_blue();
-        upper.drop_upward();
-        setUpAuto();
-        sleep(1500);
-        parking(3);
+        upper.toOrigin();
+        parking(1);
     }
 }
+

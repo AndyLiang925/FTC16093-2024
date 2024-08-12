@@ -28,7 +28,7 @@ public class NewSuperStructure implements Component {
     private DcMotorEx slideMotor;
     private DcMotorEx armExternalEnc;
     private Servo grabberRight, grabberLeft, wrist;
-    public static double grabRight_close = 0.52, grabLeft_close = 0.86, grabber_open = -0.5, grabber_release = -0.15;
+    public static double grabRight_close = 0.53, grabLeft_close = 0.79, grabber_open = -0.3, grabber_release = -0.1;
 
     public static final int MAX_SLIDE_LENGTH = 573;
     public static final int MIN_SLIDE_LENGTH = -6;
@@ -263,7 +263,7 @@ public class NewSuperStructure implements Component {
     private double armTargetPosition;
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController armPidCtrl;
-    public static final double wrt_intake_min_pos = 0.51;
+    public static final double wrt_intake_min_pos = 0.57;
     public static double wrt_intake_max_pos = .45;
     public static final double wrt_middle_pos = 0.86;
     public static final double wrt_drop_low_pos = 0.9;

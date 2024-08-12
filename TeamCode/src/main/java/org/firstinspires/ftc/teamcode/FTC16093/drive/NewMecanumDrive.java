@@ -97,6 +97,7 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
     }
     public NewMecanumDrive() {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
+        updatePositionTask.setType(Task.Type.BASE);
 
         follower = new HolonomicPIDVAFollower(TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
                 new Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5);
@@ -520,6 +521,12 @@ public class NewMecanumDrive extends MecanumDrive implements Component {
                 })
                 .end().getBase();
     }
+    public Task updatePositionTask = new Task() {
+        @Override
+        public void run() {
+            update();
+        }
+    };
     private double clamp(double val, double range) {
         return Range.clip(val, -range, range);
     }
