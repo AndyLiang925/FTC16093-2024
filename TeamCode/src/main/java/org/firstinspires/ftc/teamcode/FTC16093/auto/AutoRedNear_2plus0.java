@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous (group = "AutoRedNear")
 @Config
-public class AutoRedNear_LeftDrop_side extends AutoMaster {
+public class AutoRedNear_2plus0 extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
@@ -17,10 +17,9 @@ public class AutoRedNear_LeftDrop_side extends AutoMaster {
         upper.putOnSpikeMark();
         moveToBackDrop();
 
-        sleep(500);
         upper.putOnBackDrop();
-        sleep(300);
-        setUpAuto();
-        ec_lowFar_edgeSpline_blue();
+        upper.toOrigin();
+        parking(1);
     }
 }
+

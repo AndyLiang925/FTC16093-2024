@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 @Autonomous(group = "AutoBlueNear")
 @Config
-public class AutoBlueNear_LeftDrop_side extends AutoMaster {
+public class AutoBlueNear_side extends AutoMaster {
     @Override
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;

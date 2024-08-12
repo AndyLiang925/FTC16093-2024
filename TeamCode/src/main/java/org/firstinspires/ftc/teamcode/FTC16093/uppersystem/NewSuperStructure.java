@@ -27,8 +27,8 @@ public class NewSuperStructure implements Component {
     private DcMotorEx armMotor;
     private DcMotorEx slideMotor;
     private DcMotorEx armExternalEnc;
-    private Servo grabber1, grabber2, wrist;
-    public static double grab1_close = 0.85, grab2_close = 0.48, grabber_open = -0.26, grabber_release = -0.15;
+    private Servo grabberRight, grabberLeft, wrist;
+    public static double grabRight_close = 0.53, grabLeft_close = 0.79, grabber_open = -0.3, grabber_release = -0.1;
 
     public static final int MAX_SLIDE_LENGTH = 573;
     public static final int MIN_SLIDE_LENGTH = -6;
@@ -50,8 +50,8 @@ public class NewSuperStructure implements Component {
         armMotor = hardwareMap.get(DcMotorEx.class, "arm");
         slideMotor = hardwareMap.get(DcMotorEx.class, "armExpand");
         wrist = hardwareMap.get(Servo.class, "wrist");
-        grabber1 = hardwareMap.get(Servo.class, "grab1");
-        grabber2 = hardwareMap.get(Servo.class, "grab2");
+        grabberRight = hardwareMap.get(Servo.class, "grabRight");
+        grabberLeft = hardwareMap.get(Servo.class, "grabLeft");
         armExternalEnc = hardwareMap.get(DcMotorEx.class, "hangRight");
 
         slideMotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
@@ -59,6 +59,7 @@ public class NewSuperStructure implements Component {
         slideMotor.setDirection(DcMotorEx.Direction.REVERSE);
         armMotor.setDirection(DcMotorEx.Direction.FORWARD);
         wrist.setDirection(Servo.Direction.FORWARD);
+        grabberRight.setDirection(Servo.Direction.REVERSE);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -185,27 +186,27 @@ public class NewSuperStructure implements Component {
     private void setGrabber(Grabber grabber, double diff) {
         switch (grabber) {
             case ALL:
-                grabber1.setPosition(grab1_close + diff);
-                grabber2.setPosition(grab2_close + diff);
+                grabberRight.setPosition(grabRight_close + diff);
+                grabberLeft.setPosition(grabLeft_close + diff);
                 return;
             case LEFT:
-                grabber2.setPosition(grab2_close + diff);
+                grabberLeft.setPosition(grabLeft_close + diff);
                 return;
             case RIGHT:
-                grabber1.setPosition(grab1_close + diff);
+                grabberRight.setPosition(grabRight_close + diff);
                 return;
             case PURPLE:
                 if (sideIsRed) {
-                    grabber2.setPosition(grab2_close + diff);
+                    grabberLeft.setPosition(grabLeft_close + diff);
                 } else {
-                    grabber1.setPosition(grab1_close + diff);
+                    grabberRight.setPosition(grabRight_close + diff);
                 }
                 return;
             case YELLOW:
                 if (sideIsRed) {
-                    grabber1.setPosition(grab1_close + diff);
+                    grabberRight.setPosition(grabRight_close + diff);
                 } else {
-                    grabber2.setPosition(grab2_close + diff);
+                    grabberLeft.setPosition(grabLeft_close + diff);
                 }
         }
     }
@@ -213,9 +214,9 @@ public class NewSuperStructure implements Component {
     public boolean grabberIsClosed(Grabber grabber) {
         switch (grabber) {
             case LEFT:
-                return Math.abs(grabber2.getPosition() - grab2_close) < 0.001;
+                return Math.abs(grabberLeft.getPosition() - grabLeft_close) < 0.001;
             case RIGHT:
-                return Math.abs(grabber1.getPosition() - grab1_close) < 0.001;
+                return Math.abs(grabberRight.getPosition() - grabRight_close) < 0.001;
             default:
                 return false;
         }
@@ -262,7 +263,7 @@ public class NewSuperStructure implements Component {
     private double armTargetPosition;
     public static PIDCoefficients armPidConf = new PIDCoefficients(0.0025, 0.00011, 0.00013);
     private final PIDFController armPidCtrl;
-    public static final double wrt_intake_min_pos = 0.51;
+    public static final double wrt_intake_min_pos = 0.57;
     public static double wrt_intake_max_pos = .45;
     public static final double wrt_middle_pos = 0.86;
     public static final double wrt_drop_low_pos = 0.9;

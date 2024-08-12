@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
+import org.firstinspires.ftc.teamcode.FTC16093.uppersystem.SuperStructure;
 
 /*
  * Op mode for preliminary tuning of the follower PID coefficients (located in the drive base
@@ -29,11 +30,19 @@ import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 public class BackAndForth extends LinearOpMode {
 
     public static double DISTANCE = 50;
+    private Runnable update;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        SuperStructure upper = new SuperStructure(this);
         BarkMecanumDrive drive = new BarkMecanumDrive(hardwareMap);
 
+        update = () -> {
+            drive.update();
+            upper.update();
+        };
+        upper.setUpdateRunnable(update);
+        drive.setUpdateRunnable(update);
         Trajectory trajectoryForward = drive.trajectoryBuilder(new Pose2d())
                 .forward(DISTANCE)
                 .build();

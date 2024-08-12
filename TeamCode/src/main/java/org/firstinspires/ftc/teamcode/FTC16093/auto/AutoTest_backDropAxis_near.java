@@ -24,7 +24,8 @@ public class AutoTest_backDropAxis_near extends AutoMaster {
         upper.drop_upward();
 
         upper.setArmPosition(500);
-        upper.wrist_to_middle();
+        upper.wrist_origin();
+
         backDrop_move1Pixel();
         upper.release_extra();
         delay(200);
