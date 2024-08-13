@@ -17,11 +17,11 @@ public class AutoRedNear_gate extends AutoMaster {
         upper.putOnSpikeMark();
         // 放黄片
         moveToBackDrop();
-        delay(200);
         //upper.putOnBackDrop();
         upper.releaseYellow(side_color);
-        delay(200);
+        delay(100);
         upper.setArmPosition(0);
+
         // 夹2个白片
         intakeGate_simpleMove();
         // 放2个白片
@@ -30,7 +30,6 @@ public class AutoRedNear_gate extends AutoMaster {
         // 放下大臂，回收滑轨
         upper.dropToOrigin();
 
-        // 重复
         intakeGate_simpleMove();
         moveToDropUpward();
         upper.drop_upward();

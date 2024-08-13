@@ -23,7 +23,7 @@ public class SuperStructure {
 
     public int grab_left = 1, grab_right = -1;
     public static double grabRight_close = 0.78, grabLeft_close = 0.47, grab_openDelta = 0.28, grab_dropDelta = 0.1;
-    public static double wrist_origin = 0.77, wrist_intakeNear = 0.57, wrist_intakeFar = 0.53, wrist_upwardDrop = 0.48, wrist_drop = 0.8;
+    public static double wrist_origin = 0.77, wrist_intakeNear = 0.56, wrist_intakeFar = 0.53, wrist_upwardDrop = 0.50, wrist_drop = 0.8, wrist_pixelSlide = 0.43;
 
     private int grab_side;
 
@@ -142,8 +142,6 @@ public class SuperStructure {
      */
     public void putOnSpikeMark() {
         wristGround();
-//        setArmPosition(470);
-//        sleep(300);
         setSlide(570, 0.8);
         sleep(400);
         openPurple(grab_side);
@@ -164,13 +162,13 @@ public class SuperStructure {
     }
 
     public void drop_upward() {
-        sleep(200);
         releaseYellow(grab_side);
         releasePurple(grab_side);
+        sleep(200);
         setSlide(100,0.8);
-        sleep(100);
-        setArmPosition(4300);
-        sleep(500);
+        sleep(130);
+        setArmPosition(4080);
+        sleep(300);
     }
     public void toOrigin(){
         setArmPosition(0);
@@ -183,22 +181,21 @@ public class SuperStructure {
     }
     public void dropToOrigin(){
         setArmPosition(0);
-        setSlide(0,0.89);
+        setSlide(0,0.9);
         wrist_origin();
     }
 
     public void autoGrabPrepare(int armPos_near) {
         setArmPosition(armPos_near);
-        setSlide(0, 1);
         openPurple(grab_side);
-        wrt.setPosition(0.55);
+        wrt.setPosition(0.6);
     }
 
     public void autoGrabFinish() {
         grabPurple(grab_side);
-        sleep(300);
-        wrist_origin();
-        setArmPosition(0);
+//        sleep(300);
+//        wrist_origin();
+//        setArmPosition(0);
     }
 
     public void intake2_lowFar() {
@@ -233,12 +230,9 @@ public class SuperStructure {
         grabYellow(grab_side);
         grabPurple(grab_side);
         sleep(100);
-        setArmPosition(600);
-        wrist_upwardDrop();
+        setArmPosition(800);
+        wrist_pixelSlide();
         setSlide(0, 1);
-        sleep(200);
-        //setArmPosition(0);
-        wrist_origin();
     }
 
     public void setSlide(int length, double power) {
@@ -254,7 +248,7 @@ public class SuperStructure {
         if(armExternalEnc.getCurrentPosition() <= 800 && pos <= armExternalEnc.getCurrentPosition()){
             armPidCtrl.setOutputBounds(-0.3,0.3);
         }else if(armExternalEnc.getCurrentPosition() < 3000 && pos >= armExternalEnc.getCurrentPosition()){
-            armPidCtrl.setOutputBounds(-0.8,0.8);
+            armPidCtrl.setOutputBounds(-0.9,0.9);
         }else if(pos >= armExternalEnc.getCurrentPosition()){
             armPidCtrl.setOutputBounds(-0.5,0.5);
         }else{
@@ -314,6 +308,9 @@ public class SuperStructure {
 
     public void wrist_upwardDrop() {
         wrt.setPosition(wrist_upwardDrop);
+    }
+    public void wrist_pixelSlide(){
+        wrt.setPosition(wrist_pixelSlide);
     }
     private double armTargetPosition;
 
