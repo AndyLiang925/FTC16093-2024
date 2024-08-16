@@ -120,7 +120,7 @@ public class AutoMaster extends LinearOpMode {
         return new Pose2d(backDrop_white2_x, side_color * backDrop_white_y, Math.toRadians(backDrop_heading));
     }
 
-    public static double intake_far_grab_x = -42, intake_farCenter_y = 8.8;
+    public static double intake_far_grab_x = -43, intake_farCenter_y = 8.0;//夹白xy
     public static double gate_y = 6;
 
     public static double intake_blue_right_oblique_x = -43, intake_blue_right_oblique_y = 32;
@@ -439,8 +439,10 @@ public class AutoMaster extends LinearOpMode {
     public void moveToDropUpward(){
         drive.setSimpleMovePower(0.95);
         drive.moveTo(new Pose2d(30,intake_farCenter_y*side_color,Math.toRadians(180)),0);
+        sleep(100);
         upper.setArmPosition(4300);
         upper.wrist_upwardDrop();
+        sleep(400);
         drive.moveTo(white_preDropPose,0);
         upper.setArmPosition(4620);
         drive.setSimpleMoveTolerance(2,0.1);

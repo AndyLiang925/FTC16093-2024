@@ -22,7 +22,7 @@ public class SuperStructure {
     private Servo wrt = null;
 
     public int grab_left = 1, grab_right = -1;
-    public static double grabRight_close = 0.78, grabLeft_close = 0.47, grab_openDelta = 0.28, grab_dropDelta = 0.1;
+    public static double grabRight_close = 0.78, grabLeft_close = 0.47, grab_openDelta = 0.28, grab_dropDelta = 0.2;
     public static double wrist_origin = 0.77, wrist_intakeNear = 0.57, wrist_intakeFar = 0.53, wrist_upwardDrop = 0.48, wrist_drop = 0.8;
 
     private int grab_side;
@@ -169,7 +169,7 @@ public class SuperStructure {
         releasePurple(grab_side);
         setSlide(100,0.8);
         sleep(100);
-        setArmPosition(4300);
+        setArmPosition(4100);
         sleep(500);
     }
     public void toOrigin(){
@@ -233,7 +233,7 @@ public class SuperStructure {
         grabYellow(grab_side);
         grabPurple(grab_side);
         sleep(100);
-        setArmPosition(600);
+        setArmPosition(500);
         wrist_upwardDrop();
         setSlide(0, 1);
         sleep(200);
