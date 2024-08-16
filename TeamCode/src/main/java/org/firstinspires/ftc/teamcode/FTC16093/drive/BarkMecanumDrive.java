@@ -300,7 +300,6 @@ public class BarkMecanumDrive extends MecanumDrive {
     public void setGlobalPower(double x, double y, double rx) {
         double botHeading = imu.getAngularOrientation().firstAngle;
 
-
         double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
         double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
@@ -374,19 +373,6 @@ public class BarkMecanumDrive extends MecanumDrive {
         return new ProfileAccelerationConstraint(maxAccel);
     }
 
-    public double getMotorVelo(int vel) {
-        if (vel == 1) {
-            return leftFront.getVelocity();
-        } else if (vel == 2) {
-            return leftRear.getVelocity();
-        } else if (vel == 3) {
-            return rightFront.getVelocity();
-        } else if (vel == 4) {
-            return rightRear.getVelocity();
-        }
-        return 0;
-    }
-
     public static PIDCoefficients translationPid = new PIDCoefficients(0.1778, 0.000, 0.02286);
     public static PIDCoefficients headingPid = new PIDCoefficients(1.5, 0, 0.2);
 
@@ -412,7 +398,7 @@ public class BarkMecanumDrive extends MecanumDrive {
 
     public void stopTrajectory() {
         trajectorySequenceRunner.followTrajectorySequenceAsync(null);
-        simpleMoveIsActivate=false;
+        simpleMoveIsActivate = false;
     }
 
     public void initSimpleMove(Pose2d pos) {
