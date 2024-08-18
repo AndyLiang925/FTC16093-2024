@@ -10,7 +10,6 @@ public class AutoRedNear_side extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
         side_color = RED;
-
         // 初始化
         initHardware();
 
@@ -18,12 +17,18 @@ public class AutoRedNear_side extends AutoMaster {
         moveToSpikeMark();
         upper.putOnSpikeMark();
 
+        //放黄片
+        moveToDropYellow_Near();
+        upper.dropYellow();
+        upper.dropToOrigin();
 
-        moveToBackDrop();
-        sleep(500);
-        upper.putOnBackDrop();
-        sleep(300);
-        setUpAuto();
-        ec_lowFar_edgeSpline_blue();
+        // Side夹2个白片
+        intakeSide();
+        side_moveToDropUpward();
+        upper.drop_upward();
+        // 回到初始状态
+        upper.toOrigin();
+
+        parking(2);
     }
 }

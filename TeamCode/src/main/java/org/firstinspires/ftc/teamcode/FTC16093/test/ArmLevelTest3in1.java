@@ -79,6 +79,8 @@ public class ArmLevelTest3in1 extends LinearOpMode {
                 wrist.setPosition(wristPos);
             }
             else{
+                armMotor.setPower(0);
+                slideMotor.setPower(0);
                 wrist.setPosition(wristPos);
             }
             telemetry_M.addData("is busy_arm", armMotor.isBusy());

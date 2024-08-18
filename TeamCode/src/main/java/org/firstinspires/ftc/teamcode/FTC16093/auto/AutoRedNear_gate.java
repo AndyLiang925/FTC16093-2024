@@ -16,29 +16,25 @@ public class AutoRedNear_gate extends AutoMaster {
         moveToSpikeMark();
         upper.putOnSpikeMark();
         // 放黄片
-        moveToBackDrop();
-        //upper.putOnBackDrop();
-        upper.releaseYellow(side_color);
-        delay(100);
+        moveToDropYellow_Near();
+        upper.dropYellow();
+
         upper.setArmPosition(0);
 
         // 夹2个白片
         intakeGate_simpleMove();
         // 放2个白片
-        moveToDropUpward();
+        gate_moveToDropUpward();
         upper.drop_upward();
         // 放下大臂，回收滑轨
         upper.dropToOrigin();
 
         intakeGate_simpleMove();
-        moveToDropUpward();
-        upper.drop_upward();
-        upper.dropToOrigin();
-
-        intakeGate_simpleMove();
-        moveToDropUpward();
+        gate_moveToDropUpward();
         upper.drop_upward();
         // 回到初始状态
         upper.toOrigin();
+
+        parking(1);
     }
 }

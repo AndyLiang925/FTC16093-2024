@@ -17,12 +17,12 @@ public class AutoTest_backDropAxis extends AutoMaster {
         sleep(wait_time);
         distal_backDropAxis();
         delay(300);
-        upper.putOnBackDrop();
+        upper.dropYellow();
         upper.setArmPosition(4100);
         backDrop_move1Pixel();
         upper.release_extra();
         delay(200);
-        setUpAuto();
+        init_setUpAuto();
         delay(1500);
         parking(3);
     }
