@@ -87,7 +87,7 @@ public class AutoMaster extends LinearOpMode {
     public static int backDrop_heading = 180;
     public static double backDrop_yellowProximal_x = 52; // 48.8
     public static double backDrop_yellowDistal_x = 48.8;
-    public static double backDrop_white2_x = 46.5;
+    public static double backDrop_white2_x = 48.5;
     public static double backDrop_centerAxis_y = 33.2;
     public static double backDrop_white_y = 26.4; //25.4
 
@@ -442,7 +442,7 @@ public class AutoMaster extends LinearOpMode {
         sleep(100);
         upper.setArmPosition(4300);
         upper.wrist_upwardDrop();
-        sleep(400);
+        delay(300);
         drive.moveTo(white_preDropPose,0);
         upper.setArmPosition(4620);
         drive.setSimpleMoveTolerance(2,0.1);
