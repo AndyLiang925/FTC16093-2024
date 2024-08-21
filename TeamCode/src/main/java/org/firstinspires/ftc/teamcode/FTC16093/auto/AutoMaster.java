@@ -139,7 +139,7 @@ public class AutoMaster extends LinearOpMode {
     public SuperStructure upper;
     public static int armPos_intake1 = 255;
     public static int wait_time = 0;
-    private Runnable update;//
+    private Runnable update;
 
     @Override
     public void runOpMode() throws InterruptedException {
