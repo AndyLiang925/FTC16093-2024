@@ -21,19 +21,23 @@ public class AutoRedFar_gate extends AutoMaster {
         intakeDistal();
 
         // 到背板放黄片
-        distal_moveToDropYellow();
-        upper.dropYellow();
+        distalMoveToBackDrop();
+        upper.putOnBackDrop();
 
         // 移到板侧放1个白片
         upper.setArmPosition(4100);
         moveToDropWhite();
         upper.release_extra();
-        delay(200);
+        upper.dropToOrigin();
 
-        // 放下大臂，收回滑轨
-        upper.setArmPosition(0);
-        upper.setSlide(0,0.8);
-        parking(2);
+        // 夹2个白片
+        intakeGate_simpleMove();
+        // 放2个白片
+        moveToDropUpward();
+        upper.drop_upward();
+        // 放下大臂，收回滑轨,回到初始位置
+        upper.toOrigin();
+
     }
 }
 

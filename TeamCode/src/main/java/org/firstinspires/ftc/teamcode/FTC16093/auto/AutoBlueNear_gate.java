@@ -17,7 +17,7 @@ public class AutoBlueNear_gate extends AutoMaster {
         moveToSpikeMark();
         upper.putOnSpikeMark();
         // 放黄片
-        moveToDropYellow_Near();
+        moveToBackDrop();
         delay(200);
         //upper.putOnBackDrop();
         upper.releaseYellow(side_color);
@@ -27,19 +27,19 @@ public class AutoBlueNear_gate extends AutoMaster {
         //intakeGate();
         intakeGate_simpleMove();
         // 放2个白片
-        gate_moveToDropUpward();
+        moveToDropUpward();
         upper.drop_upward();
         // 放下大臂，回收滑轨
         upper.dropToOrigin();
 
         // 重复
         intakeGate_simpleMove();
-        gate_moveToDropUpward();
+        moveToDropUpward();
         upper.drop_upward();
         upper.dropToOrigin();
 
         intakeGate_simpleMove();
-        gate_moveToDropUpward();
+        moveToDropUpward();
         upper.drop_upward();
         // 回到初始状态
         upper.toOrigin();

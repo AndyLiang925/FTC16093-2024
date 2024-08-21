@@ -10,17 +10,21 @@ public class AutoBlueNear_side extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
         side_color = BLUE;
-
+        drop_side = LEFT;
         initHardware();
-
         moveToSpikeMark();
         upper.putOnSpikeMark();
+        moveToBackDrop();
 
-        moveToDropYellow_Near();
+        upper.setArmPosition_slow(2077);
+        sleep(500);
+        upper.putOnBackDrop();
+        setUpAuto();
 
-        intakeSide();
+        ec_lowFar_edgeSpline_blue();
         upper.drop_upward();
-
+        setUpAuto();
+        sleep(1500);
         parking(3);
     }
 }

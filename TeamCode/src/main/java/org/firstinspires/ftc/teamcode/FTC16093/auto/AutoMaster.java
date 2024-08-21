@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.FTC16093.auto;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.FTC16093.drive.BarkMecanumDrive;
 import org.firstinspires.ftc.teamcode.FTC16093.uppersystem.SuperStructure;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -62,37 +64,32 @@ public class AutoMaster extends LinearOpMode {
     Pose2d startPos;
 
     public static double startPos_x = 12.125, startPos_y = 59, startPos_heading = 90;
-    public static double spikeMark_x = 22.5, spikeMark_y = -45, spikeMark_heading = Math.toRadians(140);
+    public static double spikeMark_x, spikeMark_y, spikeMark_heading = 0;
 
     Pose2d spikeMark = new Pose2d(spikeMark_x, spikeMark_y, Math.toRadians(spikeMark_heading));
     
-    private static Pose2d spikeMark_redLeft = new Pose2d(22.5, -45, Math.toRadians(140));
-    private static Pose2d spikeMark_redCenter = new Pose2d(24.5, -46, Math.toRadians(110));
-    private static Pose2d spikeMark_redRight = new Pose2d(30, -54, Math.toRadians(103));
+    public static Pose2d spikeMark_redLeft = new Pose2d(22.5, -45, Math.toRadians(145));
+    public static Pose2d spikeMark_redCenter = new Pose2d(24.5, -46, Math.toRadians(110));
+    public static Pose2d spikeMark_redRight = new Pose2d(21.7, -54, Math.toRadians(95));
 
-    private static Pose2d spikeMark_blueLeft = new Pose2d(23.5, 51, Math.toRadians(-90)); //TODO
-    private static Pose2d spikeMark_blueCenter = new Pose2d(22, 46, Math.toRadians(-95));
-    private static Pose2d spikeMark_blueRight = new Pose2d(22, 45, Math.toRadians(-135));
+    public static Pose2d spikeMark_blueLeft = new Pose2d(23.5, 51, Math.toRadians(-90)); //TODO
+    public static Pose2d spikeMark_blueCenter = new Pose2d(22, 46, Math.toRadians(-95));
+    public static Pose2d spikeMark_blueRight = new Pose2d(22, 45, Math.toRadians(-135));
 
-    private static Pose2d spikeMark_red_distalLeft = new Pose2d(-48.2, -51, Math.toRadians(90.5));
-    private static Pose2d spikeMark_red_distalCenter = new Pose2d(-46, -46, Math.toRadians(85));
-    private static Pose2d spikeMark_red_distalRight = new Pose2d(-46, -45, Math.toRadians(45));
+    public static Pose2d spikeMark_red_distalLeft = new Pose2d(-48.2, -51, Math.toRadians(90));
+    public static Pose2d spikeMark_red_distalCenter = new Pose2d(-46, -46, Math.toRadians(85));
+    public static Pose2d spikeMark_red_distalRight = new Pose2d(-46, -45, Math.toRadians(45));
 
-    private static Pose2d spikeMark_blue_distalLeft = new Pose2d(-46, 45, Math.toRadians(-40));
-    private static Pose2d spikeMark_blue_distalCenter = new Pose2d(-46, 46, Math.toRadians(-85));
-    private static Pose2d spikeMark_blue_distalRight = new Pose2d(-48.3, 54, Math.toRadians(-90));
-
-
+    public static Pose2d spikeMark_blue_distalLeft = new Pose2d(-46, 45, Math.toRadians(-40));
+    public static Pose2d spikeMark_blue_distalCenter = new Pose2d(-46, 46, Math.toRadians(-85));
+    public static Pose2d spikeMark_blue_distalRight = new Pose2d(-48.3, 54, Math.toRadians(-90));
     Pose2d yellowBackDropPosition = new Pose2d(48.3, 33 * side_color, Math.toRadians(180)); //47.8 blue
-
     public static int backDrop_heading = 180;
-    public static double backDrop_yellowProximal_x = 52; // 48.8
+    public static double backDrop_yellowProximal_x = 49; // 48.8
     public static double backDrop_yellowDistal_x = 48.8;
-    public static double backDrop_white2_x = 48.5;
+    public static double backDrop_white2_x = 49.5;
     public static double backDrop_centerAxis_y = 33.2;
-    public static double backDrop_white_y = 27; //25.4
-    public static double backDrop_gateWhite2_y = 28;
-    public static double backDrop_sideWhite2_y = 28;
+    public static double backDrop_white_y = 26.4; //25.4
 
     public static double pixel_width = 3.11;
     public static double drop_yellow_index = 0;
@@ -110,34 +107,33 @@ public class AutoMaster extends LinearOpMode {
         return new Pose2d(40, side_color * backDrop_centerAxis_y + pos * pixel_width, Math.toRadians(backDrop_heading));
     }
     protected Pose2d white_preDropPose;
-    private Pose2d getWhite_preDropPose( ){
-        return new Pose2d(38, side_color * backDrop_white_y, Math.toRadians(backDrop_heading));
+    private Pose2d getWhite_preDropPose(double pos){
+        return new Pose2d(40, side_color * backDrop_white_y, Math.toRadians(backDrop_heading));
     }
     private Pose2d whiteDropPos_1;
     private Pose2d getWhiteDropPos_1 ( ){
         return new Pose2d(48, side_color * backDrop_white_y, Math.toRadians(backDrop_heading));
     }
 
-    private Pose2d whiteDropGatePos_2;
-    private Pose2d getWhiteDropGatePos_2( ){
-        return new Pose2d(backDrop_white2_x, side_color * backDrop_gateWhite2_y, Math.toRadians(178));
+    private Pose2d whiteDropPos_2;
+    private Pose2d getWhiteDropPos_2 ( ){
+        return new Pose2d(backDrop_white2_x, side_color * backDrop_white_y, Math.toRadians(backDrop_heading));
     }
 
-    private Pose2d whiteDropSidePos_2;
-    private Pose2d getWhiteDropSidePos_2( ){
-        return new Pose2d(backDrop_white2_x, side_color * backDrop_sideWhite2_y, Math.toRadians(178));
-    }
-
-    public static double intake_gate_x = -43.5, intake_gate_y = 9;
+    public static double intake_far_grab_x = -45, intake_farCenter_y = 8.0;//夹白xy
     public static double gate_y = 6;
-    public static double intake_side_x = -43, intake_side_y = 32,intake_side_heading = 150;
+
+    public static double intake_blue_right_oblique_x = -43, intake_blue_right_oblique_y = 32;
     public static double park_x = 43, park_inside = 56, park_outside = 6;
-    public static double intake_distal_white1_x = -58, intake_distal_y = 10.5, intake_distal_white1_medium_y = 40;  // intake_distal_y Houston = 9.6
-    private Pose2d intake_distal_white1_gate;
-    public static double intake_distal_white1_side_y = 32;
+    public static double intake_nearGrab_x = -58.5, intake_distal_y = 10.5, intake_medi_side_x = -53, intake_medi_side_y = 40;  // intake_distal_y Houston = 9.6
+    private Pose2d intake_near;
+    public static double intake_distal_sideNear_y = 32;
+    public static double edgePass_y = 53;
+    public static double intake_medi_x = -38;
+    public static double intake_medi_y = 6.5;
 
     public SuperStructure upper;
-    public static int armPos_intake1 = 255;
+    public static int armPos_intake1 = 265;
     public static int wait_time = 0;
     private Runnable update;
 
@@ -169,18 +165,18 @@ public class AutoMaster extends LinearOpMode {
         drive.update();
         drive.getLocalizer().setPoseEstimate(startPos);
         drive.update();
-        drive.getLocalizer().setPoseEstimate(startPos);
-        drive.setSimpleMoveTolerance(50, Math.toRadians(3));
-
         telemetry.addLine("init: superstructure");
         upper.setGrabSide(side_color);
+//        upper.resetArm();
+
         update = () -> {
             drive.update();
             upper.update();
         };
         upper.setUpdateRunnable(update);
         drive.setUpdateRunnable(update);
-        init_setUpAuto();
+
+        setUpAuto();
 
         telemetry.addLine("init: trajectory");
 
@@ -195,7 +191,7 @@ public class AutoMaster extends LinearOpMode {
             if (isStopRequested()) throw new InterruptedException();
         }
 
-        intake_distal_white1_gate = new Pose2d(intake_distal_white1_x, intake_distal_y * side_color, Math.toRadians(180));
+        intake_near = new Pose2d(intake_nearGrab_x, intake_distal_y * side_color, Math.toRadians(180));
         // index-yellowPosition:
         // 1: center_sideLeft 2:left_sideRight 3: left_sideLeft
         // 0: center_sideRight-1: right_sideRight -2: right_sideRight
@@ -215,7 +211,7 @@ public class AutoMaster extends LinearOpMode {
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
                 spikeMark = spikeMark_redLeft;
-                drop_yellow_index = 2.5;
+                drop_yellow_index = 2.8;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark = spikeMark_redCenter;
@@ -227,7 +223,7 @@ public class AutoMaster extends LinearOpMode {
             }
             yellowBackDropPosition = getDropPose_proximal(drop_yellow_index);
             preDropPose = getPreDropPose(drop_yellow_index);
-            white_preDropPose = getWhite_preDropPose( );
+            white_preDropPose = getWhite_preDropPose(drop_yellow_index);
         }
 
         if (startSide == DISTAL) {
@@ -246,7 +242,7 @@ public class AutoMaster extends LinearOpMode {
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
                 spikeMark = spikeMark_red_distalLeft;
-                drop_yellow_index = 2;
+                drop_yellow_index = 2.5;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark = spikeMark_red_distalCenter;
@@ -260,10 +256,9 @@ public class AutoMaster extends LinearOpMode {
             preDropPose = getPreDropPose(drop_yellow_index);
             white_preDropPose = getPreDropPose(drop_yellow_index);
         }
-        whiteDropPos_1 = getWhiteDropPos_1();
-        whiteDropGatePos_2 = getWhiteDropGatePos_2();
-        whiteDropSidePos_2 = getWhiteDropSidePos_2();
 
+        whiteDropPos_1 = getWhiteDropPos_1();
+        whiteDropPos_2 = getWhiteDropPos_2();
         runtime.reset();
         visionPortal.stopStreaming();
     }
@@ -296,12 +291,13 @@ public class AutoMaster extends LinearOpMode {
 
     public void moveToSpikeMark() {
         upper.setArmPosition(470);
+        upper.setSlide(50,0.4);
         drive.setSimpleMoveTolerance(2,0.3);
         drive.setSimpleMovePower(1);
-        drive.moveTo(spikeMark, 100);
+        drive.moveTo(spikeMark, 200);
     }
 
-    public void moveToDropYellow_Near() {
+    public void moveToBackDrop() {
         if (isStopRequested()) return;
         upper.grabPurple(side_color);
         upper.setArmPosition(4100);
@@ -315,46 +311,35 @@ public class AutoMaster extends LinearOpMode {
 
     public void intakeDistal() {
         if (isStopRequested()) return;
-
-        drive.setSimpleMovePower(0.95);
-        drive.setSimpleMoveTolerance(2,Math.toRadians(20));
-
-        drive.moveTo(new Pose2d(-57, intake_distal_white1_medium_y * side_color, Math.toRadians(180)), 0);
-
-        upper.grabWhite1_Prepare(armPos_intake1);
-
+        drive.moveTo(new Pose2d(-57, intake_medi_side_y * side_color, Math.toRadians(180)), 0);
+        drive.setSimpleMoveTolerance(2,5);
         drive.moveTo(new Pose2d(-57, intake_distal_y * side_color, Math.toRadians(180)), 0);
-        drive.moveTo(new Pose2d(-52, intake_distal_y * side_color, Math.toRadians(180)), 500);
-
-        upper.wristGround();
+        drive.moveTo(new Pose2d(-54, intake_distal_y * side_color, Math.toRadians(180)), 300);
+        upper.autoGrabPrepare(armPos_intake1);
 
         drive.setSimpleMovePower(0.5);
-        drive.setSimpleMoveTolerance(5,Math.toRadians(5));
-
-        drive.moveTo(intake_distal_white1_gate, 200);
-        upper.grabWhite1_Finish();
+        drive.setSimpleMoveTolerance(2,0.2);
+        drive.moveTo(intake_near, 200);
+        upper.autoGrabFinish();
+        drive.setSimpleMovePower(0.8);
     }
     public void moveToDropWhite(){
         drive.setSimpleMoveTolerance(2.5,0.2);
-        drive.moveTo(whiteDropPos_1,100);
+        drive.moveTo(whiteDropPos_1,200);
     }
 
-    public void distal_moveToDropYellow() {
-        drive.setSimpleMovePower(0.95);
-        drive.setSimpleMoveTolerance(1,Math.toRadians(5));
-
-        drive.moveTo(new Pose2d(30,7*side_color,Math.toRadians(180)),0);
-
-        upper.setArmPosition(3800);
-        upper.wrist_drop();
-        upper.setSlide(70,0.8);
-
-        drive.moveTo(preDropPose,500);
+    public void distalMoveToBackDrop() {
+        drive.setSimpleMoveTolerance(1,0.1);
+        drive.moveTo(new Pose2d(25,7*side_color,Math.toRadians(180)),0);
+        upper.setArmPosition_slow(3500);
+        delay(300);
+        upper.setSlide(110,0.8);
+        drive.setSimpleMovePower(0.5);
+        drive.moveTo(preDropPose,100);
+        drive.setSimpleMovePower(0.2);
 
         upper.setArmPosition(4150);
-        drive.setSimpleMovePower(0.3);
-        drive.setSimpleMoveTolerance(5,2);
-
+        drive.setSimpleMoveTolerance(3,2);
         drive.moveTo(yellowBackDropPosition, 500);
     }
 
@@ -369,41 +354,23 @@ public class AutoMaster extends LinearOpMode {
         drive.moveTo(new Pose2d(47, backDrop_centerAxis_y * side_color, Math.toRadians(180)), 500);
     }
 
-    public void intakeSide() {
-        drive.setSimpleMovePower(0.95);
-        drive.setSimpleMoveTolerance(2,Math.toRadians(10));
-
-        drive.moveTo(new Pose2d(30,54,Math.toRadians(180)),0);
-        drive.moveTo(new Pose2d(-37,54*side_color,Math.toRadians(180)),500);
-
-        upper.intakeFar_prep();
-
-        drive.setSimpleMoveTolerance(5,Math.toRadians(20));
-        drive.setSimpleMovePower(0.4);
-        drive.moveTo(new Pose2d(intake_side_x, intake_side_y *side_color, Math.toRadians((-1) * intake_side_heading * side_color)),500);
-
-        upper.intakeFar_grab();
-    }
-    public void side_moveToDropUpward(){
-        drive.setSimpleMovePower(0.95);
-
-        drive.moveTo(new Pose2d(-35, 54 * side_color, Math.toRadians(180)),0);
-        drive.moveTo(new Pose2d(30,54*side_color,Math.toRadians(180)),0);
-
-        upper.setArmPosition(4000);
-        // 将手腕翻到向上放片的角度
-        upper.wrist_upwardDrop();
-
-        drive.setSimpleMoveTolerance(2,Math.toRadians(5));
-
-        drive.moveTo(white_preDropPose,300);
-
-        upper.setArmPosition(4254);
-
-        drive.setSimpleMovePower(0.3);
-        drive.setSimpleMoveTolerance(5,Math.toRadians(20));
-
-        drive.moveTo(whiteDropGatePos_2,500);
+    public void ec_lowFar_edgeSpline_blue() {
+        TrajectorySequence moveToIntake = drive.trajectorySequenceBuilder(yellowBackDropPosition)
+                .splineTo(new Vector2d(30, 54 * side_color), Math.toRadians(180.00))
+                .lineToLinearHeading(new Pose2d(-37, 54 * side_color, Math.toRadians(180.00)))
+                //.waitSeconds(0.1)
+                .lineToLinearHeading(new Pose2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y, Math.toRadians(180)))
+                .build();
+        TrajectorySequence moveToDrop = drive.trajectorySequenceBuilder(new Pose2d(intake_blue_right_oblique_x, intake_blue_right_oblique_y, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-35, 53 * side_color, Math.toRadians(180)))
+                .lineToConstantHeading(new Vector2d(40, 53 * side_color))
+                .addDisplacementMarker(80, () -> upper.wrist_upwardDrop())
+                .addDisplacementMarker(80, () -> upper.setArmPosition(1800))
+                .lineToLinearHeading(whiteDropPos_1)
+                .build();
+        drive.followTrajectorySequence(moveToIntake);
+        upper.intake2_lowFar();
+        drive.followTrajectorySequence(moveToDrop);
     }
 
     /**
@@ -429,7 +396,7 @@ public class AutoMaster extends LinearOpMode {
         }
     }
 
-    public void init_setUpAuto() {
+    public void setUpAuto() {
         upper.setArmPosition(0);
         upper.resetSlide();
         upper.setSlide(-5, 1);
@@ -445,49 +412,47 @@ public class AutoMaster extends LinearOpMode {
         drive.followTrajectory(moveToAnotherDrop);
     }
 
+    public void intakeGate() {
+        TrajectorySequence moveToPixel = drive.trajectorySequenceBuilder(yellowBackDropPosition)
+                .splineTo(new Vector2d(30, 6.5 * side_color), Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(intake_medi_x, intake_medi_y * side_color, Math.toRadians(180)))
+                .build();
+
+        drive.followTrajectorySequence(moveToPixel);
+        drive.moveTo(new Pose2d(intake_far_grab_x, intake_farCenter_y*side_color, Math.toRadians(180)),100);
+        upper.intake2_lowFar();
+    }
+
     public void intakeGate_simpleMove(){
         drive.setSimpleMovePower(0.95);
-        drive.setSimpleMoveTolerance(5,Math.toRadians(3));
+        drive.setSimpleMoveTolerance(5,3);
 
         drive.moveTo(new Pose2d(40,gate_y*side_color,Math.toRadians(180)),0);
-
-        drive.setSimpleMoveTolerance(2,Math.toRadians(5));
-
-        drive.moveTo(new Pose2d(-25, intake_gate_y *side_color,Math.toRadians(180)),400);
-
+        drive.moveTo(new Pose2d(-30,intake_farCenter_y*side_color,Math.toRadians(180)),100);
         upper.intakeFar_prep();
-
-        drive.setSimpleMovePower(0.5);
-        drive.setSimpleMoveTolerance(5,Math.toRadians(10));
-
-        drive.moveTo(new Pose2d(intake_gate_x, intake_gate_y *side_color, Math.toRadians(180)),500);
-
+        drive.setSimpleMovePower(0.4);
+        drive.setSimpleMoveTolerance(4,0.1);
+        drive.moveTo(new Pose2d(intake_far_grab_x, intake_farCenter_y*side_color, Math.toRadians(180)),300);
         upper.intakeFar_grab();
     }
 
-    public void gate_moveToDropUpward(){
+    public void moveToDropUpward(){
         drive.setSimpleMovePower(0.95);
-        drive.moveTo(new Pose2d(30, intake_gate_y *side_color,Math.toRadians(180)),0);
-
-        upper.setArmPosition(4000);
-        // 将手腕翻到向上放片的角度
+        drive.moveTo(new Pose2d(30,intake_farCenter_y*side_color,Math.toRadians(180)),0);
+        sleep(100);
+        upper.setArmPosition(4300);
         upper.wrist_upwardDrop();
-
-        drive.setSimpleMoveTolerance(2,Math.toRadians(5));
-
-        drive.moveTo(white_preDropPose,300);
-
-        upper.setArmPosition(4254);
-
+        delay(300);
+        drive.moveTo(white_preDropPose,0);
+        upper.setArmPosition(4590);
+        drive.setSimpleMoveTolerance(2,0.1);
         drive.setSimpleMovePower(0.3);
-        drive.setSimpleMoveTolerance(5,Math.toRadians(20));
-
-        drive.moveTo(whiteDropSidePos_2,500);
+        drive.moveTo(whiteDropPos_2,100);
     }
 
     protected void delay(int time) {
         long end = System.currentTimeMillis() + time;
-        while (opModeIsActive() && end > System.currentTimeMillis() && update!=null) {
+        while (opModeIsActive() && end > System.currentTimeMillis()&&update!=null) {
             idle();
             update.run();
         }
