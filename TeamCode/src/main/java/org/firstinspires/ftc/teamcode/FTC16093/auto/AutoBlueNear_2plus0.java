@@ -15,12 +15,12 @@ public class AutoBlueNear_2plus0 extends AutoMaster {
 
         moveToSpikeMark();
         upper.putOnSpikeMark();
-        moveToBackDrop();
+        moveToDropYellow_Near();
 
         upper.setArmPosition(2077);
         sleep(1000);
-        upper.putOnBackDrop();
-        setUpAuto();
+        upper.dropYellow();
+        init_setUpAuto();
         sleep(1);
     }
 

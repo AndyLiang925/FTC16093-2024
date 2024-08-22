@@ -52,8 +52,8 @@ public class DPDrive16093 extends LinearOpMode {//
     // 手腕位置
     double wrist_origin=0.77, wrist_intakeNear=0.57, wrist_intakeFar= 0.54;
     // 爪子位置
-    private double grabRight_open=0.5, grabRight_drop =0.63, grabRight_grab = 0.78, grabRight_close = 1;
-    private double grabLeft_open=0.19, grabLeft_drop = 0.33, grabLeft_grab=0.47, grabLeft_close = 0.69;
+    private double grabRight_open=0.39, grabRight_drop =0.59, grabRight_grab = 0.76, grabRight_close = 1;
+    private double grabLeft_open=0.11, grabLeft_drop = 0.31, grabLeft_grab=0.47, grabLeft_close = 0.69;
     private ElapsedTime runtime = new ElapsedTime();
     enum Sequence {
         AIM, RELEASE, RUN, MOVEPIXEL
