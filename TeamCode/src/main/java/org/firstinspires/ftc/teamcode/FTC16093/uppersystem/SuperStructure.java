@@ -59,7 +59,7 @@ public class SuperStructure {
         armDrive.setDirection(DcMotorEx.Direction.FORWARD);
 
         wrt.setDirection(Servo.Direction.FORWARD);
-        grabRight.setDirection(Servo.Direction.FORWARD);
+        grabRight.setDirection(Servo.Direction.REVERSE);
 
         armExternalEnc.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armExternalEnc.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

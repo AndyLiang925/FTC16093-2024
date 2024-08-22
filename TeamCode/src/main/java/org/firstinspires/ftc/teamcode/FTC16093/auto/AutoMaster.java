@@ -69,8 +69,8 @@ public class AutoMaster extends LinearOpMode {
     Pose2d spikeMark = new Pose2d(spikeMark_x, spikeMark_y, Math.toRadians(spikeMark_heading));
     
     public static Pose2d spikeMark_redLeft = new Pose2d(22.5, -45, Math.toRadians(145));
-    public static Pose2d spikeMark_redCenter = new Pose2d(24.5, -46, Math.toRadians(110));
-    public static Pose2d spikeMark_redRight = new Pose2d(21.7, -54, Math.toRadians(95));
+    public static Pose2d spikeMark_redCenter = new Pose2d(24.5, -43, Math.toRadians(110));
+    public static Pose2d spikeMark_redRight = new Pose2d(21.7, -54, Math.toRadians(89));//original 95
 
     public static Pose2d spikeMark_blueLeft = new Pose2d(23.5, 51, Math.toRadians(-90)); //TODO
     public static Pose2d spikeMark_blueCenter = new Pose2d(22, 46, Math.toRadians(-95));
@@ -83,9 +83,9 @@ public class AutoMaster extends LinearOpMode {
     public static Pose2d spikeMark_blue_distalLeft = new Pose2d(-46, 45, Math.toRadians(-40));
     public static Pose2d spikeMark_blue_distalCenter = new Pose2d(-46, 46, Math.toRadians(-85));
     public static Pose2d spikeMark_blue_distalRight = new Pose2d(-48.3, 54, Math.toRadians(-90));
-    Pose2d yellowBackDropPosition = new Pose2d(48.3, 33 * side_color, Math.toRadians(180)); //47.8 blue
+    Pose2d yellowBackDropPosition = new Pose2d(51, 33 * side_color, Math.toRadians(180)); //47.8 blue；51red
     public static int backDrop_heading = 180;
-    public static double backDrop_yellowProximal_x = 49; // 48.8
+    public static double backDrop_yellowProximal_x = 51; // 47.8 blue; 51 red
     public static double backDrop_yellowDistal_x = 48.8;
     public static double backDrop_white2_x = 49.5;
     public static double backDrop_centerAxis_y = 33.2;
@@ -191,7 +191,7 @@ public class AutoMaster extends LinearOpMode {
             if (isStopRequested()) throw new InterruptedException();
         }
 
-        intake_near = new Pose2d(intake_nearGrab_x, intake_distal_y * side_color, Math.toRadians(180));
+        intake_near = new Pose2d(intake_nearGrab_x, intake_distal_y * side_color, Math.toRadians(180));//在以下改黄片位置
         // index-yellowPosition:
         // 1: center_sideLeft 2:left_sideRight 3: left_sideLeft
         // 0: center_sideRight-1: right_sideRight -2: right_sideRight
@@ -215,7 +215,7 @@ public class AutoMaster extends LinearOpMode {
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark = spikeMark_redCenter;
-                drop_yellow_index = 0.8;
+                drop_yellow_index = 1.0;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == RED) {
                 DesiredTagId = 6;
                 spikeMark = spikeMark_redRight;
