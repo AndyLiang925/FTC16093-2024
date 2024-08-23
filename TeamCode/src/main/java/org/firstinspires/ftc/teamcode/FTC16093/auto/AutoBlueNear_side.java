@@ -10,17 +10,31 @@ public class AutoBlueNear_side extends AutoMaster {
     public void runOpMode() throws InterruptedException{
         startSide = PROXIMAL;
         side_color = BLUE;
-
+        // 初始化
         initHardware();
-
+        // 放紫片
         moveToSpikeMark();
         upper.putOnSpikeMark();
-
+        // 放黄片
         moveToDropYellow_Near();
+        upper.dropYellow();
 
-        intakeSide();
+        upper.setArmPosition(0);
+
+        // 夹2个白片
+        intakeGate_simpleMove();
+        // 放2个白片
+        gate_moveToDropUpward();
         upper.drop_upward();
+        // 放下大臂，回收滑轨
+        upper.dropToOrigin();
 
-        parking(3);
+        intakeGate_simpleMove();
+        gate_moveToDropUpward();
+        upper.drop_upward();
+        // 回到初始状态
+        upper.toOrigin();
+
+        parking(1);
     }
 }

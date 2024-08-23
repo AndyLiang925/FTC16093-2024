@@ -83,12 +83,12 @@ public class AutoMaster extends LinearOpMode {
     private static Pose2d spikeMark_blue_distalRight = new Pose2d(-48.3, 54, Math.toRadians(-90));
 
 
-    Pose2d yellowBackDropPosition = new Pose2d(48.3, 33 * side_color, Math.toRadians(180)); //47.8 blue
+    Pose2d yellowBackDropPosition = new Pose2d(48.3, 33 * side_color, Math.toRadians(180)); //47.8 blue, 48.3 red
 
     public static int backDrop_heading = 180;
-    public static double backDrop_yellowProximal_x = 52; // 48.8
-    public static double backDrop_yellowDistal_x = 51; //48.8
-    public static double backDrop_white2_x = 48.5;
+    public static double backDrop_yellowProximal_x = 52; // 48.8 blue 52 red
+    public static double backDrop_yellowDistal_x = 51; //48.8 blue 51 red
+    public static double backDrop_white2_x = 49;
     public static double backDrop_centerAxis_y = 32.8;
     public static double backDrop_white_y = 27; //25.4
     public static double backDrop_gateWhite2_y = 28;
@@ -128,7 +128,7 @@ public class AutoMaster extends LinearOpMode {
         return new Pose2d(backDrop_white2_x, side_color * backDrop_sideWhite2_y, Math.toRadians(178));
     }
 
-    public static double intake_gate_x = -43.5, intake_gate_y = 9;
+    public static double intake_gate_x = -43, intake_gate_y = 9;
     public static double gate_y = 6;
     public static double intake_side_x = -47, intake_side_y = 42,intake_side_heading = 155;
     public static double park_x = 43, park_inside = 56, park_outside = 6;
@@ -477,15 +477,15 @@ public class AutoMaster extends LinearOpMode {
         drive.moveTo(new Pose2d(30, intake_gate_y *side_color,Math.toRadians(180)),0);
 
         upper.setArmPosition(4000);
-        // 将手腕翻到向上放片的角度
-        upper.wrist_upwardDrop();
 
+        //手腕原本在這
         drive.setSimpleMoveTolerance(2,Math.toRadians(5));
 
         drive.moveTo(white_preDropPose,300);
 
-        upper.setArmPosition(4254);
-
+        upper.setArmPosition(4280);
+        // 将手腕翻到向上放片的角度
+        upper.wrist_upwardDrop();
         drive.setSimpleMovePower(0.3);
         drive.setSimpleMoveTolerance(5,Math.toRadians(20));
 

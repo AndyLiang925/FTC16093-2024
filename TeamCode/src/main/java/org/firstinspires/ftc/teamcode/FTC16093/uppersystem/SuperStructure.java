@@ -22,7 +22,7 @@ public class SuperStructure {
     private Servo wrt = null;
 
     public int grab_left = 1, grab_right = -1;
-    public static double grabRight_grab = 0.76, grabLeft_grab = 0.48, grab_openDelta = 0.36, grab_dropDelta = 0.17,grab_closeDelta = 0.21;
+    public static double grabRight_grab = 0.81, grabRight_grabwhiteauto = 0.77, grabLeft_grab = 0.485, grab_openDelta = 0.36, grab_dropDelta = 0.17,grab_closeDelta = 0.27;
     public static double wrist_origin = 0.77, wrist_intakeNear = 0.56, wrist_intakeFar = 0.53, wrist_upwardDrop = 0.50, wrist_drop = 0.8, wrist_pixelSlide = 0.43;
 
     private int grab_side;
@@ -186,15 +186,17 @@ public class SuperStructure {
         sleep(300);
     }
     public void toOrigin(){
+        grabLeft_grab();
+        grabRight_grab();
         setArmPosition(0);
         setSlide(0,1);
         sleep(200);
         wrt.setPosition(wrist_origin);
         sleep(1000);
-        grabLeft_grab();
-        grabRight_grab();
     }
-
+    public void wristtoOrigin(){
+        wrt.setPosition(wrist_origin);
+    }
     public void dropToOrigin(){
         setArmPosition(0);
         setSlide(0,0.9);
@@ -219,13 +221,15 @@ public class SuperStructure {
         setSlide(573, 0.9);
     }
     public void intakeFar_grab(){
-        grabYellow(grab_side);
-        grabPurple(grab_side);
-
-        sleep(100);
-        setArmPosition(800);
+        //grabYellow(grab_side);
+        //grabPurple(grab_side);
+        grabRight.setPosition(grabRight_grabwhiteauto);
+        grabLeft.setPosition(grabLeft_grab);
+        sleep(150);
+        //setArmPosition(800);
         wrist_pixelSlide();
         setSlide(0, 1);
+        sleep(200);
     }
 
     public void intakeSide_prep(){

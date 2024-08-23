@@ -23,6 +23,8 @@ public class AutoRedNear_gate extends AutoMaster {
 
         // 夹2个白片
         intakeGate_simpleMove();
+        delay(100);
+        upper.wristtoOrigin();
         // 放2个白片
         gate_moveToDropUpward();
         upper.drop_upward();
@@ -30,6 +32,7 @@ public class AutoRedNear_gate extends AutoMaster {
         upper.dropToOrigin();
 
         intakeGate_simpleMove();
+        upper.wristtoOrigin();
         gate_moveToDropUpward();
         upper.drop_upward();
         // 回到初始状态
