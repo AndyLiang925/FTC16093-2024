@@ -22,8 +22,8 @@ public class AutoBlueFar_gate extends AutoMaster {
         delay(wait_time);
 
         // 到背板放黄片
-        distalMoveToBackDrop();
-        upper.putOnBackDrop();
+        distal_moveToDropYellow();
+        upper.dropYellow();
 
         // 放1个白片
         upper.setArmPosition(4050);

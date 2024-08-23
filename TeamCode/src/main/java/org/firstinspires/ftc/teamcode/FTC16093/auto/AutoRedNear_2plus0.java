@@ -15,9 +15,9 @@ public class AutoRedNear_2plus0 extends AutoMaster {
 
         moveToSpikeMark();
         upper.putOnSpikeMark();
-        moveToBackDrop();
+        moveToDropYellow_Near();
 
-        upper.putOnBackDrop();
+        upper.dropYellow();
         upper.toOrigin();
         parking(1);
     }
