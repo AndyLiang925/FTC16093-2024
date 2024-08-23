@@ -21,7 +21,11 @@ import java.util.List;
 
 @Config
 public class AutoMaster extends LinearOpMode {
-
+// Key Takeaways:
+    //70-84 行 紫片的xy和heading
+    //204-259行 黄片index 找左中右规律改数就行 一个单位大概是一个pixel的宽度
+    //夹白片默认heading180；xy直接从自动顶层程序里面command+左键找就行
+    //具体的手指和电机控制在superstructure程序里 就一点一点command左键找就行
 
     private ElapsedTime runtime;
 
@@ -70,13 +74,13 @@ public class AutoMaster extends LinearOpMode {
     private static Pose2d spikeMark_redCenter = new Pose2d(24.5, -45, Math.toRadians(110));
     private static Pose2d spikeMark_redRight = new Pose2d(30, -54, Math.toRadians(103));
 
-    private static Pose2d spikeMark_blueLeft = new Pose2d(23.5, 51, Math.toRadians(-90)); //TODO
+    private static Pose2d spikeMark_blueLeft = new Pose2d(26, 51, Math.toRadians(-90)); //TODO
     private static Pose2d spikeMark_blueCenter = new Pose2d(22, 46, Math.toRadians(-95));
-    private static Pose2d spikeMark_blueRight = new Pose2d(22, 45, Math.toRadians(-135));
+    private static Pose2d spikeMark_blueRight = new Pose2d(20, 45, Math.toRadians(-135));
 
-    private static Pose2d spikeMark_red_distalLeft = new Pose2d(-48.2, -51, Math.toRadians(90.1));
+    private static Pose2d spikeMark_red_distalLeft = new Pose2d(-45.2, -53, Math.toRadians(91));
     private static Pose2d spikeMark_red_distalCenter = new Pose2d(-46, -46, Math.toRadians(85));
-    private static Pose2d spikeMark_red_distalRight = new Pose2d(-46, -45, Math.toRadians(45));
+    private static Pose2d spikeMark_red_distalRight = new Pose2d(-42, -45, Math.toRadians(45));
 
     private static Pose2d spikeMark_blue_distalLeft = new Pose2d(-46, 45, Math.toRadians(-40));
     private static Pose2d spikeMark_blue_distalCenter = new Pose2d(-46, 46, Math.toRadians(-85));
@@ -132,7 +136,7 @@ public class AutoMaster extends LinearOpMode {
     public static double gate_y = 6;
     public static double intake_side_x = -47, intake_side_y = 42,intake_side_heading = 155;
     public static double park_x = 43, park_inside = 56, park_outside = 6;
-    public static double intake_distal_white1_x = -58, intake_distal_y = 10.5, intake_distal_white1_medium_y = 40;  // intake_distal_y Houston = 9.6
+    public static double intake_distal_white1_x = -58, intake_distal_y = 9.5, intake_distal_white1_medium_y = 40;  // intake_distal_y Houston = 9.6
     private Pose2d intake_distal_white1_gate;
     public static double intake_distal_white1_side_y = 32;
 
@@ -211,7 +215,7 @@ public class AutoMaster extends LinearOpMode {
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == BLUE) {
                 DesiredTagId = 3;
                 spikeMark = spikeMark_blueRight;
-                drop_yellow_index = -2;
+                drop_yellow_index = -3;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
                 spikeMark = spikeMark_redLeft;
@@ -246,15 +250,15 @@ public class AutoMaster extends LinearOpMode {
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.LEFT && side_color == RED) {
                 DesiredTagId = 4;
                 spikeMark = spikeMark_red_distalLeft;
-                drop_yellow_index = 2;
+                drop_yellow_index = 3.5;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.CENTER && side_color == RED) {
                 DesiredTagId = 5;
                 spikeMark = spikeMark_red_distalCenter;
-                drop_yellow_index = 0.5;
+                drop_yellow_index = -0.25;
             } else if (startingPos == CenterStageVisionProcessor.StartingPosition.RIGHT && side_color == RED) {
                 DesiredTagId = 6;
                 spikeMark = spikeMark_red_distalRight;
-                drop_yellow_index = -1.5;
+                drop_yellow_index = -1.25;
             }
             yellowBackDropPosition = getDropPose_distal(drop_yellow_index);
             preDropPose = getPreDropPose(drop_yellow_index);
