@@ -52,8 +52,8 @@ public class DPDrive16093 extends LinearOpMode {//
     // 手腕位置
     double wrist_origin=0.77, wrist_intakeNear=0.57, wrist_intakeFar= 0.54;
     // 爪子位置
-    private double grabRight_open=0.5, grabRight_drop =0.63, grabRight_grab = 0.78, grabRight_close = 1;
-    private double grabLeft_open=0.19, grabLeft_drop = 0.33, grabLeft_grab=0.47, grabLeft_close = 0.69;
+    private double grabRight_open=0.5, grabRight_drop =0.63, grabRight_grab = 0.81, grabRight_close = 1;
+    private double grabLeft_open=0.19, grabLeft_drop = 0.33, grabLeft_grab=0.485, grabLeft_close = 0.69;
     private ElapsedTime runtime = new ElapsedTime();
     enum Sequence {
         AIM, RELEASE, RUN, MOVEPIXEL
@@ -309,8 +309,9 @@ public class DPDrive16093 extends LinearOpMode {//
 
             // 抓片
             if(sequence== Sequence.AIM){
-                speed = 0.5;
+
                 if(distal.toTrue()){
+                    speed = 0.5;
                     setArmPosition(124);
                     wrist_pos = wrist_intakeFar;
                     wrt.setPosition(wrist_pos);
@@ -327,6 +328,7 @@ public class DPDrive16093 extends LinearOpMode {//
                 }
 
                 if(proximal.toTrue()){
+                    speed=1;
                     setSlide(0);
                     wrist_pos=wrist_intakeNear;
                     wrt.setPosition(wrist_pos);
