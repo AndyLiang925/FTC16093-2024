@@ -268,7 +268,7 @@ public class DPDrive16093 extends LinearOpMode {//
                 rightGrabOpen = false;
                 leftGrabOpen = false;
                 setArmPosition(armp);
-                sleep(1000);
+                sleep_with_drive(1000);
                 setSlide(slideLevel[index]);
 
             }

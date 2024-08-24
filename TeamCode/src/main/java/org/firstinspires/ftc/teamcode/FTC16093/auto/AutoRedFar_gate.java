@@ -19,7 +19,7 @@ public class AutoRedFar_gate extends AutoMaster {
 
         // 夹1个白片
         intakeDistal();
-
+        delay(6000);
         // 到背板放黄片
         distal_moveToDropYellow();
         upper.dropYellow();

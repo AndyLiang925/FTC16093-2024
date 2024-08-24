@@ -21,16 +21,19 @@ public class AutoBlueNear_side extends AutoMaster {
 
         upper.setArmPosition(0);
 
-        // 夹2个白片
-        intakeGate_simpleMove();
-        // 放2个白片
-        gate_moveToDropUpward();
+        // Side夹2个白片
+        intakeSide();
+        delay(100);
+        upper.wristtoOrigin();
+        side_moveToDropUpward();
         upper.drop_upward();
-        // 放下大臂，回收滑轨
         upper.dropToOrigin();
 
-        intakeGate_simpleMove();
-        gate_moveToDropUpward();
+        // Side夹2个白片
+        intakeSide();
+        delay(100);
+        upper.wristtoOrigin();
+        side_moveToDropUpward();
         upper.drop_upward();
         // 回到初始状态
         upper.toOrigin();

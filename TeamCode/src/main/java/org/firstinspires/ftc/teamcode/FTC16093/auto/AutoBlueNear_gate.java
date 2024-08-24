@@ -37,11 +37,11 @@ public class AutoBlueNear_gate extends AutoMaster {
         upper.drop_upward();
         upper.dropToOrigin();
 
-        //intakeGate_simpleMove();
-        //gate_moveToDropUpward();
-        //upper.drop_upward();
+        intakeGate_simpleMove();
+        gate_moveToDropUpward();
+        upper.drop_upward();
         // 回到初始状态
-        //upper.toOrigin();
+        upper.toOrigin();
         parking(1);
     }
 }
