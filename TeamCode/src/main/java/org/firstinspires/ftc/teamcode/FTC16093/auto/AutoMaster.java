@@ -341,7 +341,7 @@ public class AutoMaster extends LinearOpMode {
 
         drive.moveTo(intake_distal_white1_gate, 500);
         //sleep(10000);
-        upper.grabWhite1_Finish();
+
     }
     public void moveToDropWhite(){
         drive.setSimpleMoveTolerance(2.5,0.2);

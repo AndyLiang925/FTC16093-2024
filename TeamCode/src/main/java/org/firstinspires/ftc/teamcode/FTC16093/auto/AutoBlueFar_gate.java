@@ -19,6 +19,8 @@ public class AutoBlueFar_gate extends AutoMaster {
 
         // 夹1个白片
         intakeDistal();
+        delay(10000);
+        upper.grabWhite1_Finish();
         delay(wait_time);
 
         // 到背板放黄片

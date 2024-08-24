@@ -209,7 +209,7 @@ public class SuperStructure {
         wrt.setPosition(0.6);
     }
     public void grabWhite1_Finish() {
-        sleep(10000);
+        //sleep(10000);
         grabRight.setPosition(grabRight_grab);
     }
 
